@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Networkisolation | Tilly Net</title>
+<title>Remote-Recovery | Tilly Net</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.tillynet.com/tags/networkisolation/">
+<link rel="canonical" href="https://blog.tillynet.com/tags/remote-recovery/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.tillynet.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/networkisolation/index.xml">
-<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/networkisolation/">
+<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/remote-recovery/index.xml">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/remote-recovery/">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,13 +56,13 @@
         }
 
     </style>
-</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/networkisolation/">
+</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/remote-recovery/">
   <meta property="og:site_name" content="Tilly Net">
-  <meta property="og:title" content="Networkisolation">
+  <meta property="og:title" content="Remote-Recovery">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Networkisolation">
+<meta name="twitter:title" content="Remote-Recovery">
 <meta name="twitter:description" content="">
 
 </head>
@@ -128,22 +128,22 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    Networkisolation
+    Remote-Recovery
   </h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Creating Network Management Isolation
+    <h2 class="entry-hint-parent">Remote VLAN Recovery &amp; Proxmox Network Repair over VPN
     </h2>
   </header>
   <div class="entry-content">
-    <p>🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.
-🎯 Goals Remove critical services from default/native VLAN Assign a dedicated, isolated VLAN (VLAN 99) for: Proxmox management GUI Omada Controller (LXC) Trunk management VLAN through switch to Proxmox Implement firewall rules to allow remote admin access only Preserve service availability during transition 🧱 Pre-Migration Topology Component Network VLAN Interface Description Proxmox Host LAN VLAN 1 vmbr0 Static IP via native VLAN Omada Controller LAN VLAN 1 vmbr0 LXC container, web GUI on port 8043 Pi-hole LAN VLAN 1 vmbr0 DNS LXC VPN Tunnel LAN VLAN 1 pfSense Remote client-to-site access 🧠 Post-Migration Topology Component Network VLAN Interface Description Proxmox Host Management VLAN 99 vmbr1.99 Tagged IP for GUI access via vmbr1 Omada Controller Management VLAN 99 vmbr1 (tagged) LXC container with VLAN tag 99 Pi-hole LAN VLAN 1 vmbr0 LXC container Trunk Port (Switch) Trunked Port 1,99,14 enp1s0 Connected to VLAN-aware bridge vmbr1 VPN Tunnel Routed to MGMT VLAN 99 pfSense Allows external admin access to VLAN 99 🛠️ Migration Steps 1. Create VLAN 99 in pfSense Interfaces &gt; Assignments &gt; VLANs Created VLAN 99 on the LAN parent interface Assigned it as a new interface and renamed it to MGMT Enabled the interface and set a static IP (management subnet) 2. Configure Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:
+    <p>🛠️ Remote VLAN Recovery &amp; Proxmox Network Repair over VPN 📡 Project Title: Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access Overview In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely off-site, using only a mobile device connected via an OpenVPN tunnel.
+🔍 Background I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-15 00:00:00 +0000 UTC'>April 15, 2025</span>&nbsp;·&nbsp;2 min</footer>
-  <a class="entry-link" aria-label="post link to Creating Network Management Isolation" href="https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/"></a>
+  <footer class="entry-footer"><span title='2025-04-18 00:00:00 +0000 UTC'>April 18, 2025</span>&nbsp;·&nbsp;3 min</footer>
+  <a class="entry-link" aria-label="post link to Remote VLAN Recovery & Proxmox Network Repair over VPN" href="https://blog.tillynet.com/my-home-lab-journey/remote-vlan-recovery-proxmox-network-repair-over-vpn/"></a>
 </article>
     </main>
     

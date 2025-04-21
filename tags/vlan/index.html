@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Networkisolation | Tilly Net</title>
+<title>Vlan | Tilly Net</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.tillynet.com/tags/networkisolation/">
+<link rel="canonical" href="https://blog.tillynet.com/tags/vlan/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.tillynet.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/networkisolation/index.xml">
-<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/networkisolation/">
+<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/vlan/index.xml">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/vlan/">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,13 +56,13 @@
         }
 
     </style>
-</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/networkisolation/">
+</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/vlan/">
   <meta property="og:site_name" content="Tilly Net">
-  <meta property="og:title" content="Networkisolation">
+  <meta property="og:title" content="Vlan">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Networkisolation">
+<meta name="twitter:title" content="Vlan">
 <meta name="twitter:description" content="">
 
 </head>
@@ -128,22 +128,21 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    Networkisolation
+    Vlan
   </h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Creating Network Management Isolation
+    <h2 class="entry-hint-parent">Pi-hole DNS Migration to Production VLAN
     </h2>
   </header>
   <div class="entry-content">
-    <p>🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.
-🎯 Goals Remove critical services from default/native VLAN Assign a dedicated, isolated VLAN (VLAN 99) for: Proxmox management GUI Omada Controller (LXC) Trunk management VLAN through switch to Proxmox Implement firewall rules to allow remote admin access only Preserve service availability during transition 🧱 Pre-Migration Topology Component Network VLAN Interface Description Proxmox Host LAN VLAN 1 vmbr0 Static IP via native VLAN Omada Controller LAN VLAN 1 vmbr0 LXC container, web GUI on port 8043 Pi-hole LAN VLAN 1 vmbr0 DNS LXC VPN Tunnel LAN VLAN 1 pfSense Remote client-to-site access 🧠 Post-Migration Topology Component Network VLAN Interface Description Proxmox Host Management VLAN 99 vmbr1.99 Tagged IP for GUI access via vmbr1 Omada Controller Management VLAN 99 vmbr1 (tagged) LXC container with VLAN tag 99 Pi-hole LAN VLAN 1 vmbr0 LXC container Trunk Port (Switch) Trunked Port 1,99,14 enp1s0 Connected to VLAN-aware bridge vmbr1 VPN Tunnel Routed to MGMT VLAN 99 pfSense Allows external admin access to VLAN 99 🛠️ Migration Steps 1. Create VLAN 99 in pfSense Interfaces &gt; Assignments &gt; VLANs Created VLAN 99 on the LAN parent interface Assigned it as a new interface and renamed it to MGMT Enabled the interface and set a static IP (management subnet) 2. Configure Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:
-...</p>
+    <p>🧪 Pi-hole DNS Migration to Production VLAN 🧭 Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
+🎯 Objectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs 📊 Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) 🛠️ Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces &gt; Assignments &gt; VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-hole_IP&gt;/24,gw=&lt;VLAN_Gateway&gt; </p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-15 00:00:00 +0000 UTC'>April 15, 2025</span>&nbsp;·&nbsp;2 min</footer>
-  <a class="entry-link" aria-label="post link to Creating Network Management Isolation" href="https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/"></a>
+  <footer class="entry-footer"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Pi-hole DNS Migration to Production VLAN" href="https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/"></a>
 </article>
     </main>
     
