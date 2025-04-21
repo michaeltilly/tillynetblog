@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>404 Page not found | Tilly Net</title>
+<title>Homelab | Tilly Net</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.tillynet.com/404.html">
+<link rel="canonical" href="https://blog.tillynet.com/tags/homelab/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.4bd506163bc8719318b527e0857c00e9bc59a1bcd02cd3ad030efb4d1c163e43.css" integrity="sha256-S9UGFjvIcZMYtSfghXwA6bxZobzQLNOtAw77TRwWPkM=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.tillynet.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
@@ -18,7 +18,8 @@
 <link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/404.html">
+<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/homelab/index.xml">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/homelab/">
 <noscript>
     <style>
         #theme-toggle,
@@ -55,13 +56,13 @@
         }
 
     </style>
-</noscript><meta property="og:url" content="https://blog.tillynet.com/404.html">
+</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/homelab/">
   <meta property="og:site_name" content="Tilly Net">
-  <meta property="og:title" content="404 Page not found">
+  <meta property="og:title" content="Homelab">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="404 Page not found">
+<meta name="twitter:title" content="Homelab">
 <meta name="twitter:description" content="">
 
 </head>
@@ -129,8 +130,43 @@
         </ul>
     </nav>
 </header>
-<main class="main">
-<div class="not-found">404</div>
+<main class="main"> 
+<header class="page-header">
+  <h1>
+    Homelab
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Creating Network Management Isolation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.
+🎯 Goals Remove critical services from default/native VLAN
+Assign a dedicated, isolated VLAN (VLAN 99) for:
+- Proxmox management GUI
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;2 min</footer>
+  <a class="entry-link" aria-label="post link to Creating Network Management Isolation" href="https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">The Big Bang (How it All Began)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.
+🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
+Router/Firewall: pfSense VM
+Internal Services: - Pi-hole (LXC) – local DNS &#43; ad-blocking ...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;3 min</footer>
+  <a class="entry-link" aria-label="post link to The Big Bang (How it All Began)" href="https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/"></a>
+</article>
     </main>
     
 <footer class="footer">

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>The Big Bang (How it All Began) | Tilly Net</title>
+<meta name="keywords" content="tillynet, homelab, setup">
+<meta name="description" content="🏡 HomeLab: Initial Network Setup
+This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.
+
+🌐 Overview
+
+
+Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
+
+
+Router/Firewall: pfSense VM
+
+
+Internal Services:  
+
+
+  - Pi-hole (LXC) – local DNS &#43; ad-blocking  ">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4bd506163bc8719318b527e0857c00e9bc59a1bcd02cd3ad030efb4d1c163e43.css" integrity="sha256-S9UGFjvIcZMYtSfghXwA6bxZobzQLNOtAw77TRwWPkM=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="The Big Bang (How it All Began)">
+  <meta property="og:description" content="🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.
+🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
+Router/Firewall: pfSense VM
+Internal Services: - Pi-hole (LXC) – local DNS &#43; ad-blocking ">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="my-home-lab-journey">
+    <meta property="article:published_time" content="2025-04-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-20T00:00:00+00:00">
+    <meta property="article:tag" content="Tillynet">
+    <meta property="article:tag" content="Homelab">
+    <meta property="article:tag" content="Setup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Big Bang (How it All Began)">
+<meta name="twitter:description" content="🏡 HomeLab: Initial Network Setup
+This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.
+
+🌐 Overview
+
+
+Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
+
+
+Router/Firewall: pfSense VM
+
+
+Internal Services:  
+
+
+  - Pi-hole (LXC) – local DNS &#43; ad-blocking  ">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "My-Home-Lab-Journeys",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "The Big Bang (How it All Began)",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The Big Bang (How it All Began)",
+  "name": "The Big Bang (How it All Began)",
+  "description": "🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.\n🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)\nRouter/Firewall: pfSense VM\nInternal Services: - Pi-hole (LXC) – local DNS + ad-blocking ",
+  "keywords": [
+    "tillynet", "homelab", "setup"
+  ],
+  "articleBody": "🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.\n🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)\nRouter/Firewall: pfSense VM\nInternal Services: - Pi-hole (LXC) – local DNS + ad-blocking - Omada Controller (LXC) – TP-Link AP management\nLAN Devices: Proxmox host, personal workstation, AP, switch\nGuest Devices: IoT \u0026 roommate devices on isolated VLAN 14\n🏗️ Infrastructure at a Glance | Component | Description |\n|——————|————————————————-|\n| pfSense | VM with two PCI-passthrough NICs (WAN + LAN) |\n| vmbr0 | Bridge for LAN (Proxmox + LXCs) |\n| vmbr1 | Reserved for future VLAN tagging (e.g., mgmt) |\n| Pi-hole | LXC container for DNS (on LAN) |\n| Omada Ctrl | LXC container managing TP-Link EAP670 AP |\n| Cisco Switch | Access switch trunking VLANs to Proxmox/AP |\n| Guest VLAN 14| WiFi-only VLAN for roommate \u0026 IoT devices |\n🚀 Setup Timeline ✅ Phase 1 – Core Infrastructure Flashed Proxmox onto Protectli Vault\nCreated pfSense VM with 2 passthrough NICs:\n- WAN: connected to ISP modem\n- LAN: connected to Cisco switch (trunk-ready)\nConfigured vmbr0 as LAN bridge in Proxmox\nGave Proxmox host static IP on the LAN network\n✅ Phase 2 – Internal Services Provisioned LXC container for Pi-hole - Static IP assigned\n- Configured upstream DNS servers (e.g., Cloudflare)\nProvisioned LXC container for Omada Controller - Used to manage TP-Link EAP670 AP\n- Served on LAN via Omada web GUI (port 8043)\n✅ Phase 3 – Wireless \u0026 Guest VLAN Set up VLAN 14 in pfSense (Guest Network)\nTrunked VLANs through switch port to Omada AP\nCreated isolated wireless SSID mapped to VLAN 14\nConfigured firewall rules in pfSense:\n- Guests can access WAN only\n- Blocked access to LAN and Pi-hole\nVerified DHCP lease and internet access for guests\nObserved isolated traffic from personal network\n🔐 Security Practices Created distinct VLANs for guest vs personal network\nIsolated Pi-hole to LAN access only\nDisabled inter-VLAN routing from Guest → LAN\nAssigned firewall rules by interface in pfSense\nReserved management services for trusted VLAN only\n🔍 To-Do / Next Steps Create VLAN 99 for network management\nMove Proxmox GUI and Omada Controller to VLAN 99\nAdd remote access via OpenVPN (completed later)\nDiagram full topology and backup strategy\n📸 Network Diagram (Coming Soon) !\nWill include: Proxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation\n🧠 Lessons Learned Always reserve a static fallback IP for management\npfSense is extremely powerful when paired with LXC containers\nVLANs and firewall rules are critical to proper isolation\nOmada Controller offers enterprise-like wireless management\n📌 Repo Series 01_initial-setup.md → This doc\n02_management-vlan.md → VLAN 99 migration\n03_remote-recovery.md → Recovery via OpenVPN (see separate log)\n04_automation.md → Cron/Ansible update automation\n05_certificates.md → Internal SSL management (Pi-hole, Omada, pfSense)\n🧾 Resume Bullet (from this phase) Deployed full virtual home network lab with pfSense firewall, VLAN isolation, and internal services (DNS, WiFi controller) using Proxmox and LXC containers; implemented guest network segregation and trunked VLANs across Cisco infrastructure. ",
+  "wordCount" : "546",
+  "inLanguage": "en",
+  "datePublished": "2025-04-20T00:00:00Z",
+  "dateModified": "2025-04-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/my-home-lab-journey/" title="My Home Lab Journey">
+                    <span>My Home Lab Journey</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/my-home-lab-journey/" title="My-Home-Lab-Journeys">
+                    <span>My-Home-Lab-Journeys</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      The Big Bang (How it All Began)
+    </h1>
+    <div class="post-meta"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;3 min
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="-homelab-initial-network-setup">🏡 HomeLab: Initial Network Setup<a hidden class="anchor" aria-hidden="true" href="#-homelab-initial-network-setup">#</a></h1>
+<p>This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.</p>
+<hr>
+<h2 id="-overview">🌐 Overview<a hidden class="anchor" aria-hidden="true" href="#-overview">#</a></h2>
+<ul>
+<li>
+<p><strong>Hypervisor:</strong> Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)</p>
+</li>
+<li>
+<p><strong>Router/Firewall:</strong> pfSense VM</p>
+</li>
+<li>
+<p><strong>Internal Services:</strong>  </p>
+</li>
+</ul>
+<p>  - Pi-hole (LXC) – local DNS + ad-blocking  </p>
+<p>  - Omada Controller (LXC) – TP-Link AP management</p>
+<ul>
+<li>
+<p><strong>LAN Devices:</strong> Proxmox host, personal workstation, AP, switch</p>
+</li>
+<li>
+<p><strong>Guest Devices:</strong> IoT &amp; roommate devices on isolated VLAN 14</p>
+</li>
+</ul>
+<hr>
+<h2 id="-infrastructure-at-a-glance">🏗️ Infrastructure at a Glance<a hidden class="anchor" aria-hidden="true" href="#-infrastructure-at-a-glance">#</a></h2>
+<p>| Component        | Description                                     |</p>
+<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|</p>
+<p>| <strong>pfSense</strong>      | VM with two PCI-passthrough NICs (WAN + LAN)   |</p>
+<p>| <strong>vmbr0</strong>        | Bridge for LAN (Proxmox + LXCs)                |</p>
+<p>| <strong>vmbr1</strong>        | Reserved for future VLAN tagging (e.g., mgmt)  |</p>
+<p>| <strong>Pi-hole</strong>      | LXC container for DNS (on LAN)                 |</p>
+<p>| <strong>Omada Ctrl</strong>   | LXC container managing TP-Link EAP670 AP       |</p>
+<p>| <strong>Cisco Switch</strong> | Access switch trunking VLANs to Proxmox/AP     |</p>
+<p>| <strong>Guest VLAN 14</strong>| WiFi-only VLAN for roommate &amp; IoT devices      |</p>
+<hr>
+<h2 id="-setup-timeline">🚀 Setup Timeline<a hidden class="anchor" aria-hidden="true" href="#-setup-timeline">#</a></h2>
+<h3 id="-phase-1--core-infrastructure">✅ Phase 1 – Core Infrastructure<a hidden class="anchor" aria-hidden="true" href="#-phase-1--core-infrastructure">#</a></h3>
+<ul>
+<li>
+<p>Flashed Proxmox onto Protectli Vault</p>
+</li>
+<li>
+<p>Created pfSense VM with 2 passthrough NICs:</p>
+</li>
+</ul>
+<p>  - WAN: connected to ISP modem</p>
+<p>  - LAN: connected to Cisco switch (trunk-ready)</p>
+<ul>
+<li>
+<p>Configured <code>vmbr0</code> as LAN bridge in Proxmox</p>
+</li>
+<li>
+<p>Gave Proxmox host static IP on the LAN network</p>
+</li>
+</ul>
+<h3 id="-phase-2--internal-services">✅ Phase 2 – Internal Services<a hidden class="anchor" aria-hidden="true" href="#-phase-2--internal-services">#</a></h3>
+<ul>
+<li>Provisioned LXC container for Pi-hole</li>
+</ul>
+<p>  - Static IP assigned</p>
+<p>  - Configured upstream DNS servers (e.g., Cloudflare)</p>
+<ul>
+<li>Provisioned LXC container for Omada Controller</li>
+</ul>
+<p>  - Used to manage TP-Link EAP670 AP</p>
+<p>  - Served on LAN via Omada web GUI (port 8043)</p>
+<h3 id="-phase-3--wireless--guest-vlan">✅ Phase 3 – Wireless &amp; Guest VLAN<a hidden class="anchor" aria-hidden="true" href="#-phase-3--wireless--guest-vlan">#</a></h3>
+<ul>
+<li>
+<p>Set up VLAN 14 in pfSense (Guest Network)</p>
+</li>
+<li>
+<p>Trunked VLANs through switch port to Omada AP</p>
+</li>
+<li>
+<p>Created isolated wireless SSID mapped to VLAN 14</p>
+</li>
+<li>
+<p>Configured firewall rules in pfSense:</p>
+</li>
+</ul>
+<p>  - Guests can access WAN only</p>
+<p>  - Blocked access to LAN and Pi-hole</p>
+<ul>
+<li>
+<p>Verified DHCP lease and internet access for guests</p>
+</li>
+<li>
+<p>Observed isolated traffic from personal network</p>
+</li>
+</ul>
+<hr>
+<h2 id="-security-practices">🔐 Security Practices<a hidden class="anchor" aria-hidden="true" href="#-security-practices">#</a></h2>
+<ul>
+<li>
+<p>Created distinct VLANs for guest vs personal network</p>
+</li>
+<li>
+<p>Isolated Pi-hole to LAN access only</p>
+</li>
+<li>
+<p>Disabled inter-VLAN routing from Guest → LAN</p>
+</li>
+<li>
+<p>Assigned firewall rules by interface in pfSense</p>
+</li>
+<li>
+<p>Reserved management services for trusted VLAN only</p>
+</li>
+</ul>
+<hr>
+<h2 id="-to-do--next-steps">🔍 To-Do / Next Steps<a hidden class="anchor" aria-hidden="true" href="#-to-do--next-steps">#</a></h2>
+<ul>
+<li>
+<p>Create VLAN 99 for network management</p>
+</li>
+<li>
+<p>Move Proxmox GUI and Omada Controller to VLAN 99</p>
+</li>
+<li>
+<p>Add remote access via OpenVPN (completed later)</p>
+</li>
+<li>
+<p>Diagram full topology and backup strategy</p>
+</li>
+</ul>
+<hr>
+<h2 id="-network-diagram-coming-soon">📸 Network Diagram (Coming Soon)<a hidden class="anchor" aria-hidden="true" href="#-network-diagram-coming-soon">#</a></h2>
+<p>!<img alt="Image" loading="lazy" src="/images/TillyNet_OG.drawio.png"></p>
+<blockquote>
+<p>Will include:  </p></blockquote>
+<blockquote>
+<p>Proxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation</p></blockquote>
+<hr>
+<h2 id="-lessons-learned">🧠 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h2>
+<ul>
+<li>
+<p>Always reserve a static fallback IP for management</p>
+</li>
+<li>
+<p>pfSense is extremely powerful when paired with LXC containers</p>
+</li>
+<li>
+<p>VLANs and firewall rules are critical to proper isolation</p>
+</li>
+<li>
+<p>Omada Controller offers enterprise-like wireless management</p>
+</li>
+</ul>
+<hr>
+<h2 id="-repo-series">📌 Repo Series<a hidden class="anchor" aria-hidden="true" href="#-repo-series">#</a></h2>
+<ul>
+<li>
+<p><code>01_initial-setup.md</code> → <em>This doc</em></p>
+</li>
+<li>
+<p><code>02_management-vlan.md</code> → VLAN 99 migration</p>
+</li>
+<li>
+<p><code>03_remote-recovery.md</code> → Recovery via OpenVPN (see separate log)</p>
+</li>
+<li>
+<p><code>04_automation.md</code> → Cron/Ansible update automation</p>
+</li>
+<li>
+<p><code>05_certificates.md</code> → Internal SSL management (Pi-hole, Omada, pfSense)</p>
+</li>
+</ul>
+<hr>
+<h2 id="-resume-bullet-from-this-phase">🧾 Resume Bullet (from this phase)<a hidden class="anchor" aria-hidden="true" href="#-resume-bullet-from-this-phase">#</a></h2>
+<blockquote>
+<ul>
+<li>Deployed full virtual home network lab with pfSense firewall, VLAN isolation, and internal services (DNS, WiFi controller) using Proxmox and LXC containers; implemented guest network segregation and trunked VLANs across Cisco infrastructure.</li>
+</ul></blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/tillynet/">Tillynet</a></li>
+      <li><a href="https://blog.tillynet.com/tags/homelab/">Homelab</a></li>
+      <li><a href="https://blog.tillynet.com/tags/setup/">Setup</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Creating Network Management Isolation</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
