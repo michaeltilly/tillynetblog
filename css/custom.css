@@ -1,0 +1,130 @@
+/* Tilly Net Custom Theme Overrides */
+
+/* =======================================
+   🌗 Base Theme with Light & Dark Support
+========================================= */
+body {
+    font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+    line-height: 1.7;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Light mode */
+  body.light {
+    background-color: #f9f9f9;
+    color: #1a1a1a;
+  }
+  
+  /* Dark mode */
+  body.dark {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  /* =======================================
+     🔗 Hyperlink Styles with Glow
+  ========================================= */
+  a {
+    color: #1e90ff;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+  }
+  
+  a:hover {
+    text-shadow: 0 0 8px rgba(30, 144, 255, 0.6); /* Light blue glow */
+    text-decoration: underline;
+  }
+  
+  body.dark a {
+    color: #7abaff;
+  }
+  
+  body.dark a:hover {
+    text-shadow: 0 0 12px rgba(122, 186, 255, 0.8); /* Brighter glow for dark */
+  }
+  
+  /* Target social links (like GitHub, LinkedIn) as well */
+  .social-icons a:hover {
+    text-shadow: 0 0 12px rgba(122, 186, 255, 0.9);
+  }
+  
+  /* =======================================
+     ✍️ Typography + Blog Post Styling
+  ========================================= */
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    margin-top: 1.5em;
+  }
+  
+  p {
+    margin-bottom: 1em;
+  }
+  
+  blockquote {
+    border-left: 4px solid #1e90ff;
+    padding-left: 1em;
+    color: #555;
+    font-style: italic;
+  }
+  
+  body.dark blockquote {
+    color: #aaa;
+  }
+  
+  /* =======================================
+     🧾 Code Blocks
+  ========================================= */
+  code {
+    background-color: #eee;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+  }
+  
+  body.dark code {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+  }
+  
+  pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 1em;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.9em;
+  }
+  
+  /* =======================================
+     📸 Image Styling
+  ========================================= */
+  .post-content img {
+    max-width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .post-content img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+  }
+  
+  /* =======================================
+     🎯 Section Headers With Icons (Optional)
+  ========================================= */
+  /*
+  h1::before,
+  h2::before,
+  h3::before {
+    content: "";
+    margin-right: 0.3em;
+  }
+  */
+  
+  /* =======================================
+     💡 Theme Transition Tweaks
+  ========================================= */
+  html {
+    scroll-behavior: smooth;
+  }
