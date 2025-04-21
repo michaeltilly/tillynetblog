@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger | Tilly Net</title>
+<meta name="keywords" content="tillynet, automation, hugo, obsidian, python, github, hostinger">
+<meta name="description" content="🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow
+This post documents the full setup of my static site publishing pipeline that automates taking blog posts from Obsidian, rendering them with Hugo, pushing the output to GitHub, and then having Hostinger automatically update my website via webhook.
+
+🛠️ Tools Used
+
+Obsidian – Markdown note-taking and blog writing
+Hugo – Static site generator using the PaperMod theme
+
+Hugo PaperMod Wiki
+My Hugo yaml File
+
+
+GitHub – Repository with two branches:
+
+master → Hugo project &amp; content
+hostinger → Static site output
+
+
+Hostinger – Web hosting platform with webhook integration
+Python – Automation script for content syncing and site deployment My Automation Script
+
+
+📁 Folder Structure
+📂 Local_Obsidian_Vault/
+  └── my-home-lab-journey/
+      ├── post-1/
+	        └── index.md
+      ├── post-2/
+	        └── index.md
+      ├── post-3/
+	        └── index.md
+      └── ...
+
+📂 tillynetblog/
+  ├── hugo.yaml
+  ├── content/
+  │   └── my-home-lab-journey/
+  ├── public/
+  ├── themes/
+  │   └── PaperMod/
+  └── static/
+	  └── images
+      └── css/custom.css
+⚙️ What the Automation Script Does
+
+
+Clears old blog posts from Hugo’s /content/my-home-lab-journey">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger">
+  <meta property="og:description" content="🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow This post documents the full setup of my static site publishing pipeline that automates taking blog posts from Obsidian, rendering them with Hugo, pushing the output to GitHub, and then having Hostinger automatically update my website via webhook.
+🛠️ Tools Used Obsidian – Markdown note-taking and blog writing Hugo – Static site generator using the PaperMod theme Hugo PaperMod Wiki My Hugo yaml File GitHub – Repository with two branches: master → Hugo project &amp; content hostinger → Static site output Hostinger – Web hosting platform with webhook integration Python – Automation script for content syncing and site deployment My Automation Script 📁 Folder Structure 📂 Local_Obsidian_Vault/ └── my-home-lab-journey/ ├── post-1/ └── index.md ├── post-2/ └── index.md ├── post-3/ └── index.md └── ... 📂 tillynetblog/ ├── hugo.yaml ├── content/ │ └── my-home-lab-journey/ ├── public/ ├── themes/ │ └── PaperMod/ └── static/ └── images └── css/custom.css ⚙️ What the Automation Script Does Clears old blog posts from Hugo’s /content/my-home-lab-journey">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="my-home-lab-journey">
+    <meta property="article:published_time" content="2025-04-20T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-20T00:00:00+00:00">
+    <meta property="article:tag" content="Tillynet">
+    <meta property="article:tag" content="Automation">
+    <meta property="article:tag" content="Hugo">
+    <meta property="article:tag" content="Obsidian">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger">
+<meta name="twitter:description" content="🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow
+This post documents the full setup of my static site publishing pipeline that automates taking blog posts from Obsidian, rendering them with Hugo, pushing the output to GitHub, and then having Hostinger automatically update my website via webhook.
+
+🛠️ Tools Used
+
+Obsidian – Markdown note-taking and blog writing
+Hugo – Static site generator using the PaperMod theme
+
+Hugo PaperMod Wiki
+My Hugo yaml File
+
+
+GitHub – Repository with two branches:
+
+master → Hugo project &amp; content
+hostinger → Static site output
+
+
+Hostinger – Web hosting platform with webhook integration
+Python – Automation script for content syncing and site deployment My Automation Script
+
+
+📁 Folder Structure
+📂 Local_Obsidian_Vault/
+  └── my-home-lab-journey/
+      ├── post-1/
+	        └── index.md
+      ├── post-2/
+	        └── index.md
+      ├── post-3/
+	        └── index.md
+      └── ...
+
+📂 tillynetblog/
+  ├── hugo.yaml
+  ├── content/
+  │   └── my-home-lab-journey/
+  ├── public/
+  ├── themes/
+  │   └── PaperMod/
+  └── static/
+	  └── images
+      └── css/custom.css
+⚙️ What the Automation Script Does
+
+
+Clears old blog posts from Hugo’s /content/my-home-lab-journey">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "My-Home-Lab-Journeys",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger",
+  "name": "Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger",
+  "description": "🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow This post documents the full setup of my static site publishing pipeline that automates taking blog posts from Obsidian, rendering them with Hugo, pushing the output to GitHub, and then having Hostinger automatically update my website via webhook.\n🛠️ Tools Used Obsidian – Markdown note-taking and blog writing Hugo – Static site generator using the PaperMod theme Hugo PaperMod Wiki My Hugo yaml File GitHub – Repository with two branches: master → Hugo project \u0026amp; content hostinger → Static site output Hostinger – Web hosting platform with webhook integration Python – Automation script for content syncing and site deployment My Automation Script 📁 Folder Structure 📂 Local_Obsidian_Vault/ └── my-home-lab-journey/ ├── post-1/ └── index.md ├── post-2/ └── index.md ├── post-3/ └── index.md └── ... 📂 tillynetblog/ ├── hugo.yaml ├── content/ │ └── my-home-lab-journey/ ├── public/ ├── themes/ │ └── PaperMod/ └── static/ └── images └── css/custom.css ⚙️ What the Automation Script Does Clears old blog posts from Hugo’s /content/my-home-lab-journey\n",
+  "keywords": [
+    "tillynet", "automation", "hugo", "obsidian", "python", "github", "hostinger"
+  ],
+  "articleBody": "🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow This post documents the full setup of my static site publishing pipeline that automates taking blog posts from Obsidian, rendering them with Hugo, pushing the output to GitHub, and then having Hostinger automatically update my website via webhook.\n🛠️ Tools Used Obsidian – Markdown note-taking and blog writing Hugo – Static site generator using the PaperMod theme Hugo PaperMod Wiki My Hugo yaml File GitHub – Repository with two branches: master → Hugo project \u0026 content hostinger → Static site output Hostinger – Web hosting platform with webhook integration Python – Automation script for content syncing and site deployment My Automation Script 📁 Folder Structure 📂 Local_Obsidian_Vault/ └── my-home-lab-journey/ ├── post-1/ └── index.md ├── post-2/ └── index.md ├── post-3/ └── index.md └── ... 📂 tillynetblog/ ├── hugo.yaml ├── content/ │ └── my-home-lab-journey/ ├── public/ ├── themes/ │ └── PaperMod/ └── static/ └── images └── css/custom.css ⚙️ What the Automation Script Does Clears old blog posts from Hugo’s /content/my-home-lab-journey\nCopies blog post folders from Obsidian vault into Hugo\nConverts image embeds (![Image](/images/image.png)) to Hugo-style ![Image Description](...)\nCopies images to static/images\nBuilds the Hugo site with:\nhugo -D --cleanDestinationDir --themesDir=./themes Pushes full repo to GitHub master\nSubtree pushes public/ output to hostinger branch\n🐞 Issues I Encountered ❌ Website Styling Not Matching Local Preview Problem: Hostinger version didn’t load custom CSS or theme\nFix: Used this build command:\nbash\nCopyEdit\nhugo -D --cleanDestinationDir --themesDir=./themes\n❌ CSS Not Applying on Deployed Site Root Cause: Hostinger was caching fingerprinted CSS\nFix:\nDisabled Hugo asset fingerprinting in hugo.yaml:\nassets: disableFingerprinting: true Verified correct path: assets/css/custom.css\n🧠 Lessons Learned Static site deployment workflows require full control over content paths and assets\nAsset fingerprinting can break styling if not handled properly\nObsidian’s [[embed]] syntax must be converted for Hugo compatibility\nGit subtree pushing keeps deployment clean and isolated to public/\n✅ Final Outcome 🔁 End-to-end deployment is fully automated\n✍️ Blog posts are written in Obsidian subfolders\n🚀 Single Python script deploys everything to GitHub and Hostinger\n🧼 Duplicate post issues and CSS bugs resolved\n✨ Dark/light theme and custom styles work across devices\n🧾 Resume Bullet Built an automated static site deployment pipeline linking Obsidian, Hugo (PaperMod), GitHub, and Hostinger via webhook; resolved CSS asset fingerprinting issues, enabled Hugo theme integration, and automated blog post syncing using Python.\n",
+  "wordCount" : "392",
+  "inLanguage": "en",
+  "datePublished": "2025-04-20T00:00:00Z",
+  "dateModified": "2025-04-20T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/my-home-lab-journey/" title="My Home Lab Journey">
+                    <span>My Home Lab Journey</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger
+    </h1>
+    <div class="post-meta"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;2 min
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="-obsidian--hugo--github--hostinger-automation-workflow">🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow<a hidden class="anchor" aria-hidden="true" href="#-obsidian--hugo--github--hostinger-automation-workflow">#</a></h1>
+<p>This post documents the full setup of my <strong>static site publishing pipeline</strong> that automates taking blog posts from <strong>Obsidian</strong>, rendering them with <strong>Hugo</strong>, pushing the output to <strong>GitHub</strong>, and then having <strong>Hostinger</strong> automatically update my website via webhook.</p>
+<hr>
+<h2 id="-tools-used">🛠️ Tools Used<a hidden class="anchor" aria-hidden="true" href="#-tools-used">#</a></h2>
+<ul>
+<li><strong>Obsidian</strong> – Markdown note-taking and blog writing</li>
+<li><strong>Hugo</strong> – Static site generator using the <a href="https://github.com/adityatelange/hugo-PaperMod">PaperMod theme</a>
+<ul>
+<li><a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Installation">Hugo PaperMod Wiki</a></li>
+<li><a href="https://github.com/michaeltilly/tillynetblog/blob/master/hugo.yaml">My Hugo yaml File</a></li>
+</ul>
+</li>
+<li><strong>GitHub</strong> – Repository with two branches:
+<ul>
+<li><code>master</code> → Hugo project &amp; content</li>
+<li><code>hostinger</code> → Static site output</li>
+</ul>
+</li>
+<li><strong>Hostinger</strong> – Web hosting platform with webhook integration</li>
+<li><strong>Python</strong> – Automation script for content syncing and site deployment <a href="https://github.com/michaeltilly/tillynetblog/blob/master/deploy_tillynetblog2.py">My Automation Script</a></li>
+</ul>
+<hr>
+<h2 id="-folder-structure">📁 Folder Structure<a hidden class="anchor" aria-hidden="true" href="#-folder-structure">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-plaintext" data-lang="plaintext"><span class="line"><span class="cl">📂 Local_Obsidian_Vault/
+</span></span><span class="line"><span class="cl">  └── my-home-lab-journey/
+</span></span><span class="line"><span class="cl">      ├── post-1/
+</span></span><span class="line"><span class="cl">	        └── index.md
+</span></span><span class="line"><span class="cl">      ├── post-2/
+</span></span><span class="line"><span class="cl">	        └── index.md
+</span></span><span class="line"><span class="cl">      ├── post-3/
+</span></span><span class="line"><span class="cl">	        └── index.md
+</span></span><span class="line"><span class="cl">      └── ...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">📂 tillynetblog/
+</span></span><span class="line"><span class="cl">  ├── hugo.yaml
+</span></span><span class="line"><span class="cl">  ├── content/
+</span></span><span class="line"><span class="cl">  │   └── my-home-lab-journey/
+</span></span><span class="line"><span class="cl">  ├── public/
+</span></span><span class="line"><span class="cl">  ├── themes/
+</span></span><span class="line"><span class="cl">  │   └── PaperMod/
+</span></span><span class="line"><span class="cl">  └── static/
+</span></span><span class="line"><span class="cl">	  └── images
+</span></span><span class="line"><span class="cl">      └── css/custom.css
+</span></span></code></pre></div><h2 id="-what-the-automation-script-does">⚙️ What the Automation Script Does<a hidden class="anchor" aria-hidden="true" href="#-what-the-automation-script-does">#</a></h2>
+<ul>
+<li>
+<p><strong>Clears old blog posts</strong> from Hugo’s <code>/content/my-home-lab-journey</code></p>
+</li>
+<li>
+<p><strong>Copies blog post folders</strong> from Obsidian vault into Hugo</p>
+</li>
+<li>
+<p><strong>Converts image embeds</strong> (<code>![Image](/images/image.png)</code>) to Hugo-style <code>![Image Description](...)</code></p>
+</li>
+<li>
+<p><strong>Copies images</strong> to <code>static/images</code></p>
+</li>
+<li>
+<p><strong>Builds the Hugo site</strong> with:</p>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">hugo -D --cleanDestinationDir --themesDir<span class="o">=</span>./themes
+</span></span></code></pre></div><ul>
+<li>
+<p><strong>Pushes</strong> full repo to GitHub <code>master</code></p>
+</li>
+<li>
+<p><strong>Subtree pushes</strong> <code>public/</code> output to <code>hostinger</code> branch</p>
+</li>
+</ul>
+<hr>
+<h2 id="-issues-i-encountered">🐞 Issues I Encountered<a hidden class="anchor" aria-hidden="true" href="#-issues-i-encountered">#</a></h2>
+<h3 id="-website-styling-not-matching-local-preview">❌ Website Styling Not Matching Local Preview<a hidden class="anchor" aria-hidden="true" href="#-website-styling-not-matching-local-preview">#</a></h3>
+<ul>
+<li>
+<p><strong>Problem:</strong> Hostinger version didn’t load custom CSS or theme</p>
+</li>
+<li>
+<p><strong>Fix:</strong> Used this build command:</p>
+<p>bash</p>
+<p>CopyEdit</p>
+<p><code>hugo -D --cleanDestinationDir --themesDir=./themes</code></p>
+</li>
+</ul>
+<h3 id="-css-not-applying-on-deployed-site">❌ CSS Not Applying on Deployed Site<a hidden class="anchor" aria-hidden="true" href="#-css-not-applying-on-deployed-site">#</a></h3>
+<ul>
+<li>
+<p><strong>Root Cause:</strong> Hostinger was caching fingerprinted CSS</p>
+</li>
+<li>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>
+<p>Disabled Hugo asset fingerprinting in <code>hugo.yaml</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">assets</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">disableFingerprinting</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>Verified correct path: <code>assets/css/custom.css</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="-lessons-learned">🧠 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h2>
+<ul>
+<li>
+<p>Static site deployment workflows require full control over content paths and assets</p>
+</li>
+<li>
+<p>Asset fingerprinting can break styling if not handled properly</p>
+</li>
+<li>
+<p>Obsidian&rsquo;s <code>[[embed]]</code> syntax must be converted for Hugo compatibility</p>
+</li>
+<li>
+<p>Git subtree pushing keeps deployment clean and isolated to <code>public/</code></p>
+</li>
+</ul>
+<hr>
+<h2 id="-final-outcome">✅ Final Outcome<a hidden class="anchor" aria-hidden="true" href="#-final-outcome">#</a></h2>
+<ul>
+<li>
+<p>🔁 End-to-end deployment is fully automated</p>
+</li>
+<li>
+<p>✍️ Blog posts are written in Obsidian subfolders</p>
+</li>
+<li>
+<p>🚀 Single Python script deploys everything to GitHub and Hostinger</p>
+</li>
+<li>
+<p>🧼 Duplicate post issues and CSS bugs resolved</p>
+</li>
+<li>
+<p>✨ Dark/light theme and custom styles work across devices</p>
+</li>
+</ul>
+<hr>
+<h2 id="-resume-bullet">🧾 Resume Bullet<a hidden class="anchor" aria-hidden="true" href="#-resume-bullet">#</a></h2>
+<blockquote>
+<p>Built an automated static site deployment pipeline linking Obsidian, Hugo (PaperMod), GitHub, and Hostinger via webhook; resolved CSS asset fingerprinting issues, enabled Hugo theme integration, and automated blog post syncing using Python.</p></blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/tillynet/">Tillynet</a></li>
+      <li><a href="https://blog.tillynet.com/tags/automation/">Automation</a></li>
+      <li><a href="https://blog.tillynet.com/tags/hugo/">Hugo</a></li>
+      <li><a href="https://blog.tillynet.com/tags/obsidian/">Obsidian</a></li>
+      <li><a href="https://blog.tillynet.com/tags/python/">Python</a></li>
+      <li><a href="https://blog.tillynet.com/tags/github/">Github</a></li>
+      <li><a href="https://blog.tillynet.com/tags/hostinger/">Hostinger</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Pi-hole DNS Migration to Production VLAN</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
