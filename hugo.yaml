@@ -9,6 +9,7 @@ assetDir: "assets"
 staticDir: "static"
 sectionPagesMenu: "main"
 description: "Tilly Net - A technical blog focused on homelab, virtualization, and self-hosting."
+pygmentsUseClasses: true
 
 params:
   defaultTheme: auto
@@ -18,9 +19,11 @@ params:
   ShowPostNavLinks: true
   enableInlineShortcodes: true
 
+  customCSS:
+    - css/custom.css
+
   assets:
-    css:
-      - css/extended/custom.css
+    disableFingerprinting: true
 
   homeInfoParams:
     Title: "Welcome to Tilly Net"
