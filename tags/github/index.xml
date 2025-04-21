@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Github on Tilly Net</title>
+    <link>https://blog.tillynet.com/tags/github/</link>
+    <description>Recent content in Github on Tilly Net</description>
+    <generator>Hugo -- 0.146.6</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 20 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.tillynet.com/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</link>
+      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</guid>
+      <description>&lt;h1 id=&#34;-obsidian--hugo--github--hostinger-automation-workflow&#34;&gt;🔁 Obsidian → Hugo → GitHub → Hostinger Automation Workflow&lt;/h1&gt;
+&lt;p&gt;This post documents the full setup of my &lt;strong&gt;static site publishing pipeline&lt;/strong&gt; that automates taking blog posts from &lt;strong&gt;Obsidian&lt;/strong&gt;, rendering them with &lt;strong&gt;Hugo&lt;/strong&gt;, pushing the output to &lt;strong&gt;GitHub&lt;/strong&gt;, and then having &lt;strong&gt;Hostinger&lt;/strong&gt; automatically update my website via webhook.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-tools-used&#34;&gt;🛠️ Tools Used&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Obsidian&lt;/strong&gt; – Markdown note-taking and blog writing&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hugo&lt;/strong&gt; – Static site generator using the &lt;a href=&#34;https://github.com/adityatelange/hugo-PaperMod&#34;&gt;PaperMod theme&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/adityatelange/hugo-PaperMod/wiki/Installation&#34;&gt;Hugo PaperMod Wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/michaeltilly/tillynetblog/blob/master/hugo.yaml&#34;&gt;My Hugo yaml File&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt; – Repository with two branches:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt; → Hugo project &amp;amp; content&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hostinger&lt;/code&gt; → Static site output&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hostinger&lt;/strong&gt; – Web hosting platform with webhook integration&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Python&lt;/strong&gt; – Automation script for content syncing and site deployment &lt;a href=&#34;https://github.com/michaeltilly/tillynetblog/blob/master/deploy_tillynetblog2.py&#34;&gt;My Automation Script&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-folder-structure&#34;&gt;📁 Folder Structure&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plaintext&#34; data-lang=&#34;plaintext&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;📂 Local_Obsidian_Vault/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  └── my-home-lab-journey/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      ├── post-1/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        └── index.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      ├── post-2/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        └── index.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      ├── post-3/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        └── index.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      └── ...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;📂 tillynetblog/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── hugo.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── content/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  │   └── my-home-lab-journey/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── public/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── themes/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  │   └── PaperMod/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  └── static/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	  └── images
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      └── css/custom.css
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;-what-the-automation-script-does&#34;&gt;⚙️ What the Automation Script Does&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Clears old blog posts&lt;/strong&gt; from Hugo’s &lt;code&gt;/content/my-home-lab-journey&lt;/code&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
