@@ -44,7 +44,7 @@ def process_obsidian_notes():
                     f.write(content)
 
 def build_hugo():
-    subprocess.run(["hugo", "-s", HUGO_SITE_DIR, "--cleanDestinationDir"], check=True)
+    subprocess.run(["hugo", "-s", HUGO_SITE_DIR, "--cleanDestinationDir", "-b", "https://blog.tillynet.com"], check=True)
 
 def push_to_github():
     subprocess.run(["git", "-C", HUGO_SITE_DIR, "add", "."], check=True)

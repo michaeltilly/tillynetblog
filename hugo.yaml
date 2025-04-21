@@ -20,7 +20,7 @@ params:
 
   assets:
     css:
-      - custom.css
+      - css/extended/custom.css
 
   homeInfoParams:
     Title: "Welcome to Tilly Net"
