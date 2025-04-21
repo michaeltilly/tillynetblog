@@ -79,12 +79,11 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     <item>
-      <title>Remote VLAN Recovery &amp; Proxmox Network Repair over VPN</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/remote-vlan-recovery-proxmox-network-repair-over-vpn/</link>
+      <title>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/remote-vlan-recovery-proxmox-network-repair-over-vpn/</guid>
-      <description>&lt;h1 id=&#34;-remote-vlan-recovery--proxmox-network-repair-over-vpn&#34;&gt;🛠️ Remote VLAN Recovery &amp;amp; Proxmox Network Repair over VPN&lt;/h1&gt;
-&lt;h2 id=&#34;-project-title-remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;📡 Project Title: Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
+      <guid>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</guid>
+      <description>&lt;h2 id=&#34;-remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;📡 Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
 &lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;
 &lt;p&gt;In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely &lt;strong&gt;off-site&lt;/strong&gt;, using only a mobile device connected via an &lt;strong&gt;OpenVPN tunnel&lt;/strong&gt;.&lt;/p&gt;
 &lt;hr&gt;

@@ -108,16 +108,6 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 📌 Repo Series
-
-- `01_initial-setup.md` → *This doc*
-- `02_management-vlan.md` → VLAN 99 migration
-- `03_remote-recovery.md` → Recovery via OpenVPN (see separate log)
-- `04_automation.md` → Cron/Ansible update automation
-- `05_certificates.md` → Internal SSL management (Pi-hole, Omada, pfSense)
-
----
-
 ## 🧾 Resume Bullet (from this phase)
 
 > - Deployed full virtual home network lab with pfSense firewall, VLAN isolation, and internal services (DNS, WiFi controller) using Proxmox and LXC containers; implemented guest network segregation and trunked VLANs across Cisco infrastructure.
