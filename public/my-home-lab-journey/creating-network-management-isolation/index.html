@@ -12,14 +12,121 @@ This phase documents the migration of all core management infrastructure to an i
 
 🎯 Goals
 
-
 Remove critical services from default/native VLAN
-
-
 Assign a dedicated, isolated VLAN (VLAN 99) for:
 
+Proxmox management GUI
+Omada Controller (LXC)
 
-  - Proxmox management GUI">
+
+Trunk management VLAN through switch to Proxmox
+Implement firewall rules to allow remote admin access only
+Preserve service availability during transition
+
+
+🧱 Pre-Migration Topology
+
+  
+      
+          Component
+          Network
+          VLAN
+          Interface
+          Description
+      
+  
+  
+      
+          Proxmox Host
+          LAN
+          VLAN 1
+          vmbr0
+          Static IP via native VLAN
+      
+      
+          Omada Controller
+          LAN
+          VLAN 1
+          vmbr0
+          LXC container, web GUI on port 8043
+      
+      
+          Pi-hole
+          LAN
+          VLAN 1
+          vmbr0
+          DNS LXC
+      
+      
+          VPN Tunnel
+          LAN
+          VLAN 1
+          pfSense
+          Remote client-to-site access
+      
+  
+
+
+🧠 Post-Migration Topology
+
+  
+      
+          Component
+          Network
+          VLAN
+          Interface
+          Description
+      
+  
+  
+      
+          Proxmox Host
+          Management
+          VLAN 99
+          vmbr1.99
+          Tagged IP for GUI access via vmbr1
+      
+      
+          Omada Controller
+          Management
+          VLAN 99
+          vmbr1 (tagged)
+          LXC container with VLAN tag 99
+      
+      
+          Pi-hole
+          LAN
+          VLAN 1
+          vmbr0
+          LXC container
+      
+      
+          Trunk Port (Switch)
+          Trunked Port
+          1,99,14
+          enp1s0
+          Connected to VLAN-aware bridge vmbr1
+      
+      
+          VPN Tunnel
+          Routed to MGMT
+          VLAN 99
+          pfSense
+          Allows external admin access to VLAN 99
+      
+  
+
+
+🛠️ Migration Steps
+1. Create VLAN 99 in pfSense
+
+Interfaces &gt; Assignments &gt; VLANs
+Created VLAN 99 on the LAN parent interface
+Assigned it as a new interface and renamed it to MGMT
+Enabled the interface and set a static IP (management subnet)
+
+2. Configure Proxmox Bridge for VLAN Tagging
+Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:">
 <meta name="author" content="">
 <link rel="canonical" href="https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -71,14 +178,12 @@ Assign a dedicated, isolated VLAN (VLAN 99) for:
   <meta property="og:site_name" content="Tilly Net">
   <meta property="og:title" content="Creating Network Management Isolation">
   <meta property="og:description" content="🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.
-🎯 Goals Remove critical services from default/native VLAN
-Assign a dedicated, isolated VLAN (VLAN 99) for:
-- Proxmox management GUI">
+🎯 Goals Remove critical services from default/native VLAN Assign a dedicated, isolated VLAN (VLAN 99) for: Proxmox management GUI Omada Controller (LXC) Trunk management VLAN through switch to Proxmox Implement firewall rules to allow remote admin access only Preserve service availability during transition 🧱 Pre-Migration Topology Component Network VLAN Interface Description Proxmox Host LAN VLAN 1 vmbr0 Static IP via native VLAN Omada Controller LAN VLAN 1 vmbr0 LXC container, web GUI on port 8043 Pi-hole LAN VLAN 1 vmbr0 DNS LXC VPN Tunnel LAN VLAN 1 pfSense Remote client-to-site access 🧠 Post-Migration Topology Component Network VLAN Interface Description Proxmox Host Management VLAN 99 vmbr1.99 Tagged IP for GUI access via vmbr1 Omada Controller Management VLAN 99 vmbr1 (tagged) LXC container with VLAN tag 99 Pi-hole LAN VLAN 1 vmbr0 LXC container Trunk Port (Switch) Trunked Port 1,99,14 enp1s0 Connected to VLAN-aware bridge vmbr1 VPN Tunnel Routed to MGMT VLAN 99 pfSense Allows external admin access to VLAN 99 🛠️ Migration Steps 1. Create VLAN 99 in pfSense Interfaces &gt; Assignments &gt; VLANs Created VLAN 99 on the LAN parent interface Assigned it as a new interface and renamed it to MGMT Enabled the interface and set a static IP (management subnet) 2. Configure Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="my-home-lab-journey">
-    <meta property="article:published_time" content="2025-04-20T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-04-20T00:00:00+00:00">
+    <meta property="article:published_time" content="2025-04-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-15T00:00:00+00:00">
     <meta property="article:tag" content="Tillynet">
     <meta property="article:tag" content="Homelab">
     <meta property="article:tag" content="Networkisolation">
@@ -89,14 +194,121 @@ This phase documents the migration of all core management infrastructure to an i
 
 🎯 Goals
 
-
 Remove critical services from default/native VLAN
-
-
 Assign a dedicated, isolated VLAN (VLAN 99) for:
 
+Proxmox management GUI
+Omada Controller (LXC)
 
-  - Proxmox management GUI">
+
+Trunk management VLAN through switch to Proxmox
+Implement firewall rules to allow remote admin access only
+Preserve service availability during transition
+
+
+🧱 Pre-Migration Topology
+
+  
+      
+          Component
+          Network
+          VLAN
+          Interface
+          Description
+      
+  
+  
+      
+          Proxmox Host
+          LAN
+          VLAN 1
+          vmbr0
+          Static IP via native VLAN
+      
+      
+          Omada Controller
+          LAN
+          VLAN 1
+          vmbr0
+          LXC container, web GUI on port 8043
+      
+      
+          Pi-hole
+          LAN
+          VLAN 1
+          vmbr0
+          DNS LXC
+      
+      
+          VPN Tunnel
+          LAN
+          VLAN 1
+          pfSense
+          Remote client-to-site access
+      
+  
+
+
+🧠 Post-Migration Topology
+
+  
+      
+          Component
+          Network
+          VLAN
+          Interface
+          Description
+      
+  
+  
+      
+          Proxmox Host
+          Management
+          VLAN 99
+          vmbr1.99
+          Tagged IP for GUI access via vmbr1
+      
+      
+          Omada Controller
+          Management
+          VLAN 99
+          vmbr1 (tagged)
+          LXC container with VLAN tag 99
+      
+      
+          Pi-hole
+          LAN
+          VLAN 1
+          vmbr0
+          LXC container
+      
+      
+          Trunk Port (Switch)
+          Trunked Port
+          1,99,14
+          enp1s0
+          Connected to VLAN-aware bridge vmbr1
+      
+      
+          VPN Tunnel
+          Routed to MGMT
+          VLAN 99
+          pfSense
+          Allows external admin access to VLAN 99
+      
+  
+
+
+🛠️ Migration Steps
+1. Create VLAN 99 in pfSense
+
+Interfaces &gt; Assignments &gt; VLANs
+Created VLAN 99 on the LAN parent interface
+Assigned it as a new interface and renamed it to MGMT
+Enabled the interface and set a static IP (management subnet)
+
+2. Configure Proxmox Bridge for VLAN Tagging
+Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:">
 
 
 <script type="application/ld+json">
@@ -125,15 +337,15 @@ Assign a dedicated, isolated VLAN (VLAN 99) for:
   "@type": "BlogPosting",
   "headline": "Creating Network Management Isolation",
   "name": "Creating Network Management Isolation",
-  "description": "🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.\n🎯 Goals Remove critical services from default/native VLAN\nAssign a dedicated, isolated VLAN (VLAN 99) for:\n- Proxmox management GUI\n",
+  "description": "🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.\n🎯 Goals Remove critical services from default/native VLAN Assign a dedicated, isolated VLAN (VLAN 99) for: Proxmox management GUI Omada Controller (LXC) Trunk management VLAN through switch to Proxmox Implement firewall rules to allow remote admin access only Preserve service availability during transition 🧱 Pre-Migration Topology Component Network VLAN Interface Description Proxmox Host LAN VLAN 1 vmbr0 Static IP via native VLAN Omada Controller LAN VLAN 1 vmbr0 LXC container, web GUI on port 8043 Pi-hole LAN VLAN 1 vmbr0 DNS LXC VPN Tunnel LAN VLAN 1 pfSense Remote client-to-site access 🧠 Post-Migration Topology Component Network VLAN Interface Description Proxmox Host Management VLAN 99 vmbr1.99 Tagged IP for GUI access via vmbr1 Omada Controller Management VLAN 99 vmbr1 (tagged) LXC container with VLAN tag 99 Pi-hole LAN VLAN 1 vmbr0 LXC container Trunk Port (Switch) Trunked Port 1,99,14 enp1s0 Connected to VLAN-aware bridge vmbr1 VPN Tunnel Routed to MGMT VLAN 99 pfSense Allows external admin access to VLAN 99 🛠️ Migration Steps 1. Create VLAN 99 in pfSense Interfaces \u0026gt; Assignments \u0026gt; VLANs Created VLAN 99 on the LAN parent interface Assigned it as a new interface and renamed it to MGMT Enabled the interface and set a static IP (management subnet) 2. Configure Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:\n",
   "keywords": [
     "tillynet", "homelab", "networkisolation"
   ],
-  "articleBody": "🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.\n🎯 Goals Remove critical services from default/native VLAN\nAssign a dedicated, isolated VLAN (VLAN 99) for:\n- Proxmox management GUI\n- Omada Controller (LXC)\nTrunk management VLAN through switch to Proxmox\nImplement firewall rules to allow remote admin access only\nPreserve service availability during transition\n🧱 Pre-Migration Topology | Component | Network | VLAN | Interface | Description |\n|——————|———–|———|———–|————————————–|\n| Proxmox Host | LAN | VLAN 1 | vmbr0 | Static IP via native VLAN |\n| Omada Controller | LAN | VLAN 1 | vmbr0 | LXC container, web GUI on port 8043 |\n| Pi-hole | LAN | VLAN 1 | vmbr0 | DNS LXC |\n| VPN Tunnel | LAN | VLAN 1 | pfSense | Remote client-to-site access |\n🧠 Post-Migration Topology | Component | Network | VLAN | Interface | Description |\n|——————|—————-|——–|—————|—————————————–|\n| Proxmox Host | Management | VLAN 99| vmbr1.99 | Tagged IP for GUI access via vmbr1 |\n| Omada Controller | Management | VLAN 99| vmbr1 (tagged)| LXC container with VLAN tag 99 |\n| Pi-hole | Lan | VLAN 1| vmbr0 | LXC container |\n| Trunk Port (Switch) | Trunked Port | 1,99,14| enp1s0 | Connected to VLAN-aware bridge vmbr1 |\n| VPN Tunnel | Routed to MGMT | VLAN 99| pfSense | Allows external admin access to VLAN 99 |\n🛠️ Migration Steps 1. Created VLAN 99 in pfSense Interfaces \u003e Assignments \u003e VLANs\nCreated VLAN 99 on the LAN parent interface\nAssigned it as a new interface and renamed it to MGMT\nEnabled interface and gave it a static IP (management subnet)\n2. Configured Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:\nauto vmbr1 iface vmbr1 inet manual bridge-ports enp1s0 bridge-stp off bridge-fd 0 bridge-vlan-aware yes bridge-vids 2-4094 auto vmbr1.99 iface vmbr1.99 inet static address /24 gateway ",
-  "wordCount" : "358",
+  "articleBody": "🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.\n🎯 Goals Remove critical services from default/native VLAN Assign a dedicated, isolated VLAN (VLAN 99) for: Proxmox management GUI Omada Controller (LXC) Trunk management VLAN through switch to Proxmox Implement firewall rules to allow remote admin access only Preserve service availability during transition 🧱 Pre-Migration Topology Component Network VLAN Interface Description Proxmox Host LAN VLAN 1 vmbr0 Static IP via native VLAN Omada Controller LAN VLAN 1 vmbr0 LXC container, web GUI on port 8043 Pi-hole LAN VLAN 1 vmbr0 DNS LXC VPN Tunnel LAN VLAN 1 pfSense Remote client-to-site access 🧠 Post-Migration Topology Component Network VLAN Interface Description Proxmox Host Management VLAN 99 vmbr1.99 Tagged IP for GUI access via vmbr1 Omada Controller Management VLAN 99 vmbr1 (tagged) LXC container with VLAN tag 99 Pi-hole LAN VLAN 1 vmbr0 LXC container Trunk Port (Switch) Trunked Port 1,99,14 enp1s0 Connected to VLAN-aware bridge vmbr1 VPN Tunnel Routed to MGMT VLAN 99 pfSense Allows external admin access to VLAN 99 🛠️ Migration Steps 1. Create VLAN 99 in pfSense Interfaces \u003e Assignments \u003e VLANs Created VLAN 99 on the LAN parent interface Assigned it as a new interface and renamed it to MGMT Enabled the interface and set a static IP (management subnet) 2. Configure Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:\nauto vmbr1 iface vmbr1 inet manual bridge-ports enp1s0 bridge-stp off bridge-fd 0 bridge-vlan-aware yes bridge-vids 2-4094 auto vmbr1.99 iface vmbr1.99 inet static address /24 gateway ",
+  "wordCount" : "294",
   "inLanguage": "en",
-  "datePublished": "2025-04-20T00:00:00Z",
-  "dateModified": "2025-04-20T00:00:00Z",
+  "datePublished": "2025-04-15T00:00:00Z",
+  "dateModified": "2025-04-15T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/"
@@ -216,7 +428,7 @@ Assign a dedicated, isolated VLAN (VLAN 99) for:
     <h1 class="post-title entry-hint-parent">
       Creating Network Management Isolation
     </h1>
-    <div class="post-meta"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;2 min
+    <div class="post-meta"><span title='2025-04-15 00:00:00 +0000 UTC'>April 15, 2025</span>&nbsp;·&nbsp;2 min
 
 </div>
   </header> 
@@ -225,86 +437,133 @@ Assign a dedicated, isolated VLAN (VLAN 99) for:
 <hr>
 <h2 id="-goals">🎯 Goals<a hidden class="anchor" aria-hidden="true" href="#-goals">#</a></h2>
 <ul>
-<li>
-<p>Remove critical services from default/native VLAN</p>
-</li>
-<li>
-<p>Assign a dedicated, isolated VLAN (VLAN 99) for:</p>
-</li>
-</ul>
-<p>  - Proxmox management GUI</p>
-<p>  - Omada Controller (LXC)</p>
+<li>Remove critical services from default/native VLAN</li>
+<li>Assign a dedicated, isolated VLAN (VLAN 99) for:
 <ul>
-<li>
-<p>Trunk management VLAN through switch to Proxmox</p>
+<li>Proxmox management GUI</li>
+<li>Omada Controller (LXC)</li>
+</ul>
 </li>
-<li>
-<p>Implement firewall rules to allow remote admin access only</p>
-</li>
-<li>
-<p>Preserve service availability during transition</p>
-</li>
+<li>Trunk management VLAN through switch to Proxmox</li>
+<li>Implement firewall rules to allow remote admin access only</li>
+<li>Preserve service availability during transition</li>
 </ul>
 <hr>
 <h2 id="-pre-migration-topology">🧱 Pre-Migration Topology<a hidden class="anchor" aria-hidden="true" href="#-pre-migration-topology">#</a></h2>
-<p>| Component         | Network   | VLAN    | Interface | Description                          |</p>
-<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
-<p>| Proxmox Host     | LAN       | VLAN 1  | vmbr0     | Static IP via native VLAN            |</p>
-<p>| Omada Controller | LAN       | VLAN 1  | vmbr0     | LXC container, web GUI on port 8043  |</p>
-<p>| Pi-hole          | LAN       | VLAN 1  | vmbr0     | DNS LXC                               |</p>
-<p>| VPN Tunnel       | LAN       | VLAN 1  | pfSense   | Remote client-to-site access         |</p>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Network</th>
+          <th>VLAN</th>
+          <th>Interface</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Proxmox Host</strong></td>
+          <td>LAN</td>
+          <td>VLAN 1</td>
+          <td>vmbr0</td>
+          <td>Static IP via native VLAN</td>
+      </tr>
+      <tr>
+          <td><strong>Omada Controller</strong></td>
+          <td>LAN</td>
+          <td>VLAN 1</td>
+          <td>vmbr0</td>
+          <td>LXC container, web GUI on port 8043</td>
+      </tr>
+      <tr>
+          <td><strong>Pi-hole</strong></td>
+          <td>LAN</td>
+          <td>VLAN 1</td>
+          <td>vmbr0</td>
+          <td>DNS LXC</td>
+      </tr>
+      <tr>
+          <td><strong>VPN Tunnel</strong></td>
+          <td>LAN</td>
+          <td>VLAN 1</td>
+          <td>pfSense</td>
+          <td>Remote client-to-site access</td>
+      </tr>
+  </tbody>
+</table>
 <hr>
 <h2 id="-post-migration-topology">🧠 Post-Migration Topology<a hidden class="anchor" aria-hidden="true" href="#-post-migration-topology">#</a></h2>
-<p>| Component         | Network        | VLAN   | Interface     | Description                             |</p>
-<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|</p>
-<p>| Proxmox Host     | Management     | VLAN 99| vmbr1.99      | Tagged IP for GUI access via <code>vmbr1</code>    |</p>
-<p>| Omada Controller | Management     | VLAN 99| vmbr1 (tagged)| LXC container with VLAN tag 99          |</p>
-<p>| Pi-hole          | Lan            | VLAN 1| vmbr0          | LXC container                           |</p>
-<p>| Trunk Port (Switch) | Trunked Port | 1,99,14| enp1s0       | Connected to VLAN-aware bridge <code>vmbr1</code>  |</p>
-<p>| VPN Tunnel       | Routed to MGMT | VLAN 99| pfSense       | Allows external admin access to VLAN 99 |</p>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Network</th>
+          <th>VLAN</th>
+          <th>Interface</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Proxmox Host</strong></td>
+          <td>Management</td>
+          <td>VLAN 99</td>
+          <td>vmbr1.99</td>
+          <td>Tagged IP for GUI access via <code>vmbr1</code></td>
+      </tr>
+      <tr>
+          <td><strong>Omada Controller</strong></td>
+          <td>Management</td>
+          <td>VLAN 99</td>
+          <td>vmbr1 (tagged)</td>
+          <td>LXC container with VLAN tag 99</td>
+      </tr>
+      <tr>
+          <td><strong>Pi-hole</strong></td>
+          <td>LAN</td>
+          <td>VLAN 1</td>
+          <td>vmbr0</td>
+          <td>LXC container</td>
+      </tr>
+      <tr>
+          <td><strong>Trunk Port (Switch)</strong></td>
+          <td>Trunked Port</td>
+          <td>1,99,14</td>
+          <td>enp1s0</td>
+          <td>Connected to VLAN-aware bridge <code>vmbr1</code></td>
+      </tr>
+      <tr>
+          <td><strong>VPN Tunnel</strong></td>
+          <td>Routed to MGMT</td>
+          <td>VLAN 99</td>
+          <td>pfSense</td>
+          <td>Allows external admin access to VLAN 99</td>
+      </tr>
+  </tbody>
+</table>
 <hr>
 <h2 id="-migration-steps">🛠️ Migration Steps<a hidden class="anchor" aria-hidden="true" href="#-migration-steps">#</a></h2>
-<h3 id="1-created-vlan-99-in-pfsense">1. Created VLAN 99 in pfSense<a hidden class="anchor" aria-hidden="true" href="#1-created-vlan-99-in-pfsense">#</a></h3>
+<h3 id="1-create-vlan-99-in-pfsense">1. Create VLAN 99 in pfSense<a hidden class="anchor" aria-hidden="true" href="#1-create-vlan-99-in-pfsense">#</a></h3>
 <ul>
-<li>
-<p><strong>Interfaces &gt; Assignments &gt; VLANs</strong></p>
-</li>
-<li>
-<p>Created VLAN 99 on the LAN parent interface</p>
-</li>
-<li>
-<p>Assigned it as a new interface and renamed it to <code>MGMT</code></p>
-</li>
-<li>
-<p>Enabled interface and gave it a static IP (management subnet)</p>
-</li>
+<li><strong>Interfaces &gt; Assignments &gt; VLANs</strong></li>
+<li>Created VLAN 99 on the LAN parent interface</li>
+<li>Assigned it as a new interface and renamed it to <code>MGMT</code></li>
+<li>Enabled the interface and set a static IP (management subnet)</li>
 </ul>
-<h3 id="2-configured-proxmox-bridge-for-vlan-tagging">2. Configured Proxmox Bridge for VLAN Tagging<a hidden class="anchor" aria-hidden="true" href="#2-configured-proxmox-bridge-for-vlan-tagging">#</a></h3>
+<h3 id="2-configure-proxmox-bridge-for-vlan-tagging">2. Configure Proxmox Bridge for VLAN Tagging<a hidden class="anchor" aria-hidden="true" href="#2-configure-proxmox-bridge-for-vlan-tagging">#</a></h3>
 <p>Created a new VLAN-aware bridge and subinterface in <code>/etc/network/interfaces</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">auto vmbr1
-</span></span><span class="line"><span class="cl">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">auto vmbr1
 </span></span><span class="line"><span class="cl">iface vmbr1 inet manual
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    bridge-ports enp1s0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    bridge-stp off
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    bridge-fd <span class="m">0</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    bridge-vlan-aware yes
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    bridge-vids 2-4094
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    bridge-ports enp1s0
+</span></span><span class="line"><span class="cl">    bridge-stp off
+</span></span><span class="line"><span class="cl">    bridge-fd <span class="m">0</span>
+</span></span><span class="line"><span class="cl">    bridge-vlan-aware yes
+</span></span><span class="line"><span class="cl">    bridge-vids 2-4094
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">auto vmbr1.99
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">iface vmbr1.99 inet static
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    address &lt;management_ip&gt;/24
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    gateway &lt;management_gateway&gt;
+</span></span><span class="line"><span class="cl">    address &lt;management_ip&gt;/24
+</span></span><span class="line"><span class="cl">    gateway &lt;management_gateway&gt;
 </span></span></code></pre></div>
 
   </div>
@@ -316,6 +575,11 @@ Assign a dedicated, isolated VLAN (VLAN 99) for:
       <li><a href="https://blog.tillynet.com/tags/networkisolation/">Networkisolation</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://blog.tillynet.com/my-home-lab-journey/remote-vlan-recovery-proxmox-network-repair-over-vpn/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Remote VLAN Recovery &amp; Proxmox Network Repair over VPN</span>
+  </a>
   <a class="next" href="https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/">
     <span class="title">Next »</span>
     <br>

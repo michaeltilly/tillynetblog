@@ -12,17 +12,120 @@ This project documents the first working phase of my home network infrastructure
 
 🌐 Overview
 
-
 Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
-
-
 Router/Firewall: pfSense VM
+Internal Services:
+
+Pi-hole (LXC) – local DNS &#43; ad-blocking
+Omada Controller (LXC) – TP-Link AP management
 
 
-Internal Services:  
+LAN Devices: Proxmox host, personal workstation, AP, switch
+Guest Devices: IoT &amp; roommate devices on isolated VLAN 14
 
 
-  - Pi-hole (LXC) – local DNS &#43; ad-blocking  ">
+🏗️ Infrastructure at a Glance
+
+  
+      
+          Component
+          Description
+      
+  
+  
+      
+          pfSense
+          VM with two PCI-passthrough NICs (WAN &#43; LAN)
+      
+      
+          vmbr0
+          Bridge for LAN (Proxmox &#43; LXCs)
+      
+      
+          vmbr1
+          Reserved for future VLAN tagging (e.g., mgmt)
+      
+      
+          Pi-hole
+          LXC container for DNS (on LAN)
+      
+      
+          Omada Ctrl
+          LXC container managing TP-Link EAP670 AP
+      
+      
+          Cisco Switch
+          Access switch trunking VLANs to Proxmox/AP
+      
+      
+          Guest VLAN 14
+          WiFi-only VLAN for roommate &amp; IoT devices
+      
+  
+
+
+🚀 Setup Timeline
+✅ Phase 1 – Core Infrastructure
+
+Flashed Proxmox onto Protectli Vault
+Created pfSense VM with 2 passthrough NICs:
+
+WAN: connected to ISP modem
+LAN: connected to Cisco switch (trunk-ready)
+
+
+Configured vmbr0 as LAN bridge in Proxmox
+Gave Proxmox host static IP on the LAN network
+
+✅ Phase 2 – Internal Services
+
+Provisioned LXC container for Pi-hole
+
+Static IP assigned
+Configured upstream DNS servers (e.g., Cloudflare)
+
+
+Provisioned LXC container for Omada Controller
+
+Used to manage TP-Link EAP670 AP
+Served on LAN via Omada web GUI (port 8043)
+
+
+
+✅ Phase 3 – Wireless &amp; Guest VLAN
+
+Set up VLAN 14 in pfSense (Guest Network)
+Trunked VLANs through switch port to Omada AP
+Created isolated wireless SSID mapped to VLAN 14
+Configured firewall rules in pfSense:
+
+Guests can access WAN only
+Blocked access to LAN and Pi-hole
+
+
+Verified DHCP lease and internet access for guests
+Observed isolated traffic from personal network
+
+
+🔐 Security Practices
+
+Created distinct VLANs for guest vs personal network
+Isolated Pi-hole to LAN access only
+Disabled inter-VLAN routing from Guest → LAN
+Assigned firewall rules by interface in pfSense
+Reserved management services for trusted VLAN only
+
+
+🔍 To-Do / Next Steps
+
+Create VLAN 99 for network management
+Move Proxmox GUI and Omada Controller to VLAN 99
+Add remote access via OpenVPN (completed later)
+Diagram full topology and backup strategy
+
+
+📸 Network Diagram
+">
 <meta name="author" content="">
 <link rel="canonical" href="https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -74,14 +177,12 @@ Internal Services:  
   <meta property="og:site_name" content="Tilly Net">
   <meta property="og:title" content="The Big Bang (How it All Began)">
   <meta property="og:description" content="🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.
-🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
-Router/Firewall: pfSense VM
-Internal Services: - Pi-hole (LXC) – local DNS &#43; ad-blocking ">
+🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs) Router/Firewall: pfSense VM Internal Services: Pi-hole (LXC) – local DNS &#43; ad-blocking Omada Controller (LXC) – TP-Link AP management LAN Devices: Proxmox host, personal workstation, AP, switch Guest Devices: IoT &amp; roommate devices on isolated VLAN 14 🏗️ Infrastructure at a Glance Component Description pfSense VM with two PCI-passthrough NICs (WAN &#43; LAN) vmbr0 Bridge for LAN (Proxmox &#43; LXCs) vmbr1 Reserved for future VLAN tagging (e.g., mgmt) Pi-hole LXC container for DNS (on LAN) Omada Ctrl LXC container managing TP-Link EAP670 AP Cisco Switch Access switch trunking VLANs to Proxmox/AP Guest VLAN 14 WiFi-only VLAN for roommate &amp; IoT devices 🚀 Setup Timeline ✅ Phase 1 – Core Infrastructure Flashed Proxmox onto Protectli Vault Created pfSense VM with 2 passthrough NICs: WAN: connected to ISP modem LAN: connected to Cisco switch (trunk-ready) Configured vmbr0 as LAN bridge in Proxmox Gave Proxmox host static IP on the LAN network ✅ Phase 2 – Internal Services Provisioned LXC container for Pi-hole Static IP assigned Configured upstream DNS servers (e.g., Cloudflare) Provisioned LXC container for Omada Controller Used to manage TP-Link EAP670 AP Served on LAN via Omada web GUI (port 8043) ✅ Phase 3 – Wireless &amp; Guest VLAN Set up VLAN 14 in pfSense (Guest Network) Trunked VLANs through switch port to Omada AP Created isolated wireless SSID mapped to VLAN 14 Configured firewall rules in pfSense: Guests can access WAN only Blocked access to LAN and Pi-hole Verified DHCP lease and internet access for guests Observed isolated traffic from personal network 🔐 Security Practices Created distinct VLANs for guest vs personal network Isolated Pi-hole to LAN access only Disabled inter-VLAN routing from Guest → LAN Assigned firewall rules by interface in pfSense Reserved management services for trusted VLAN only 🔍 To-Do / Next Steps Create VLAN 99 for network management Move Proxmox GUI and Omada Controller to VLAN 99 Add remote access via OpenVPN (completed later) Diagram full topology and backup strategy 📸 Network Diagram ">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="my-home-lab-journey">
-    <meta property="article:published_time" content="2025-04-20T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-04-20T00:00:00+00:00">
+    <meta property="article:published_time" content="2025-04-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-10T00:00:00+00:00">
     <meta property="article:tag" content="Tillynet">
     <meta property="article:tag" content="Homelab">
     <meta property="article:tag" content="Setup">
@@ -92,17 +193,120 @@ This project documents the first working phase of my home network infrastructure
 
 🌐 Overview
 
-
 Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
-
-
 Router/Firewall: pfSense VM
+Internal Services:
+
+Pi-hole (LXC) – local DNS &#43; ad-blocking
+Omada Controller (LXC) – TP-Link AP management
 
 
-Internal Services:  
+LAN Devices: Proxmox host, personal workstation, AP, switch
+Guest Devices: IoT &amp; roommate devices on isolated VLAN 14
 
 
-  - Pi-hole (LXC) – local DNS &#43; ad-blocking  ">
+🏗️ Infrastructure at a Glance
+
+  
+      
+          Component
+          Description
+      
+  
+  
+      
+          pfSense
+          VM with two PCI-passthrough NICs (WAN &#43; LAN)
+      
+      
+          vmbr0
+          Bridge for LAN (Proxmox &#43; LXCs)
+      
+      
+          vmbr1
+          Reserved for future VLAN tagging (e.g., mgmt)
+      
+      
+          Pi-hole
+          LXC container for DNS (on LAN)
+      
+      
+          Omada Ctrl
+          LXC container managing TP-Link EAP670 AP
+      
+      
+          Cisco Switch
+          Access switch trunking VLANs to Proxmox/AP
+      
+      
+          Guest VLAN 14
+          WiFi-only VLAN for roommate &amp; IoT devices
+      
+  
+
+
+🚀 Setup Timeline
+✅ Phase 1 – Core Infrastructure
+
+Flashed Proxmox onto Protectli Vault
+Created pfSense VM with 2 passthrough NICs:
+
+WAN: connected to ISP modem
+LAN: connected to Cisco switch (trunk-ready)
+
+
+Configured vmbr0 as LAN bridge in Proxmox
+Gave Proxmox host static IP on the LAN network
+
+✅ Phase 2 – Internal Services
+
+Provisioned LXC container for Pi-hole
+
+Static IP assigned
+Configured upstream DNS servers (e.g., Cloudflare)
+
+
+Provisioned LXC container for Omada Controller
+
+Used to manage TP-Link EAP670 AP
+Served on LAN via Omada web GUI (port 8043)
+
+
+
+✅ Phase 3 – Wireless &amp; Guest VLAN
+
+Set up VLAN 14 in pfSense (Guest Network)
+Trunked VLANs through switch port to Omada AP
+Created isolated wireless SSID mapped to VLAN 14
+Configured firewall rules in pfSense:
+
+Guests can access WAN only
+Blocked access to LAN and Pi-hole
+
+
+Verified DHCP lease and internet access for guests
+Observed isolated traffic from personal network
+
+
+🔐 Security Practices
+
+Created distinct VLANs for guest vs personal network
+Isolated Pi-hole to LAN access only
+Disabled inter-VLAN routing from Guest → LAN
+Assigned firewall rules by interface in pfSense
+Reserved management services for trusted VLAN only
+
+
+🔍 To-Do / Next Steps
+
+Create VLAN 99 for network management
+Move Proxmox GUI and Omada Controller to VLAN 99
+Add remote access via OpenVPN (completed later)
+Diagram full topology and backup strategy
+
+
+📸 Network Diagram
+">
 
 
 <script type="application/ld+json">
@@ -131,15 +335,15 @@ Internal Services:  
   "@type": "BlogPosting",
   "headline": "The Big Bang (How it All Began)",
   "name": "The Big Bang (How it All Began)",
-  "description": "🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.\n🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)\nRouter/Firewall: pfSense VM\nInternal Services: - Pi-hole (LXC) – local DNS + ad-blocking ",
+  "description": "🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.\n🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs) Router/Firewall: pfSense VM Internal Services: Pi-hole (LXC) – local DNS + ad-blocking Omada Controller (LXC) – TP-Link AP management LAN Devices: Proxmox host, personal workstation, AP, switch Guest Devices: IoT \u0026amp; roommate devices on isolated VLAN 14 🏗️ Infrastructure at a Glance Component Description pfSense VM with two PCI-passthrough NICs (WAN + LAN) vmbr0 Bridge for LAN (Proxmox + LXCs) vmbr1 Reserved for future VLAN tagging (e.g., mgmt) Pi-hole LXC container for DNS (on LAN) Omada Ctrl LXC container managing TP-Link EAP670 AP Cisco Switch Access switch trunking VLANs to Proxmox/AP Guest VLAN 14 WiFi-only VLAN for roommate \u0026amp; IoT devices 🚀 Setup Timeline ✅ Phase 1 – Core Infrastructure Flashed Proxmox onto Protectli Vault Created pfSense VM with 2 passthrough NICs: WAN: connected to ISP modem LAN: connected to Cisco switch (trunk-ready) Configured vmbr0 as LAN bridge in Proxmox Gave Proxmox host static IP on the LAN network ✅ Phase 2 – Internal Services Provisioned LXC container for Pi-hole Static IP assigned Configured upstream DNS servers (e.g., Cloudflare) Provisioned LXC container for Omada Controller Used to manage TP-Link EAP670 AP Served on LAN via Omada web GUI (port 8043) ✅ Phase 3 – Wireless \u0026amp; Guest VLAN Set up VLAN 14 in pfSense (Guest Network) Trunked VLANs through switch port to Omada AP Created isolated wireless SSID mapped to VLAN 14 Configured firewall rules in pfSense: Guests can access WAN only Blocked access to LAN and Pi-hole Verified DHCP lease and internet access for guests Observed isolated traffic from personal network 🔐 Security Practices Created distinct VLANs for guest vs personal network Isolated Pi-hole to LAN access only Disabled inter-VLAN routing from Guest → LAN Assigned firewall rules by interface in pfSense Reserved management services for trusted VLAN only 🔍 To-Do / Next Steps Create VLAN 99 for network management Move Proxmox GUI and Omada Controller to VLAN 99 Add remote access via OpenVPN (completed later) Diagram full topology and backup strategy 📸 Network Diagram ",
   "keywords": [
     "tillynet", "homelab", "setup"
   ],
-  "articleBody": "🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.\n🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)\nRouter/Firewall: pfSense VM\nInternal Services: - Pi-hole (LXC) – local DNS + ad-blocking - Omada Controller (LXC) – TP-Link AP management\nLAN Devices: Proxmox host, personal workstation, AP, switch\nGuest Devices: IoT \u0026 roommate devices on isolated VLAN 14\n🏗️ Infrastructure at a Glance | Component | Description |\n|——————|————————————————-|\n| pfSense | VM with two PCI-passthrough NICs (WAN + LAN) |\n| vmbr0 | Bridge for LAN (Proxmox + LXCs) |\n| vmbr1 | Reserved for future VLAN tagging (e.g., mgmt) |\n| Pi-hole | LXC container for DNS (on LAN) |\n| Omada Ctrl | LXC container managing TP-Link EAP670 AP |\n| Cisco Switch | Access switch trunking VLANs to Proxmox/AP |\n| Guest VLAN 14| WiFi-only VLAN for roommate \u0026 IoT devices |\n🚀 Setup Timeline ✅ Phase 1 – Core Infrastructure Flashed Proxmox onto Protectli Vault\nCreated pfSense VM with 2 passthrough NICs:\n- WAN: connected to ISP modem\n- LAN: connected to Cisco switch (trunk-ready)\nConfigured vmbr0 as LAN bridge in Proxmox\nGave Proxmox host static IP on the LAN network\n✅ Phase 2 – Internal Services Provisioned LXC container for Pi-hole - Static IP assigned\n- Configured upstream DNS servers (e.g., Cloudflare)\nProvisioned LXC container for Omada Controller - Used to manage TP-Link EAP670 AP\n- Served on LAN via Omada web GUI (port 8043)\n✅ Phase 3 – Wireless \u0026 Guest VLAN Set up VLAN 14 in pfSense (Guest Network)\nTrunked VLANs through switch port to Omada AP\nCreated isolated wireless SSID mapped to VLAN 14\nConfigured firewall rules in pfSense:\n- Guests can access WAN only\n- Blocked access to LAN and Pi-hole\nVerified DHCP lease and internet access for guests\nObserved isolated traffic from personal network\n🔐 Security Practices Created distinct VLANs for guest vs personal network\nIsolated Pi-hole to LAN access only\nDisabled inter-VLAN routing from Guest → LAN\nAssigned firewall rules by interface in pfSense\nReserved management services for trusted VLAN only\n🔍 To-Do / Next Steps Create VLAN 99 for network management\nMove Proxmox GUI and Omada Controller to VLAN 99\nAdd remote access via OpenVPN (completed later)\nDiagram full topology and backup strategy\n📸 Network Diagram (Coming Soon) !\nWill include: Proxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation\n🧠 Lessons Learned Always reserve a static fallback IP for management\npfSense is extremely powerful when paired with LXC containers\nVLANs and firewall rules are critical to proper isolation\nOmada Controller offers enterprise-like wireless management\n📌 Repo Series 01_initial-setup.md → This doc\n02_management-vlan.md → VLAN 99 migration\n03_remote-recovery.md → Recovery via OpenVPN (see separate log)\n04_automation.md → Cron/Ansible update automation\n05_certificates.md → Internal SSL management (Pi-hole, Omada, pfSense)\n🧾 Resume Bullet (from this phase) Deployed full virtual home network lab with pfSense firewall, VLAN isolation, and internal services (DNS, WiFi controller) using Proxmox and LXC containers; implemented guest network segregation and trunked VLANs across Cisco infrastructure. ",
-  "wordCount" : "546",
+  "articleBody": "🏡 HomeLab: Initial Network Setup This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.\n🌐 Overview Hypervisor: Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs) Router/Firewall: pfSense VM Internal Services: Pi-hole (LXC) – local DNS + ad-blocking Omada Controller (LXC) – TP-Link AP management LAN Devices: Proxmox host, personal workstation, AP, switch Guest Devices: IoT \u0026 roommate devices on isolated VLAN 14 🏗️ Infrastructure at a Glance Component Description pfSense VM with two PCI-passthrough NICs (WAN + LAN) vmbr0 Bridge for LAN (Proxmox + LXCs) vmbr1 Reserved for future VLAN tagging (e.g., mgmt) Pi-hole LXC container for DNS (on LAN) Omada Ctrl LXC container managing TP-Link EAP670 AP Cisco Switch Access switch trunking VLANs to Proxmox/AP Guest VLAN 14 WiFi-only VLAN for roommate \u0026 IoT devices 🚀 Setup Timeline ✅ Phase 1 – Core Infrastructure Flashed Proxmox onto Protectli Vault Created pfSense VM with 2 passthrough NICs: WAN: connected to ISP modem LAN: connected to Cisco switch (trunk-ready) Configured vmbr0 as LAN bridge in Proxmox Gave Proxmox host static IP on the LAN network ✅ Phase 2 – Internal Services Provisioned LXC container for Pi-hole Static IP assigned Configured upstream DNS servers (e.g., Cloudflare) Provisioned LXC container for Omada Controller Used to manage TP-Link EAP670 AP Served on LAN via Omada web GUI (port 8043) ✅ Phase 3 – Wireless \u0026 Guest VLAN Set up VLAN 14 in pfSense (Guest Network) Trunked VLANs through switch port to Omada AP Created isolated wireless SSID mapped to VLAN 14 Configured firewall rules in pfSense: Guests can access WAN only Blocked access to LAN and Pi-hole Verified DHCP lease and internet access for guests Observed isolated traffic from personal network 🔐 Security Practices Created distinct VLANs for guest vs personal network Isolated Pi-hole to LAN access only Disabled inter-VLAN routing from Guest → LAN Assigned firewall rules by interface in pfSense Reserved management services for trusted VLAN only 🔍 To-Do / Next Steps Create VLAN 99 for network management Move Proxmox GUI and Omada Controller to VLAN 99 Add remote access via OpenVPN (completed later) Diagram full topology and backup strategy 📸 Network Diagram Will include:\nProxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation\n🧠 Lessons Learned Always reserve a static fallback IP for management pfSense is extremely powerful when paired with LXC containers VLANs and firewall rules are critical to proper isolation Omada Controller offers enterprise-like wireless management 📌 Repo Series 01_initial-setup.md → This doc 02_management-vlan.md → VLAN 99 migration 03_remote-recovery.md → Recovery via OpenVPN (see separate log) 04_automation.md → Cron/Ansible update automation 05_certificates.md → Internal SSL management (Pi-hole, Omada, pfSense) 🧾 Resume Bullet (from this phase) Deployed full virtual home network lab with pfSense firewall, VLAN isolation, and internal services (DNS, WiFi controller) using Proxmox and LXC containers; implemented guest network segregation and trunked VLANs across Cisco infrastructure. ",
+  "wordCount" : "509",
   "inLanguage": "en",
-  "datePublished": "2025-04-20T00:00:00Z",
-  "dateModified": "2025-04-20T00:00:00Z",
+  "datePublished": "2025-04-10T00:00:00Z",
+  "dateModified": "2025-04-10T00:00:00Z",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/"
@@ -222,7 +426,7 @@ Internal Services:  
     <h1 class="post-title entry-hint-parent">
       The Big Bang (How it All Began)
     </h1>
-    <div class="post-meta"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;3 min
+    <div class="post-meta"><span title='2025-04-10 00:00:00 +0000 UTC'>April 10, 2025</span>&nbsp;·&nbsp;3 min
 
 </div>
   </header> 
@@ -231,170 +435,139 @@ Internal Services:  
 <hr>
 <h2 id="-overview">🌐 Overview<a hidden class="anchor" aria-hidden="true" href="#-overview">#</a></h2>
 <ul>
-<li>
-<p><strong>Hypervisor:</strong> Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)</p>
-</li>
-<li>
-<p><strong>Router/Firewall:</strong> pfSense VM</p>
-</li>
-<li>
-<p><strong>Internal Services:</strong>  </p>
-</li>
-</ul>
-<p>  - Pi-hole (LXC) – local DNS + ad-blocking  </p>
-<p>  - Omada Controller (LXC) – TP-Link AP management</p>
+<li><strong>Hypervisor:</strong> Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)</li>
+<li><strong>Router/Firewall:</strong> pfSense VM</li>
+<li><strong>Internal Services:</strong>
 <ul>
-<li>
-<p><strong>LAN Devices:</strong> Proxmox host, personal workstation, AP, switch</p>
+<li>Pi-hole (LXC) – local DNS + ad-blocking</li>
+<li>Omada Controller (LXC) – TP-Link AP management</li>
+</ul>
 </li>
-<li>
-<p><strong>Guest Devices:</strong> IoT &amp; roommate devices on isolated VLAN 14</p>
-</li>
+<li><strong>LAN Devices:</strong> Proxmox host, personal workstation, AP, switch</li>
+<li><strong>Guest Devices:</strong> IoT &amp; roommate devices on isolated VLAN 14</li>
 </ul>
 <hr>
 <h2 id="-infrastructure-at-a-glance">🏗️ Infrastructure at a Glance<a hidden class="anchor" aria-hidden="true" href="#-infrastructure-at-a-glance">#</a></h2>
-<p>| Component        | Description                                     |</p>
-<p>|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|</p>
-<p>| <strong>pfSense</strong>      | VM with two PCI-passthrough NICs (WAN + LAN)   |</p>
-<p>| <strong>vmbr0</strong>        | Bridge for LAN (Proxmox + LXCs)                |</p>
-<p>| <strong>vmbr1</strong>        | Reserved for future VLAN tagging (e.g., mgmt)  |</p>
-<p>| <strong>Pi-hole</strong>      | LXC container for DNS (on LAN)                 |</p>
-<p>| <strong>Omada Ctrl</strong>   | LXC container managing TP-Link EAP670 AP       |</p>
-<p>| <strong>Cisco Switch</strong> | Access switch trunking VLANs to Proxmox/AP     |</p>
-<p>| <strong>Guest VLAN 14</strong>| WiFi-only VLAN for roommate &amp; IoT devices      |</p>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>pfSense</strong></td>
+          <td>VM with two PCI-passthrough NICs (WAN + LAN)</td>
+      </tr>
+      <tr>
+          <td><strong>vmbr0</strong></td>
+          <td>Bridge for LAN (Proxmox + LXCs)</td>
+      </tr>
+      <tr>
+          <td><strong>vmbr1</strong></td>
+          <td>Reserved for future VLAN tagging (e.g., mgmt)</td>
+      </tr>
+      <tr>
+          <td><strong>Pi-hole</strong></td>
+          <td>LXC container for DNS (on LAN)</td>
+      </tr>
+      <tr>
+          <td><strong>Omada Ctrl</strong></td>
+          <td>LXC container managing TP-Link EAP670 AP</td>
+      </tr>
+      <tr>
+          <td><strong>Cisco Switch</strong></td>
+          <td>Access switch trunking VLANs to Proxmox/AP</td>
+      </tr>
+      <tr>
+          <td><strong>Guest VLAN 14</strong></td>
+          <td>WiFi-only VLAN for roommate &amp; IoT devices</td>
+      </tr>
+  </tbody>
+</table>
 <hr>
 <h2 id="-setup-timeline">🚀 Setup Timeline<a hidden class="anchor" aria-hidden="true" href="#-setup-timeline">#</a></h2>
 <h3 id="-phase-1--core-infrastructure">✅ Phase 1 – Core Infrastructure<a hidden class="anchor" aria-hidden="true" href="#-phase-1--core-infrastructure">#</a></h3>
 <ul>
-<li>
-<p>Flashed Proxmox onto Protectli Vault</p>
-</li>
-<li>
-<p>Created pfSense VM with 2 passthrough NICs:</p>
-</li>
-</ul>
-<p>  - WAN: connected to ISP modem</p>
-<p>  - LAN: connected to Cisco switch (trunk-ready)</p>
+<li>Flashed Proxmox onto Protectli Vault</li>
+<li>Created pfSense VM with 2 passthrough NICs:
 <ul>
-<li>
-<p>Configured <code>vmbr0</code> as LAN bridge in Proxmox</p>
+<li>WAN: connected to ISP modem</li>
+<li>LAN: connected to Cisco switch (trunk-ready)</li>
+</ul>
 </li>
-<li>
-<p>Gave Proxmox host static IP on the LAN network</p>
-</li>
+<li>Configured <code>vmbr0</code> as LAN bridge in Proxmox</li>
+<li>Gave Proxmox host static IP on the LAN network</li>
 </ul>
 <h3 id="-phase-2--internal-services">✅ Phase 2 – Internal Services<a hidden class="anchor" aria-hidden="true" href="#-phase-2--internal-services">#</a></h3>
 <ul>
-<li>Provisioned LXC container for Pi-hole</li>
-</ul>
-<p>  - Static IP assigned</p>
-<p>  - Configured upstream DNS servers (e.g., Cloudflare)</p>
+<li>Provisioned LXC container for Pi-hole
 <ul>
-<li>Provisioned LXC container for Omada Controller</li>
+<li>Static IP assigned</li>
+<li>Configured upstream DNS servers (e.g., Cloudflare)</li>
 </ul>
-<p>  - Used to manage TP-Link EAP670 AP</p>
-<p>  - Served on LAN via Omada web GUI (port 8043)</p>
+</li>
+<li>Provisioned LXC container for Omada Controller
+<ul>
+<li>Used to manage TP-Link EAP670 AP</li>
+<li>Served on LAN via Omada web GUI (port 8043)</li>
+</ul>
+</li>
+</ul>
 <h3 id="-phase-3--wireless--guest-vlan">✅ Phase 3 – Wireless &amp; Guest VLAN<a hidden class="anchor" aria-hidden="true" href="#-phase-3--wireless--guest-vlan">#</a></h3>
 <ul>
-<li>
-<p>Set up VLAN 14 in pfSense (Guest Network)</p>
-</li>
-<li>
-<p>Trunked VLANs through switch port to Omada AP</p>
-</li>
-<li>
-<p>Created isolated wireless SSID mapped to VLAN 14</p>
-</li>
-<li>
-<p>Configured firewall rules in pfSense:</p>
-</li>
-</ul>
-<p>  - Guests can access WAN only</p>
-<p>  - Blocked access to LAN and Pi-hole</p>
+<li>Set up VLAN 14 in pfSense (Guest Network)</li>
+<li>Trunked VLANs through switch port to Omada AP</li>
+<li>Created isolated wireless SSID mapped to VLAN 14</li>
+<li>Configured firewall rules in pfSense:
 <ul>
-<li>
-<p>Verified DHCP lease and internet access for guests</p>
+<li>Guests can access WAN only</li>
+<li>Blocked access to LAN and Pi-hole</li>
+</ul>
 </li>
-<li>
-<p>Observed isolated traffic from personal network</p>
-</li>
+<li>Verified DHCP lease and internet access for guests</li>
+<li>Observed isolated traffic from personal network</li>
 </ul>
 <hr>
 <h2 id="-security-practices">🔐 Security Practices<a hidden class="anchor" aria-hidden="true" href="#-security-practices">#</a></h2>
 <ul>
-<li>
-<p>Created distinct VLANs for guest vs personal network</p>
-</li>
-<li>
-<p>Isolated Pi-hole to LAN access only</p>
-</li>
-<li>
-<p>Disabled inter-VLAN routing from Guest → LAN</p>
-</li>
-<li>
-<p>Assigned firewall rules by interface in pfSense</p>
-</li>
-<li>
-<p>Reserved management services for trusted VLAN only</p>
-</li>
+<li>Created distinct VLANs for guest vs personal network</li>
+<li>Isolated Pi-hole to LAN access only</li>
+<li>Disabled inter-VLAN routing from Guest → LAN</li>
+<li>Assigned firewall rules by interface in pfSense</li>
+<li>Reserved management services for trusted VLAN only</li>
 </ul>
 <hr>
 <h2 id="-to-do--next-steps">🔍 To-Do / Next Steps<a hidden class="anchor" aria-hidden="true" href="#-to-do--next-steps">#</a></h2>
 <ul>
-<li>
-<p>Create VLAN 99 for network management</p>
-</li>
-<li>
-<p>Move Proxmox GUI and Omada Controller to VLAN 99</p>
-</li>
-<li>
-<p>Add remote access via OpenVPN (completed later)</p>
-</li>
-<li>
-<p>Diagram full topology and backup strategy</p>
-</li>
+<li>Create VLAN 99 for network management</li>
+<li>Move Proxmox GUI and Omada Controller to VLAN 99</li>
+<li>Add remote access via OpenVPN (completed later)</li>
+<li>Diagram full topology and backup strategy</li>
 </ul>
 <hr>
-<h2 id="-network-diagram-coming-soon">📸 Network Diagram (Coming Soon)<a hidden class="anchor" aria-hidden="true" href="#-network-diagram-coming-soon">#</a></h2>
-<p>!<img alt="Image" loading="lazy" src="/images/TillyNet_OG.drawio.png"></p>
+<h2 id="-network-diagram">📸 Network Diagram<a hidden class="anchor" aria-hidden="true" href="#-network-diagram">#</a></h2>
+<p><img alt="Image" loading="lazy" src="/images/TillyNet_OG.drawio.png"></p>
 <blockquote>
-<p>Will include:  </p></blockquote>
-<blockquote>
-<p>Proxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation</p></blockquote>
+<p>Will include:<br>
+Proxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation</p></blockquote>
 <hr>
 <h2 id="-lessons-learned">🧠 Lessons Learned<a hidden class="anchor" aria-hidden="true" href="#-lessons-learned">#</a></h2>
 <ul>
-<li>
-<p>Always reserve a static fallback IP for management</p>
-</li>
-<li>
-<p>pfSense is extremely powerful when paired with LXC containers</p>
-</li>
-<li>
-<p>VLANs and firewall rules are critical to proper isolation</p>
-</li>
-<li>
-<p>Omada Controller offers enterprise-like wireless management</p>
-</li>
+<li>Always reserve a static fallback IP for management</li>
+<li>pfSense is extremely powerful when paired with LXC containers</li>
+<li>VLANs and firewall rules are critical to proper isolation</li>
+<li>Omada Controller offers enterprise-like wireless management</li>
 </ul>
 <hr>
 <h2 id="-repo-series">📌 Repo Series<a hidden class="anchor" aria-hidden="true" href="#-repo-series">#</a></h2>
 <ul>
-<li>
-<p><code>01_initial-setup.md</code> → <em>This doc</em></p>
-</li>
-<li>
-<p><code>02_management-vlan.md</code> → VLAN 99 migration</p>
-</li>
-<li>
-<p><code>03_remote-recovery.md</code> → Recovery via OpenVPN (see separate log)</p>
-</li>
-<li>
-<p><code>04_automation.md</code> → Cron/Ansible update automation</p>
-</li>
-<li>
-<p><code>05_certificates.md</code> → Internal SSL management (Pi-hole, Omada, pfSense)</p>
-</li>
+<li><code>01_initial-setup.md</code> → <em>This doc</em></li>
+<li><code>02_management-vlan.md</code> → VLAN 99 migration</li>
+<li><code>03_remote-recovery.md</code> → Recovery via OpenVPN (see separate log)</li>
+<li><code>04_automation.md</code> → Cron/Ansible update automation</li>
+<li><code>05_certificates.md</code> → Internal SSL management (Pi-hole, Omada, pfSense)</li>
 </ul>
 <hr>
 <h2 id="-resume-bullet-from-this-phase">🧾 Resume Bullet (from this phase)<a hidden class="anchor" aria-hidden="true" href="#-resume-bullet-from-this-phase">#</a></h2>

@@ -5,7 +5,7 @@
     <loc>https://blog.tillynet.com/categories/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</loc>
+    <loc>https://blog.tillynet.com/tags/dns/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/homelab/</loc>
@@ -17,16 +17,13 @@
     <loc>https://blog.tillynet.com/my-home-lab-journey/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/networkisolation/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/setup/</loc>
+    <loc>https://blog.tillynet.com/tags/pihole/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-04-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/</loc>
@@ -34,5 +31,32 @@
   </url><url>
     <loc>https://blog.tillynet.com/tags/tillynet/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/vlan/</loc>
+    <lastmod>2025-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/networking/</loc>
+    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/remote-vlan-recovery-proxmox-network-repair-over-vpn/</loc>
+    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/remote-recovery/</loc>
+    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/vpn/</loc>
+    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</loc>
+    <lastmod>2025-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/networkisolation/</loc>
+    <lastmod>2025-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/setup/</loc>
+    <lastmod>2025-04-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</loc>
+    <lastmod>2025-04-10T00:00:00+00:00</lastmod>
   </url>
 </urlset>
