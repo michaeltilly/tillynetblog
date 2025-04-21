@@ -1,0 +1,68 @@
+# Hugo Configuration File (hugo.yaml)
+
+baseURL: "https://blog.tillynet.com"
+title: "Tilly Net"
+languageCode: "en-us"
+theme: "PaperMod"
+contentDir: "content"
+assetDir: "assets"
+staticDir: "static"
+sectionPagesMenu: "main"
+description: "Tilly Net - A technical blog focused on homelab, virtualization, and self-hosting."
+
+params:
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowCodeCopyButtons: true
+  ShowPostNavLinks: true
+  enableInlineShortcodes: true
+
+  assets:
+    css:
+      - css/extended/custom.css
+
+  homeInfoParams:
+    Title: "Welcome to Tilly Net"
+    Content: "Exploring my journey in home networking, virtualization, automation, and self-hosting."
+
+  socialIcons:
+    - name: GitHub
+      url: "https://github.com/michaeltilly"
+    - name: LinkedIn
+      url: "https://www.linkedin.com/in/michaeltillman7/"
+
+menu:
+  main:
+    - name: "Home"
+      url: "/"
+      weight: 1
+    - name: "My Home Lab Journey"
+      url: "/my-home-lab-journey/"
+      weight: 2
+    - name: "About"
+      url: "/about/"
+      weight: 3
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+taxonomies:
+  tag: "tags"
+  category: "categories"
+
+permalinks:
+  my-home-lab-journey: "/my-home-lab-journey/:slug/"
+
+markup:
+  highlight:
+    noClasses: false
+    style: monokai
+
+languages:
+  en:
+    languageName: "English"
+    weight: 1
