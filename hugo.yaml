@@ -18,8 +18,9 @@ params:
   ShowPostNavLinks: true
   enableInlineShortcodes: true
 
-  customCSS:
-    - css/custom.css
+  assets:
+    css:
+      - custom.css
 
   homeInfoParams:
     Title: "Welcome to Tilly Net"
