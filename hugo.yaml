@@ -7,7 +7,6 @@ theme: "PaperMod"
 contentDir: "content"
 assetDir: "assets"
 staticDir: "static"
-sectionPagesMenu: "main"
 description: "Tilly Net - A technical blog focused on homelab, virtualization, and self-hosting."
 pygmentsUseClasses: true
 
