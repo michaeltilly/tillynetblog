@@ -14,64 +14,7 @@ TillyNet is my custom-built home lab environment designed to practice enterprise
 
 ## Network Topology
 
-
-```mermaid
-flowchart TD
-    ISP[ISP Modem]
-
-    subgraph PROXMOX STACK
-        pfSenseVM["pfSense VM"]
-        OmadaLXC["Omada Controller (LXC)
-        VLAN 99
-        172.16.99.35"]
-        PiHoleLXC["Pi-hole DNS (LXC)
-        VLAN 21
-        172.21.21.21"]
-        ProxmoxMgmt["Proxmox MGMT Interface
-        172.16.99.15"]
-    end
-
-    subgraph CISCO SWITCH
-        Switch["Managed Cisco Switch"]
-        AP["Omada EAP Access Point
-        Tagged VLANs 14, 99"
-        172.16.99.30]
-        MgmtPC["Management PC
-        VLAN 99"]
-    end
-
-    subgraph VLANS
-        VLAN1["LAN (VLAN 1)
-        172.16.7.0/24"]
-        VLAN14["GUEST (VLAN 14)
-        172.16.14.0/24"]
-        VLAN21["PRODUCTION (VLAN 21)
-        172.21.21.0/24"]
-        VLAN99["MGMT (VLAN 99)
-        172.16.99.0/24"]
-    end
-
-    ISP --> pfSenseVM
-    pfSenseVM --> Switch
-
-    pfSenseVM --> VLAN1
-    pfSenseVM --> VLAN14
-    pfSenseVM --> VLAN21
-    pfSenseVM --> VLAN99
-
-    Switch --> OmadaLXC
-    Switch --> PiHoleLXC
-    Switch --> AP
-    Switch --> MgmtPC
-
-    OmadaLXC --> VLAN99
-    PiHoleLXC --> VLAN21
-    MgmtPC --> VLAN99
-    AP --> VLAN14
-    AP --> VLAN99
-    ProxmoxMgmt --> VLAN99
-```
-
+!![Image](/images/tillynet_mermaid.png)
 
 ---
 

@@ -26,61 +26,8 @@
 &lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;network-topology&#34;&gt;Network Topology&lt;/h2&gt;
-&lt;pre tabindex=&#34;0&#34;&gt;&lt;code class=&#34;language-mermaid&#34; data-lang=&#34;mermaid&#34;&gt;flowchart TD
-    ISP[ISP Modem]
-
-    subgraph PROXMOX STACK
-        pfSenseVM[&amp;#34;pfSense VM&amp;#34;]
-        OmadaLXC[&amp;#34;Omada Controller (LXC)
-        VLAN 99
-        172.16.99.35&amp;#34;]
-        PiHoleLXC[&amp;#34;Pi-hole DNS (LXC)
-        VLAN 21
-        172.21.21.21&amp;#34;]
-        ProxmoxMgmt[&amp;#34;Proxmox MGMT Interface
-        172.16.99.15&amp;#34;]
-    end
-
-    subgraph CISCO SWITCH
-        Switch[&amp;#34;Managed Cisco Switch&amp;#34;]
-        AP[&amp;#34;Omada EAP Access Point
-        Tagged VLANs 14, 99&amp;#34;
-        172.16.99.30]
-        MgmtPC[&amp;#34;Management PC
-        VLAN 99&amp;#34;]
-    end
-
-    subgraph VLANS
-        VLAN1[&amp;#34;LAN (VLAN 1)
-        172.16.7.0/24&amp;#34;]
-        VLAN14[&amp;#34;GUEST (VLAN 14)
-        172.16.14.0/24&amp;#34;]
-        VLAN21[&amp;#34;PRODUCTION (VLAN 21)
-        172.21.21.0/24&amp;#34;]
-        VLAN99[&amp;#34;MGMT (VLAN 99)
-        172.16.99.0/24&amp;#34;]
-    end
-
-    ISP --&amp;gt; pfSenseVM
-    pfSenseVM --&amp;gt; Switch
-
-    pfSenseVM --&amp;gt; VLAN1
-    pfSenseVM --&amp;gt; VLAN14
-    pfSenseVM --&amp;gt; VLAN21
-    pfSenseVM --&amp;gt; VLAN99
-
-    Switch --&amp;gt; OmadaLXC
-    Switch --&amp;gt; PiHoleLXC
-    Switch --&amp;gt; AP
-    Switch --&amp;gt; MgmtPC
-
-    OmadaLXC --&amp;gt; VLAN99
-    PiHoleLXC --&amp;gt; VLAN21
-    MgmtPC --&amp;gt; VLAN99
-    AP --&amp;gt; VLAN14
-    AP --&amp;gt; VLAN99
-    ProxmoxMgmt --&amp;gt; VLAN99
-&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;p&gt;!&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/tillynet_mermaid.png&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
 &lt;h2 id=&#34;network-design-objectives&#34;&gt;Network Design Objectives&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Layer 2/3 segmentation&lt;/strong&gt; using VLANs&lt;/li&gt;
