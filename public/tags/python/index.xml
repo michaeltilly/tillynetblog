@@ -6,8 +6,17 @@
     <description>Recent content in Python on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 20 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Experimenting With Network Topologies</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/</guid>
+      <description>&lt;h1 id=&#34;creating-a-network-topology-using-graphviz-and-diagrams-package-in-python&#34;&gt;Creating a Network Topology Using Graphviz and diagrams Package in Python&lt;/h1&gt;
+&lt;p&gt;This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the &lt;code&gt;graphviz&lt;/code&gt; engine with the &lt;code&gt;diagrams&lt;/code&gt; Python package, I decided to experiment with it.&lt;/p&gt;
+&lt;p&gt;The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</link>

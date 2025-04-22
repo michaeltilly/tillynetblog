@@ -1,7 +1,7 @@
 ---
 title: "The Big Bang (How it All Began)"
 date: 2025-04-10
-tags: ["tillynet", "homelab", "setup"]
+tags: ["tillynet", "homelab", "setup", "network_topology"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---
