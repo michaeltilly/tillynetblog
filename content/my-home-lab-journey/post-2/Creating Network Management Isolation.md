@@ -6,13 +6,13 @@ categories: ["My Home Lab Journey"]
 draft: false
 ---
 
-# 🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99)
+# 02 - Migrating to a Dedicated Management VLAN (VLAN 99)
 
 This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.
 
 ---
 
-## 🎯 Goals
+## Goals
 
 - Remove critical services from default/native VLAN
 - Assign a dedicated, isolated VLAN (VLAN 99) for:
@@ -24,7 +24,7 @@ This phase documents the migration of all core management infrastructure to an i
 
 ---
 
-## 🧱 Pre-Migration Topology
+## Pre-Migration Topology
 
 | Component         | Network | VLAN  | Interface | Description                        |
 |------------------|---------|-------|-----------|------------------------------------|
@@ -35,7 +35,7 @@ This phase documents the migration of all core management infrastructure to an i
 
 ---
 
-## 🧠 Post-Migration Topology
+## Post-Migration Topology
 
 | Component           | Network        | VLAN   | Interface     | Description                                  |
 |--------------------|----------------|--------|---------------|----------------------------------------------|
@@ -47,7 +47,7 @@ This phase documents the migration of all core management infrastructure to an i
 
 ---
 
-## 🛠️ Migration Steps
+## Migration Steps
 
 ### 1. Create VLAN 99 in pfSense
 

@@ -13,11 +13,11 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</guid>
-      <description>&lt;h1 id=&#34;-pi-hole-dns-migration-to-production-vlan&#34;&gt;🧪 Pi-hole DNS Migration to Production VLAN&lt;/h1&gt;
-&lt;h2 id=&#34;-overview&#34;&gt;🧭 Overview&lt;/h2&gt;
+      <description>&lt;h1 id=&#34;pi-hole-dns-migration-to-production-vlan&#34;&gt;Pi-hole DNS Migration to Production VLAN&lt;/h1&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated &lt;strong&gt;Production VLAN&lt;/strong&gt;. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-objectives&#34;&gt;🎯 Objectives&lt;/h2&gt;
+&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Create and configure a dedicated Production VLAN on pfSense&lt;/li&gt;
 &lt;li&gt;Migrate the Pi-hole LXC container to the new VLAN&lt;/li&gt;
@@ -26,7 +26,7 @@
 &lt;li&gt;Update DHCP DNS settings across all VLANs&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-network-summary&#34;&gt;📊 Network Summary&lt;/h2&gt;
+&lt;h2 id=&#34;network-summary&#34;&gt;Network Summary&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -64,7 +64,7 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-steps-performed&#34;&gt;🛠️ Steps Performed&lt;/h2&gt;
+&lt;h2 id=&#34;steps-performed&#34;&gt;Steps Performed&lt;/h2&gt;
 &lt;h3 id=&#34;1-created-production-vlan-in-pfsense&#34;&gt;1. Created Production VLAN in pfSense&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Navigated to &lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;
@@ -83,11 +83,11 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</guid>
-      <description>&lt;h2 id=&#34;-remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;📡 Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
+      <description>&lt;h2 id=&#34;remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
 &lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;
 &lt;p&gt;In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely &lt;strong&gt;off-site&lt;/strong&gt;, using only a mobile device connected via an &lt;strong&gt;OpenVPN tunnel&lt;/strong&gt;.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h3 id=&#34;-background&#34;&gt;🔍 Background&lt;/h3&gt;
+&lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;
 &lt;p&gt;I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.&lt;/p&gt;</description>
     </item>
     <item>
@@ -95,10 +95,10 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</link>
       <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</guid>
-      <description>&lt;h1 id=&#34;-02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
 &lt;p&gt;This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-goals&#34;&gt;🎯 Goals&lt;/h2&gt;
+&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Remove critical services from default/native VLAN&lt;/li&gt;
 &lt;li&gt;Assign a dedicated, isolated VLAN (VLAN 99) for:
@@ -112,7 +112,7 @@
 &lt;li&gt;Preserve service availability during transition&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-pre-migration-topology&#34;&gt;🧱 Pre-Migration Topology&lt;/h2&gt;
+&lt;h2 id=&#34;pre-migration-topology&#34;&gt;Pre-Migration Topology&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -155,7 +155,7 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-post-migration-topology&#34;&gt;🧠 Post-Migration Topology&lt;/h2&gt;
+&lt;h2 id=&#34;post-migration-topology&#34;&gt;Post-Migration Topology&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -205,7 +205,7 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-migration-steps&#34;&gt;🛠️ Migration Steps&lt;/h2&gt;
+&lt;h2 id=&#34;migration-steps&#34;&gt;Migration Steps&lt;/h2&gt;
 &lt;h3 id=&#34;1-create-vlan-99-in-pfsense&#34;&gt;1. Create VLAN 99 in pfSense&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;
@@ -221,10 +221,10 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</link>
       <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</guid>
-      <description>&lt;h1 id=&#34;-homelab-initial-network-setup&#34;&gt;🏡 HomeLab: Initial Network Setup&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;
 &lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-overview&#34;&gt;🌐 Overview&lt;/h2&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;
@@ -238,7 +238,7 @@
 &lt;li&gt;&lt;strong&gt;Guest Devices:&lt;/strong&gt; IoT &amp;amp; roommate devices on isolated VLAN 14&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-infrastructure-at-a-glance&#34;&gt;🏗️ Infrastructure at a Glance&lt;/h2&gt;
+&lt;h2 id=&#34;infrastructure-at-a-glance&#34;&gt;Infrastructure at a Glance&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -278,8 +278,8 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-setup-timeline&#34;&gt;🚀 Setup Timeline&lt;/h2&gt;
-&lt;h3 id=&#34;-phase-1--core-infrastructure&#34;&gt;✅ Phase 1 – Core Infrastructure&lt;/h3&gt;
+&lt;h2 id=&#34;setup-timeline&#34;&gt;Setup Timeline&lt;/h2&gt;
+&lt;h3 id=&#34;phase-1--core-infrastructure&#34;&gt;Phase 1 – Core Infrastructure&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Flashed Proxmox onto Protectli Vault&lt;/li&gt;
 &lt;li&gt;Created pfSense VM with 2 passthrough NICs:
@@ -291,7 +291,7 @@
 &lt;li&gt;Configured &lt;code&gt;vmbr0&lt;/code&gt; as LAN bridge in Proxmox&lt;/li&gt;
 &lt;li&gt;Gave Proxmox host static IP on the LAN network&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;-phase-2--internal-services&#34;&gt;✅ Phase 2 – Internal Services&lt;/h3&gt;
+&lt;h3 id=&#34;phase-2--internal-services&#34;&gt;Phase 2 – Internal Services&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Provisioned LXC container for Pi-hole
 &lt;ul&gt;
@@ -306,7 +306,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;-phase-3--wireless--guest-vlan&#34;&gt;✅ Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
+&lt;h3 id=&#34;phase-3--wireless--guest-vlan&#34;&gt;Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Set up VLAN 14 in pfSense (Guest Network)&lt;/li&gt;
 &lt;li&gt;Trunked VLANs through switch port to Omada AP&lt;/li&gt;
@@ -321,7 +321,7 @@
 &lt;li&gt;Observed isolated traffic from personal network&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-security-practices&#34;&gt;🔐 Security Practices&lt;/h2&gt;
+&lt;h2 id=&#34;security-practices&#34;&gt;Security Practices&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Created distinct VLANs for guest vs personal network&lt;/li&gt;
 &lt;li&gt;Isolated Pi-hole to LAN access only&lt;/li&gt;
@@ -330,7 +330,7 @@
 &lt;li&gt;Reserved management services for trusted VLAN only&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-to-do--next-steps&#34;&gt;🔍 To-Do / Next Steps&lt;/h2&gt;
+&lt;h2 id=&#34;to-do--next-steps&#34;&gt;To-Do / Next Steps&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Create VLAN 99 for network management&lt;/li&gt;
 &lt;li&gt;Move Proxmox GUI and Omada Controller to VLAN 99&lt;/li&gt;
@@ -338,7 +338,7 @@
 &lt;li&gt;Diagram full topology and backup strategy&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-network-diagram&#34;&gt;📸 Network Diagram&lt;/h2&gt;
+&lt;h2 id=&#34;network-diagram&#34;&gt;Network Diagram&lt;/h2&gt;
 &lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/TillyNet_OG.drawio.png&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>

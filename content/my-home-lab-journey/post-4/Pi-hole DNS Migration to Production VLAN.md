@@ -1,20 +1,20 @@
 ---
 title: "Pi-hole DNS Migration to Production VLAN"
 date: 2025-04-20
-tags: ["tillynet", "homelab", "pihole", "vlan", "dns"]
+tags: ["tillynet", "homelab", "pihole", "vlan", "dns", "network_isolation"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---
 
-# 🧪 Pi-hole DNS Migration to Production VLAN
+# Pi-hole DNS Migration to Production VLAN
 
-## 🧭 Overview
+## Overview
 
 This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated **Production VLAN**. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 - Create and configure a dedicated Production VLAN on pfSense  
 - Migrate the Pi-hole LXC container to the new VLAN  
@@ -24,7 +24,7 @@ This phase of the HomeLab project documents the successful migration of the inte
 
 ---
 
-## 📊 Network Summary
+## Network Summary
 
 | Component         | Before Migration        | After Migration               |
 |------------------|--------------------------|-------------------------------|
@@ -36,7 +36,7 @@ This phase of the HomeLab project documents the successful migration of the inte
 
 ---
 
-## 🛠️ Steps Performed
+## Steps Performed
 
 ### 1. Created Production VLAN in pfSense
 

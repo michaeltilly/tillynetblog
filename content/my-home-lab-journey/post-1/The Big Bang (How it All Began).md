@@ -6,13 +6,13 @@ categories: ["My Home Lab Journey"]
 draft: false
 ---
 
-# 🏡 HomeLab: Initial Network Setup
+# HomeLab: Initial Network Setup
 
 This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.
 
 ---
 
-## 🌐 Overview
+## Overview
 
 - **Hypervisor:** Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
 - **Router/Firewall:** pfSense VM
@@ -24,7 +24,7 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 🏗️ Infrastructure at a Glance
+## Infrastructure at a Glance
 
 | Component        | Description                                         |
 |------------------|-----------------------------------------------------|
@@ -38,9 +38,9 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 🚀 Setup Timeline
+## Setup Timeline
 
-### ✅ Phase 1 – Core Infrastructure
+### Phase 1 – Core Infrastructure
 
 - Flashed Proxmox onto Protectli Vault
 - Created pfSense VM with 2 passthrough NICs:
@@ -49,7 +49,7 @@ This project documents the first working phase of my home network infrastructure
 - Configured `vmbr0` as LAN bridge in Proxmox
 - Gave Proxmox host static IP on the LAN network
 
-### ✅ Phase 2 – Internal Services
+### Phase 2 – Internal Services
 
 - Provisioned LXC container for Pi-hole
   - Static IP assigned
@@ -58,7 +58,7 @@ This project documents the first working phase of my home network infrastructure
   - Used to manage TP-Link EAP670 AP
   - Served on LAN via Omada web GUI (port 8043)
 
-### ✅ Phase 3 – Wireless & Guest VLAN
+### Phase 3 – Wireless & Guest VLAN
 
 - Set up VLAN 14 in pfSense (Guest Network)
 - Trunked VLANs through switch port to Omada AP
@@ -71,7 +71,7 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 🔐 Security Practices
+## Security Practices
 
 - Created distinct VLANs for guest vs personal network
 - Isolated Pi-hole to LAN access only
@@ -81,7 +81,7 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 🔍 To-Do / Next Steps
+## To-Do / Next Steps
 
 - Create VLAN 99 for network management
 - Move Proxmox GUI and Omada Controller to VLAN 99
@@ -90,7 +90,7 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 📸 Network Diagram
+## Network Diagram
 
 ![Image](/images/TillyNet_OG.drawio.png)
 
@@ -99,7 +99,7 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 🧠 Lessons Learned
+## Lessons Learned
 
 - Always reserve a static fallback IP for management
 - pfSense is extremely powerful when paired with LXC containers
@@ -108,6 +108,6 @@ This project documents the first working phase of my home network infrastructure
 
 ---
 
-## 🧾 Resume Bullet (from this phase)
+## Resume Bullet (from this phase)
 
 > - Deployed full virtual home network lab with pfSense firewall, VLAN isolation, and internal services (DNS, WiFi controller) using Proxmox and LXC containers; implemented guest network segregation and trunked VLANs across Cisco infrastructure.

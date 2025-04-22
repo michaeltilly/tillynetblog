@@ -1,12 +1,12 @@
 ---
 title: "Remote SDN Recovery & VLAN Isolation via VPN & Shell Access"
 date: 2025-04-18
-tags: ["tillynet", "homelab", "remote-recovery", "vpn", "networking"]
+tags: ["tillynet", "homelab", "remote_recovery", "vpn", "network_isolation"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---
 
-## 📡 Remote SDN Recovery & VLAN Isolation via VPN & Shell Access
+## Remote SDN Recovery & VLAN Isolation via VPN & Shell Access
 
 ### Overview
 
@@ -14,13 +14,13 @@ In this project, I successfully re-established full access to my network managem
 
 ---
 
-### 🔍 Background
+### Background
 
 I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.
 
 ---
 
-### 🎯 Objective
+### Objective
 
 - Regain access to VLAN 99 (management)
 - Restore Omada Controller GUI and Proxmox Web GUI
@@ -28,7 +28,7 @@ I transitioned my home lab management network to VLAN 99 to achieve full traffic
 
 ---
 
-### 🧰 Tools Used
+### Tools Used
 
 - Proxmox VE 8.3
 - pfSense (OpenVPN Server & Firewall)
@@ -40,7 +40,7 @@ I transitioned my home lab management network to VLAN 99 to achieve full traffic
 
 ---
 
-### 🔧 Steps Performed
+### Steps Performed
 
 1. **Connected to VPN Tunnel 1 (LAN access)**  
    - Used an existing OpenVPN client-to-site tunnel connected to the LAN network  
@@ -80,7 +80,7 @@ I transitioned my home lab management network to VLAN 99 to achieve full traffic
 
 ---
 
-### ✅ Outcome
+### Outcome
 
 - Full recovery of Proxmox and Omada Controller  
 - Management services isolated to VLAN 99  
@@ -90,7 +90,7 @@ I transitioned my home lab management network to VLAN 99 to achieve full traffic
 
 ---
 
-### 📸 Screenshots & CLI Snippets _(To be added)_
+### Screenshots & CLI Snippets _(To be added)_
 
 - Network configuration diagrams  
 - VLAN trunking layout (Cisco Catalyst Switch)
@@ -196,7 +196,7 @@ unprivileged: 1
 
 ---
 
-### 🧠 Lessons Learned
+### Lessons Learned
 
 - Always test VLAN changes with fallback access
 - Proxmox shell is essential for remote recovery
@@ -205,7 +205,7 @@ unprivileged: 1
 
 ---
 
-### 🔮 Future Improvements
+### Future Improvements
 
 - Add fallback management IP on separate VLAN
 - Setup out-of-band access (serial/IPMI)
@@ -213,6 +213,6 @@ unprivileged: 1
 
 ---
 
-### 🧾 Resume Bullet
+### Resume Bullet
 
 > - Performed live remote SDN infrastructure recovery using OpenVPN and SSH from a mobile device; reconfigured VLAN-tagged Proxmox bridges, updated pfSense firewall rules, and restored access to critical network services including Omada Controller and LXC containers on an isolated management VLAN.

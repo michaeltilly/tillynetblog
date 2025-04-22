@@ -13,10 +13,10 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</link>
       <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</guid>
-      <description>&lt;h1 id=&#34;-02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;🧠 02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
 &lt;p&gt;This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-goals&#34;&gt;🎯 Goals&lt;/h2&gt;
+&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Remove critical services from default/native VLAN&lt;/li&gt;
 &lt;li&gt;Assign a dedicated, isolated VLAN (VLAN 99) for:
@@ -30,7 +30,7 @@
 &lt;li&gt;Preserve service availability during transition&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-pre-migration-topology&#34;&gt;🧱 Pre-Migration Topology&lt;/h2&gt;
+&lt;h2 id=&#34;pre-migration-topology&#34;&gt;Pre-Migration Topology&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -73,7 +73,7 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-post-migration-topology&#34;&gt;🧠 Post-Migration Topology&lt;/h2&gt;
+&lt;h2 id=&#34;post-migration-topology&#34;&gt;Post-Migration Topology&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -123,7 +123,7 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-migration-steps&#34;&gt;🛠️ Migration Steps&lt;/h2&gt;
+&lt;h2 id=&#34;migration-steps&#34;&gt;Migration Steps&lt;/h2&gt;
 &lt;h3 id=&#34;1-create-vlan-99-in-pfsense&#34;&gt;1. Create VLAN 99 in pfSense&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;

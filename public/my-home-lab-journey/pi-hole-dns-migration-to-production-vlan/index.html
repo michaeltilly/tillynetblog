@@ -6,12 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Pi-hole DNS Migration to Production VLAN | Tilly Net</title>
-<meta name="keywords" content="tillynet, homelab, pihole, vlan, dns">
-<meta name="description" content="🧪 Pi-hole DNS Migration to Production VLAN
-🧭 Overview
+<meta name="keywords" content="tillynet, homelab, pihole, vlan, dns, network_isolation">
+<meta name="description" content="Pi-hole DNS Migration to Production VLAN
+Overview
 This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
 
-🎯 Objectives
+Objectives
 
 Create and configure a dedicated Production VLAN on pfSense
 Migrate the Pi-hole LXC container to the new VLAN
@@ -20,7 +20,7 @@ Apply proper firewall rules to restrict unnecessary access
 Update DHCP DNS settings across all VLANs
 
 
-📊 Network Summary
+Network Summary
 
   
       
@@ -58,7 +58,7 @@ Update DHCP DNS settings across all VLANs
   
 
 
-🛠️ Steps Performed
+Steps Performed
 1. Created Production VLAN in pfSense
 
 Navigated to Interfaces &gt; Assignments &gt; VLANs
@@ -121,8 +121,8 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
 </noscript><meta property="og:url" content="https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/">
   <meta property="og:site_name" content="Tilly Net">
   <meta property="og:title" content="Pi-hole DNS Migration to Production VLAN">
-  <meta property="og:description" content="🧪 Pi-hole DNS Migration to Production VLAN 🧭 Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
-🎯 Objectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs 📊 Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) 🛠️ Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces &gt; Assignments &gt; VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-hole_IP&gt;/24,gw=&lt;VLAN_Gateway&gt; ">
+  <meta property="og:description" content="Pi-hole DNS Migration to Production VLAN Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
+Objectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces &gt; Assignments &gt; VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-hole_IP&gt;/24,gw=&lt;VLAN_Gateway&gt; ">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="my-home-lab-journey">
@@ -133,13 +133,14 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
     <meta property="article:tag" content="Pihole">
     <meta property="article:tag" content="Vlan">
     <meta property="article:tag" content="Dns">
+    <meta property="article:tag" content="Network_isolation">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pi-hole DNS Migration to Production VLAN">
-<meta name="twitter:description" content="🧪 Pi-hole DNS Migration to Production VLAN
-🧭 Overview
+<meta name="twitter:description" content="Pi-hole DNS Migration to Production VLAN
+Overview
 This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
 
-🎯 Objectives
+Objectives
 
 Create and configure a dedicated Production VLAN on pfSense
 Migrate the Pi-hole LXC container to the new VLAN
@@ -148,7 +149,7 @@ Apply proper firewall rules to restrict unnecessary access
 Update DHCP DNS settings across all VLANs
 
 
-📊 Network Summary
+Network Summary
 
   
       
@@ -186,7 +187,7 @@ Update DHCP DNS settings across all VLANs
   
 
 
-🛠️ Steps Performed
+Steps Performed
 1. Created Production VLAN in pfSense
 
 Navigated to Interfaces &gt; Assignments &gt; VLANs
@@ -227,12 +228,12 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
   "@type": "BlogPosting",
   "headline": "Pi-hole DNS Migration to Production VLAN",
   "name": "Pi-hole DNS Migration to Production VLAN",
-  "description": "🧪 Pi-hole DNS Migration to Production VLAN 🧭 Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.\n🎯 Objectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs 📊 Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) 🛠️ Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces \u0026gt; Assignments \u0026gt; VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set \u0026lt;CTID\u0026gt; -net0 name=eth0,bridge=vmbr0,tag=\u0026lt;VLAN_ID\u0026gt;,ip=\u0026lt;Pi-hole_IP\u0026gt;/24,gw=\u0026lt;VLAN_Gateway\u0026gt; ",
+  "description": "Pi-hole DNS Migration to Production VLAN Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.\nObjectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces \u0026gt; Assignments \u0026gt; VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set \u0026lt;CTID\u0026gt; -net0 name=eth0,bridge=vmbr0,tag=\u0026lt;VLAN_ID\u0026gt;,ip=\u0026lt;Pi-hole_IP\u0026gt;/24,gw=\u0026lt;VLAN_Gateway\u0026gt; ",
   "keywords": [
-    "tillynet", "homelab", "pihole", "vlan", "dns"
+    "tillynet", "homelab", "pihole", "vlan", "dns", "network_isolation"
   ],
-  "articleBody": "🧪 Pi-hole DNS Migration to Production VLAN 🧭 Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.\n🎯 Objectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs 📊 Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) 🛠️ Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces \u003e Assignments \u003e VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set -net0 name=eth0,bridge=vmbr0,tag=,ip=/24,gw= ",
-  "wordCount" : "195",
+  "articleBody": "Pi-hole DNS Migration to Production VLAN Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.\nObjectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces \u003e Assignments \u003e VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set -net0 name=eth0,bridge=vmbr0,tag=,ip=/24,gw= ",
+  "wordCount" : "190",
   "inLanguage": "en",
   "datePublished": "2025-04-20T00:00:00Z",
   "dateModified": "2025-04-20T00:00:00Z",
@@ -322,11 +323,11 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
 
 </div>
   </header> 
-  <div class="post-content"><h1 id="-pi-hole-dns-migration-to-production-vlan">🧪 Pi-hole DNS Migration to Production VLAN<a hidden class="anchor" aria-hidden="true" href="#-pi-hole-dns-migration-to-production-vlan">#</a></h1>
-<h2 id="-overview">🧭 Overview<a hidden class="anchor" aria-hidden="true" href="#-overview">#</a></h2>
+  <div class="post-content"><h1 id="pi-hole-dns-migration-to-production-vlan">Pi-hole DNS Migration to Production VLAN<a hidden class="anchor" aria-hidden="true" href="#pi-hole-dns-migration-to-production-vlan">#</a></h1>
+<h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
 <p>This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated <strong>Production VLAN</strong>. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.</p>
 <hr>
-<h2 id="-objectives">🎯 Objectives<a hidden class="anchor" aria-hidden="true" href="#-objectives">#</a></h2>
+<h2 id="objectives">Objectives<a hidden class="anchor" aria-hidden="true" href="#objectives">#</a></h2>
 <ul>
 <li>Create and configure a dedicated Production VLAN on pfSense</li>
 <li>Migrate the Pi-hole LXC container to the new VLAN</li>
@@ -335,7 +336,7 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
 <li>Update DHCP DNS settings across all VLANs</li>
 </ul>
 <hr>
-<h2 id="-network-summary">📊 Network Summary<a hidden class="anchor" aria-hidden="true" href="#-network-summary">#</a></h2>
+<h2 id="network-summary">Network Summary<a hidden class="anchor" aria-hidden="true" href="#network-summary">#</a></h2>
 <table>
   <thead>
       <tr>
@@ -373,7 +374,7 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
   </tbody>
 </table>
 <hr>
-<h2 id="-steps-performed">🛠️ Steps Performed<a hidden class="anchor" aria-hidden="true" href="#-steps-performed">#</a></h2>
+<h2 id="steps-performed">Steps Performed<a hidden class="anchor" aria-hidden="true" href="#steps-performed">#</a></h2>
 <h3 id="1-created-production-vlan-in-pfsense">1. Created Production VLAN in pfSense<a hidden class="anchor" aria-hidden="true" href="#1-created-production-vlan-in-pfsense">#</a></h3>
 <ul>
 <li>Navigated to <strong>Interfaces &gt; Assignments &gt; VLANs</strong></li>
@@ -396,6 +397,7 @@ pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-
       <li><a href="https://blog.tillynet.com/tags/pihole/">Pihole</a></li>
       <li><a href="https://blog.tillynet.com/tags/vlan/">Vlan</a></li>
       <li><a href="https://blog.tillynet.com/tags/dns/">Dns</a></li>
+      <li><a href="https://blog.tillynet.com/tags/network_isolation/">Network_isolation</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/">
