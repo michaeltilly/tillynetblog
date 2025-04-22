@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Obsidian | Tilly Net</title>
+<title>Network_isolation | Tilly Net</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.tillynet.com/tags/obsidian/">
+<link rel="canonical" href="https://blog.tillynet.com/tags/network_isolation/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.tillynet.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/obsidian/index.xml">
-<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/obsidian/">
+<link rel="alternate" type="application/rss+xml" href="https://blog.tillynet.com/tags/network_isolation/index.xml">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/tags/network_isolation/">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,13 +56,13 @@
         }
 
     </style>
-</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/obsidian/">
+</noscript><meta property="og:url" content="https://blog.tillynet.com/tags/network_isolation/">
   <meta property="og:site_name" content="Tilly Net">
-  <meta property="og:title" content="Obsidian">
+  <meta property="og:title" content="Network_isolation">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Obsidian">
+<meta name="twitter:title" content="Network_isolation">
 <meta name="twitter:description" content="">
 
 </head>
@@ -128,22 +128,35 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    Obsidian
+    Network_isolation
   </h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger
+    <h2 class="entry-hint-parent">Pi-hole DNS Migration to Production VLAN
     </h2>
   </header>
   <div class="entry-content">
-    <p>Obsidian → Hugo → GitHub → Hostinger Automation Workflow This post documents the full setup of my static site publishing pipeline that automates taking blog posts from Obsidian, rendering them with Hugo, pushing the output to GitHub, and then having Hostinger automatically update my website via webhook.
-Tools Used Obsidian – Markdown note-taking and blog writing Hugo – Static site generator using the PaperMod theme Hugo PaperMod Wiki My Hugo yaml File GitHub – Repository with two branches: master → Hugo project &amp; content hostinger → Static site output Hostinger – Web hosting platform with webhook integration Python – Automation script for content syncing and site deployment My Automation Script 📁 Folder Structure 📂 Local_Obsidian_Vault/ └── my-home-lab-journey/ ├── post-1/ └── index.md ├── post-2/ └── index.md ├── post-3/ └── index.md └── ... 📂 tillynetblog/ ├── hugo.yaml ├── content/ │ └── my-home-lab-journey/ ├── public/ ├── themes/ │ └── PaperMod/ └── static/ └── images └── css/custom.css What the Automation Script Does Imports import os import shutil import subprocess import re os: for filesystem operations like path handling shutil: for copying/removing files and directories subprocess: for running shell commands like hugo and git re: for finding image links in markdown via regular expressions Configuration obsidian_dir = r&#34;C:\Users\micha\Documents\Local_Obsidian_Vault\my-home-lab-journey&#34; hugo_root_dir = r&#34;C:\Users\micha\Documents\tillynetblog&#34; hugo_content_dir = os.path.join(hugo_root_dir, &#34;content&#34;, &#34;my-home-lab-journey&#34;) attachments_dir = r&#34;C:\Users\micha\Documents\Local_Obsidian_Vault\assets\images&#34; static_images_dir = os.path.join(hugo_root_dir, &#34;static&#34;, &#34;images&#34;) about_src = r&#34;C:\Users\micha\Documents\Local_Obsidian_Vault\pages\about.md&#34; about_dst = os.path.join(hugo_root_dir, &#34;content&#34;, &#34;about.md&#34;) base_url = &#34;https://blog.tillynet.com&#34; Sets paths to: Obsidian content (obsidian_dir) Hugo blog folder Where to copy markdown posts Where Obsidian images are and where to move them Source/destination for the about.md file The blog’s base URL for Hugo STEP 1: Copy Markdown Posts if os.path.exists(hugo_content_dir): shutil.rmtree(hugo_content_dir) shutil.copytree(obsidian_dir, hugo_content_dir) print(&#34;✔ Copied markdown posts from Obsidian.&#34;) Deletes existing markdown content in Hugo Copies fresh markdown files from Obsidian Confirms the copy STEP 2: Convert Image Embeds and Copy Images for subdir, _, files in os.walk(hugo_content_dir): for filename in files: if filename.endswith(&#34;.md&#34;): ... iterates through every markdown file in the blog content images = re.findall(r&#39;\[\[([^]]*\.png)\]\]&#39;, content) Looks for image link like (example.png) for image in images: markdown_image = f&#34;![Image](/images/{image.replace(&#39; &#39;, &#39;%20&#39;)})&#34; Replaces with standard Markdown image syntax src_image = os.path.join(attachments_dir, image) if os.path.exists(src_image): shutil.copy(src_image, static_images_dir) copies matching images from Obsidian to Hugo’s static image folder with open(md_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as file: file.write(content) Overwrites the file with the updated content print(&#34;✔ Processed images and updated markdown links.&#34;) Confirms processing is complete STEP 3: Copy About Page if os.path.exists(about_src): shutil.copyfile(about_src, about_dst) print(&#34;✔ Updated About page.&#34;) else: print(&#34;⚠ About page not found; skipping.&#34;) Copies about.md from Obsidian to Hugo content Skips and warns if the file is missing STEP 4: Build the Hugo Site subprocess.run([&#34;hugo&#34;, &#34;-b&#34;, base_url], cwd=hugo_root_dir, check=True) print(&#34;✔ Hugo site built with baseURL.&#34;) Builds the site using the hugo command with my specified BaseURL STEP 5: Push Source Files to GitHub master subprocess.run([&#34;git&#34;, &#34;checkout&#34;, &#34;master&#34;], cwd=hugo_root_dir, check=True) subprocess.run([&#34;git&#34;, &#34;add&#34;, &#34;.&#34;], cwd=hugo_root_dir, check=True) subprocess.run([&#34;git&#34;, &#34;commit&#34;, &#34;-m&#34;, &#34;Update blog content&#34;], cwd=hugo_root_dir, check=False) subprocess.run([&#34;git&#34;, &#34;push&#34;, &#34;origin&#34;, &#34;master&#34;], cwd=hugo_root_dir, check=True) print(&#34;✔ Pushed changes to GitHub master.&#34;) Commits and pushes all changes to the master branch STEP 6: Deploy Public Folder to hostinger Branch subprocess.run([&#34;git&#34;, &#34;subtree&#34;, &#34;split&#34;, &#34;--prefix&#34;, &#34;public&#34;, &#34;-b&#34;, &#34;hostinger-deploy&#34;], cwd=hugo_root_dir, check=True) subprocess.run([&#34;git&#34;, &#34;push&#34;, &#34;origin&#34;, &#34;hostinger-deploy:hostinger&#34;, &#34;--force&#34;], cwd=hugo_root_dir, check=True) subprocess.run([&#34;git&#34;, &#34;branch&#34;, &#34;-D&#34;, &#34;hostinger-deploy&#34;], cwd=hugo_root_dir, check=True) print(&#34;✔ Deployed public/ folder to GitHub hostinger branch.&#34;) Splits public/ into a new branch Pushes it forcefully to the hostinger branch on GitHub (used for site deployment) Deletes the temporary hostinger-deploy branch This is necessary for our webhook to recognize the changes Issues I Encountered Website Styling Not Matching Local Preview Problem: Hostinger version didn’t load custom CSS or theme
+    <p>Pi-hole DNS Migration to Production VLAN Overview This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated Production VLAN. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.
+Objectives Create and configure a dedicated Production VLAN on pfSense Migrate the Pi-hole LXC container to the new VLAN Ensure inter-VLAN DNS resolution using Pi-hole Apply proper firewall rules to restrict unnecessary access Update DHCP DNS settings across all VLANs Network Summary Component Before Migration After Migration Pi-hole Location LAN network (untagged) Production VLAN (tagged) VLAN ID - Production VLAN ID Subnet LAN Subnet Production Subnet Pi-hole IP LAN Assigned IP VLAN-assigned static IP Access Open to LAN Inter-VLAN DNS only (port 53) Steps Performed 1. Created Production VLAN in pfSense Navigated to Interfaces &gt; Assignments &gt; VLANs Assigned a unique VLAN tag and set the parent interface (LAN) Created new interface, enabled it, and assigned a static IPv4 gateway 2. Updated Pi-hole LXC Container Configuration Edited the container via Proxmox: pct set &lt;CTID&gt; -net0 name=eth0,bridge=vmbr0,tag=&lt;VLAN_ID&gt;,ip=&lt;Pi-hole_IP&gt;/24,gw=&lt;VLAN_Gateway&gt; </p>
+  </div>
+  <footer class="entry-footer"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;1 min</footer>
+  <a class="entry-link" aria-label="post link to Pi-hole DNS Migration to Production VLAN" href="https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access Overview In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely off-site, using only a mobile device connected via an OpenVPN tunnel.
+Background I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2025-04-20 00:00:00 +0000 UTC'>April 20, 2025</span>&nbsp;·&nbsp;4 min</footer>
-  <a class="entry-link" aria-label="post link to Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger" href="https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/"></a>
+  <footer class="entry-footer"><span title='2025-04-18 00:00:00 +0000 UTC'>April 18, 2025</span>&nbsp;·&nbsp;4 min</footer>
+  <a class="entry-link" aria-label="post link to Remote SDN Recovery & VLAN Isolation via VPN & Shell Access" href="https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/"></a>
 </article>
     </main>
     

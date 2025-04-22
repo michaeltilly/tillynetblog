@@ -13,10 +13,10 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</link>
       <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</guid>
-      <description>&lt;h1 id=&#34;-homelab-initial-network-setup&#34;&gt;🏡 HomeLab: Initial Network Setup&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;
 &lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-overview&#34;&gt;🌐 Overview&lt;/h2&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;
@@ -30,7 +30,7 @@
 &lt;li&gt;&lt;strong&gt;Guest Devices:&lt;/strong&gt; IoT &amp;amp; roommate devices on isolated VLAN 14&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-infrastructure-at-a-glance&#34;&gt;🏗️ Infrastructure at a Glance&lt;/h2&gt;
+&lt;h2 id=&#34;infrastructure-at-a-glance&#34;&gt;Infrastructure at a Glance&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -70,8 +70,8 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-setup-timeline&#34;&gt;🚀 Setup Timeline&lt;/h2&gt;
-&lt;h3 id=&#34;-phase-1--core-infrastructure&#34;&gt;✅ Phase 1 – Core Infrastructure&lt;/h3&gt;
+&lt;h2 id=&#34;setup-timeline&#34;&gt;Setup Timeline&lt;/h2&gt;
+&lt;h3 id=&#34;phase-1--core-infrastructure&#34;&gt;Phase 1 – Core Infrastructure&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Flashed Proxmox onto Protectli Vault&lt;/li&gt;
 &lt;li&gt;Created pfSense VM with 2 passthrough NICs:
@@ -83,7 +83,7 @@
 &lt;li&gt;Configured &lt;code&gt;vmbr0&lt;/code&gt; as LAN bridge in Proxmox&lt;/li&gt;
 &lt;li&gt;Gave Proxmox host static IP on the LAN network&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;-phase-2--internal-services&#34;&gt;✅ Phase 2 – Internal Services&lt;/h3&gt;
+&lt;h3 id=&#34;phase-2--internal-services&#34;&gt;Phase 2 – Internal Services&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Provisioned LXC container for Pi-hole
 &lt;ul&gt;
@@ -98,7 +98,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;-phase-3--wireless--guest-vlan&#34;&gt;✅ Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
+&lt;h3 id=&#34;phase-3--wireless--guest-vlan&#34;&gt;Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Set up VLAN 14 in pfSense (Guest Network)&lt;/li&gt;
 &lt;li&gt;Trunked VLANs through switch port to Omada AP&lt;/li&gt;
@@ -113,7 +113,7 @@
 &lt;li&gt;Observed isolated traffic from personal network&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-security-practices&#34;&gt;🔐 Security Practices&lt;/h2&gt;
+&lt;h2 id=&#34;security-practices&#34;&gt;Security Practices&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Created distinct VLANs for guest vs personal network&lt;/li&gt;
 &lt;li&gt;Isolated Pi-hole to LAN access only&lt;/li&gt;
@@ -122,7 +122,7 @@
 &lt;li&gt;Reserved management services for trusted VLAN only&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-to-do--next-steps&#34;&gt;🔍 To-Do / Next Steps&lt;/h2&gt;
+&lt;h2 id=&#34;to-do--next-steps&#34;&gt;To-Do / Next Steps&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Create VLAN 99 for network management&lt;/li&gt;
 &lt;li&gt;Move Proxmox GUI and Omada Controller to VLAN 99&lt;/li&gt;
@@ -130,7 +130,7 @@
 &lt;li&gt;Diagram full topology and backup strategy&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-network-diagram&#34;&gt;📸 Network Diagram&lt;/h2&gt;
+&lt;h2 id=&#34;network-diagram&#34;&gt;Network Diagram&lt;/h2&gt;
 &lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/TillyNet_OG.drawio.png&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>

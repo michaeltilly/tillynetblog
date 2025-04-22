@@ -13,11 +13,11 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</guid>
-      <description>&lt;h1 id=&#34;-pi-hole-dns-migration-to-production-vlan&#34;&gt;🧪 Pi-hole DNS Migration to Production VLAN&lt;/h1&gt;
-&lt;h2 id=&#34;-overview&#34;&gt;🧭 Overview&lt;/h2&gt;
+      <description>&lt;h1 id=&#34;pi-hole-dns-migration-to-production-vlan&#34;&gt;Pi-hole DNS Migration to Production VLAN&lt;/h1&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated &lt;strong&gt;Production VLAN&lt;/strong&gt;. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-objectives&#34;&gt;🎯 Objectives&lt;/h2&gt;
+&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Create and configure a dedicated Production VLAN on pfSense&lt;/li&gt;
 &lt;li&gt;Migrate the Pi-hole LXC container to the new VLAN&lt;/li&gt;
@@ -26,7 +26,7 @@
 &lt;li&gt;Update DHCP DNS settings across all VLANs&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-network-summary&#34;&gt;📊 Network Summary&lt;/h2&gt;
+&lt;h2 id=&#34;network-summary&#34;&gt;Network Summary&lt;/h2&gt;
 &lt;table&gt;
   &lt;thead&gt;
       &lt;tr&gt;
@@ -64,7 +64,7 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;-steps-performed&#34;&gt;🛠️ Steps Performed&lt;/h2&gt;
+&lt;h2 id=&#34;steps-performed&#34;&gt;Steps Performed&lt;/h2&gt;
 &lt;h3 id=&#34;1-created-production-vlan-in-pfsense&#34;&gt;1. Created Production VLAN in pfSense&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Navigated to &lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;
