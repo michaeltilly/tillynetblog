@@ -6,8 +6,43 @@
     <description>Recent content in Tags on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 20 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 21 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Diagrams</title>
+      <link>https://blog.tillynet.com/tags/diagrams/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/diagrams/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Graphviz</title>
+      <link>https://blog.tillynet.com/tags/graphviz/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/graphviz/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Network_topology</title>
+      <link>https://blog.tillynet.com/tags/network_topology/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/network_topology/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://blog.tillynet.com/tags/python/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tillynet</title>
+      <link>https://blog.tillynet.com/tags/tillynet/</link>
+      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/tillynet/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Automation</title>
       <link>https://blog.tillynet.com/tags/automation/</link>
@@ -69,20 +104,6 @@
       <link>https://blog.tillynet.com/tags/pihole/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/pihole/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://blog.tillynet.com/tags/python/</link>
-      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tillynet</title>
-      <link>https://blog.tillynet.com/tags/tillynet/</link>
-      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/tillynet/</guid>
       <description></description>
     </item>
     <item>
