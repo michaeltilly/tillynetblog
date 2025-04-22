@@ -77,7 +77,8 @@ hugo_content_dir = os.path.join(hugo_root_dir, "content", "my-home-lab-journey")
 attachments_dir = r"C:\Users\micha\Documents\Local_Obsidian_Vault\assets\images"
 static_images_dir = os.path.join(hugo_root_dir, "static", "images")
 about_src = r"C:\Users\micha\Documents\Local_Obsidian_Vault\pages\about.md"
-about_dst = os.path.join(hugo_root_dir, "content", "about.md")
+about_dst_dir = os.path.join(hugo_root_dir, "content", "about")
+about_dst = os.path.join(about_dst_dir, "index.md")
 base_url = "https://blog.tillynet.com"
 ```
 
@@ -151,14 +152,27 @@ print("✔ Processed images and updated markdown links.")
 
 ```python
 if os.path.exists(about_src):
-    shutil.copyfile(about_src, about_dst)
-    print("✔ Updated About page.")
+    os.makedirs(about_dst_dir, exist_ok=True)
+    shutil.copyfile(about_src, about_dst)
+    print("✔ Updated About page as /about/index.md.")
 else:
-    print("⚠ About page not found; skipping.")
+    print("⚠ About page not found in Obsidian vault; skipping.")
 ```
 
 - Copies ``about.md`` from Obsidian to Hugo content
 - Skips and warns if the file is missing
+
+### STEP 4: Clean Existing ``public/`` Folder
+
+```python
+public_dir = os.path.join(hugo_root_dir, "public")
+if os.path.exists(public_dir):
+    shutil.rmtree(public_dir)
+    print("✔ Cleaned existing public/ folder.")
+```
+
+- Removes the old ``public/`` folder
+- Forces Hugo to rebuild the entire static site from scratch, picking up all new pages and changes
 
 ### STEP 4: Build the Hugo Site
 
@@ -197,20 +211,7 @@ print("✔ Deployed public/ folder to GitHub hostinger branch.")
 
 ---
 
-##  Issues I Encountered
-
-### Website Styling Not Matching Local Preview
-
-- **Problem:** Hostinger version didn’t load custom CSS or theme
-    
-- **Fix:** Used this build command:
-    
-    bash
-    
-    CopyEdit
-    
-    `hugo -D --cleanDestinationDir --themesDir=./themes`
-    
+##  Issues I Encountered  
 
 ###  CSS Not Applying on Deployed Site
 
@@ -234,12 +235,10 @@ print("✔ Deployed public/ folder to GitHub hostinger branch.")
 ## Lessons Learned
 
 - Static site deployment workflows require full control over content paths and assets
-    
 - Asset fingerprinting can break styling if not handled properly
-    
 - Obsidian's `[[embed]]` syntax must be converted for Hugo compatibility
-    
 - Git subtree pushing keeps deployment clean and isolated to `public/`
+- Have my python automation script remove the old ``public/`` folder so that Hugo is forced to rebuild the entire static site from scratch thus picking up all new pages and changes
     
 
 ---
