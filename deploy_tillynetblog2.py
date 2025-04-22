@@ -10,7 +10,8 @@ hugo_content_dir = os.path.join(hugo_root_dir, "content", "my-home-lab-journey")
 attachments_dir = r"C:\Users\micha\Documents\Local_Obsidian_Vault\assets\images"
 static_images_dir = os.path.join(hugo_root_dir, "static", "images")
 about_src = r"C:\Users\micha\Documents\Local_Obsidian_Vault\pages\about.md"
-about_dst = os.path.join(hugo_root_dir, "content", "about.md")
+about_dst_dir = os.path.join(hugo_root_dir, "content", "about")
+about_dst = os.path.join(about_dst_dir, "index.md")
 base_url = "https://blog.tillynet.com"
 
 # === STEP 1: Sync Markdown Posts from Obsidian ===
@@ -39,12 +40,14 @@ for subdir, _, files in os.walk(hugo_content_dir):
                 file.write(content)
 print("✔ Processed images and updated markdown links.")
 
-# === STEP 3: Copy About Page ===
+# === STEP 3: Copy About Page to /about/ as index.md ===
 if os.path.exists(about_src):
+    os.makedirs(about_dst_dir, exist_ok=True)
     shutil.copyfile(about_src, about_dst)
-    print("✔ Updated About page.")
+    print("✔ Updated About page as /about/index.md.")
 else:
-    print("⚠ About page not found; skipping.")
+    print("⚠ About page not found in Obsidian vault; skipping.")
+
 
 # === STEP 4: Build Hugo Site with baseURL ===
 subprocess.run(["hugo", "-b", base_url], cwd=hugo_root_dir, check=True)
