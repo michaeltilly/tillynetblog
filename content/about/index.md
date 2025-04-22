@@ -1,6 +1,7 @@
 ---
 title: "About"
 date: 2025-04-24
+type: page
 ---
 
 # About Me
