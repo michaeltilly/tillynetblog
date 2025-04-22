@@ -2,7 +2,6 @@
 title: "About"
 date: 2025-04-24
 draft: false
-categories: ["About"]
 ---
 
 # About Me
