@@ -55,7 +55,7 @@ if os.path.exists(public_dir):
     print("✔ Cleaned existing public/ folder.")
 
 # === STEP 5: Build Hugo Site with baseURL ===
-subprocess.run(["hugo", "-b", base_url], cwd=hugo_root_dir, check=True)
+subprocess.run(["hugo", "--buildDrafts", "--buildFuture", "-b", base_url], cwd=hugo_root_dir, check=True)
 print("✔ Hugo site built with baseURL.")
 
 # === STEP 6: Push changes to GitHub master ===
