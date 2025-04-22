@@ -114,7 +114,7 @@ for subdir, _, files in os.walk(hugo_content_dir):
 
 - iterates through every markdown file in the blog content
 
-```pyhton
+```python
             images = re.findall(r'\[\[([^]]*\.png)\]\]', content)
 ```
 
@@ -174,16 +174,16 @@ if os.path.exists(public_dir):
 - Removes the old ``public/`` folder
 - Forces Hugo to rebuild the entire static site from scratch, picking up all new pages and changes
 
-### STEP 4: Build the Hugo Site
+### STEP 5: Build the Hugo Site
 
 ```python
-subprocess.run(["hugo", "-b", base_url], cwd=hugo_root_dir, check=True)
+subprocess.run(["hugo", "--buildDrafts", "--buildFuture", "-b", base_url], cwd=hugo_root_dir, check=True)
 print("✔ Hugo site built with baseURL.")
 ```
 
 - Builds the site using the ``hugo`` command with my specified ``BaseURL``
 
-### STEP 5: Push Source Files to GitHub ``master``
+### STEP 6: Push Source Files to GitHub ``master``
 
 ```python
 subprocess.run(["git", "checkout", "master"], cwd=hugo_root_dir, check=True)
@@ -195,7 +195,7 @@ print("✔ Pushed changes to GitHub master.")
 
 - Commits and pushes all changes to the ``master`` branch
 
-### STEP 6: Deploy Public Folder to ``hostinger`` Branch
+### STEP 7: Deploy Public Folder to ``hostinger`` Branch
 
 ```python
 subprocess.run(["git", "subtree", "split", "--prefix", "public", "-b", "hostinger-deploy"], cwd=hugo_root_dir, check=True)
