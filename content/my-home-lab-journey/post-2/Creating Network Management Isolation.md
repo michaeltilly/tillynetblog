@@ -1,7 +1,7 @@
 ---
 title: "Creating Network Management Isolation"
 date: 2025-04-15
-tags: ["tillynet", "homelab", "networkisolation"]
+tags: ["tillynet", "homelab", "networkisolation", "proxmox", "hypervisor", "vpn", "openvpn", "virtual_network"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---

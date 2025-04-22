@@ -14,10 +14,10 @@ This project documents the first working phase of my home network infrastructure
 
 ## Overview
 
-- **Hypervisor:** Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)
+- **Hypervisor:** Proxmox VE running on Protectli Vault VP2420 (Intel J6412, 4 NICs)
 - **Router/Firewall:** pfSense VM
 - **Internal Services:**
-  - Pi-hole (LXC) – local DNS + ad-blocking
+  - Pi-hole (LXC) – local recursive DNS + ad-blocking
   - Omada Controller (LXC) – TP-Link AP management
 - **LAN Devices:** Proxmox host, personal workstation, AP, switch
 - **Guest Devices:** IoT & roommate devices on isolated VLAN 14
@@ -93,9 +93,6 @@ This project documents the first working phase of my home network infrastructure
 ## Network Diagram
 
 ![Image](/images/TillyNet_OG.drawio.png)
-
-> Will include:  
-> Proxmox bridges → pfSense VM → Switch trunk → AP → VLAN segmentation
 
 ---
 
