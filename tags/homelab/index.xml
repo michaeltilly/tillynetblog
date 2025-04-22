@@ -226,11 +226,11 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault (Intel J6412, 4 NICs)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault VP2420 (Intel J6412, 4 NICs)&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Internal Services:&lt;/strong&gt;
 &lt;ul&gt;
-&lt;li&gt;Pi-hole (LXC) – local DNS + ad-blocking&lt;/li&gt;
+&lt;li&gt;Pi-hole (LXC) – local recursive DNS + ad-blocking&lt;/li&gt;
 &lt;li&gt;Omada Controller (LXC) – TP-Link AP management&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
