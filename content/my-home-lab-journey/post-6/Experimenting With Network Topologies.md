@@ -86,7 +86,7 @@ with Diagram("TillyNet Home Lab Topology", show=True, direction="LR"):
 
 ## Generated Network Topology
 
-!![Image](/images/tillynet_graphviz.png)
+![Image](/images/tillynet_graphviz.png)
 
 ---
 ## Current TillyNet Home Lab Environment - Summary

@@ -14,7 +14,7 @@ TillyNet is my custom-built home lab environment designed to practice enterprise
 
 ## Network Topology
 
-!![Image](/images/tillynet_mermaid.png)
+![Image](/images/tillynet_mermaid.png)
 
 ---
 

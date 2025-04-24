@@ -42,6 +42,9 @@ menu:
     - name: "My Home Lab Journey"
       url: "/my-home-lab-journey/"
       weight: 2
+    - name: "Tags"
+      url: "/tags/"
+      weight: 4
     - name: "About"
       url: "/about/"
       weight: 3
