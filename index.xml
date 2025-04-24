@@ -14,8 +14,17 @@
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/about/</guid>
       <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;
-&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;—a self-hosted, segmented lab environment that simulates enterprise-grade infrastructure. Built from the ground up using open-source tools and industry-standard practices, TillyNet includes VLAN-based network segmentation, centralized firewalling, containerized services, internal DNS, and automated deployment pipelines. This lab serves as both a learning environment and a proving ground for real-world IT architecture and network design.&lt;/p&gt;
-&lt;p&gt;Professionally, I have a solid background in systems support, cybersecurity compliance, and enterprise operations. I currently support The Department of Defense networks with a focus on asset lifecycle management, automation, and secure IT service delivery. I hold active Cisco CCNA (200-301) and CompTIA Security+ certifications and am currently working toward the Cisco CCNP as I continue developing my technical depth in modern networking.&lt;/p&gt;</description>
+&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.&lt;/p&gt;
+&lt;p&gt;I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Deploying a Proxmox Node on a Wi-Fi-Only Dell XPS Laptop</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</link>
+      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;
+&lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Current Running Version of TillyNet</title>

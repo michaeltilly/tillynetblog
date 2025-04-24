@@ -6,8 +6,17 @@
     <description>Recent content in My-Home-Lab-Journeys on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 22 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/my-home-lab-journey/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Deploying a Proxmox Node on a Wi-Fi-Only Dell XPS Laptop</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</link>
+      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;
+&lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Current Running Version of TillyNet</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</link>
