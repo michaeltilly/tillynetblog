@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
 <title>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access | Tilly Net</title>
-<meta name="keywords" content="tillynet, homelab, remote_recovery, vpn, network_isolation, networkisolation, proxmox, hypervisor, vpn, openvpn, virtual_network">
+<meta name="keywords" content="proxmox, openvpn, omada, firewall, vlan, network-isolation, homelab">
 <meta name="description" content="Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access
 Overview
 In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely off-site, using only a mobile device connected via an OpenVPN tunnel.
@@ -70,12 +70,12 @@ Background I transitioned my home lab management network to VLAN 99 to achieve f
     <meta property="article:section" content="my-home-lab-journey">
     <meta property="article:published_time" content="2025-04-18T00:00:00+00:00">
     <meta property="article:modified_time" content="2025-04-18T00:00:00+00:00">
-    <meta property="article:tag" content="Tillynet">
-    <meta property="article:tag" content="Homelab">
-    <meta property="article:tag" content="Remote_recovery">
-    <meta property="article:tag" content="Network_isolation">
-    <meta property="article:tag" content="Networkisolation">
     <meta property="article:tag" content="Proxmox">
+    <meta property="article:tag" content="Openvpn">
+    <meta property="article:tag" content="Omada">
+    <meta property="article:tag" content="Firewall">
+    <meta property="article:tag" content="Vlan">
+    <meta property="article:tag" content="Network-Isolation">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access">
 <meta name="twitter:description" content="Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access
@@ -114,7 +114,7 @@ I transitioned my home lab management network to VLAN 99 to achieve full traffic
   "name": "Remote SDN Recovery \u0026 VLAN Isolation via VPN \u0026 Shell Access",
   "description": "Remote SDN Recovery \u0026amp; VLAN Isolation via VPN \u0026amp; Shell Access Overview In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely off-site, using only a mobile device connected via an OpenVPN tunnel.\nBackground I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.\n",
   "keywords": [
-    "tillynet", "homelab", "remote_recovery", "vpn", "network_isolation", "networkisolation", "proxmox", "hypervisor", "vpn", "openvpn", "virtual_network"
+    "proxmox", "openvpn", "omada", "firewall", "vlan", "network-isolation", "homelab"
   ],
   "articleBody": "Remote SDN Recovery \u0026 VLAN Isolation via VPN \u0026 Shell Access Overview In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely off-site, using only a mobile device connected via an OpenVPN tunnel.\nBackground I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.\nObjective Regain access to VLAN 99 (management) Restore Omada Controller GUI and Proxmox Web GUI Ensure all traffic on management interfaces is VLAN 99 tagged Tools Used Proxmox VE 8.3 pfSense (OpenVPN Server \u0026 Firewall) TP-Link Omada Controller (LXC) SSH (mobile terminal access) OpenVPN (Client-to-Site) VLAN-aware Linux bridges (vmbr1) Cisco Catalyst switch (trunk config) Steps Performed Connected to VPN Tunnel 1 (LAN access)\nUsed an existing OpenVPN client-to-site tunnel connected to the LAN network Leveraged this connection as a starting point Established VPN Tunnel 2 (MGMT access)\nConfigured a new OpenVPN tunnel to reach VLAN 99 Verified routing and DNS from VPN client to MGMT subnet Accessed Proxmox Shell Remotely\nUsed SSH to access the Proxmox server shell Reviewed \u0026 Edited /etc/network/interfaces\nCreated a Linux Bridge vmbr1 on enp1s0 Configured vmbr1 as VLAN-aware with a VLAN 99 subinterface Reconfigured Omada Controller LXC\nSet static IP from VLAN 99 Edited /etc/pve/lxc/.conf to tag interface correctly Updated pfSense Firewall Rules\nAllowed VPN access to Proxmox, Omada Controller, and LXCs Verified GUI access over VPN Safely Restarted Proxmox Networking Stack\nReloaded network stack without reboot to preserve SSH session Verified LXC \u0026 Controller Connectivity\nConfirmed restored access to Omada Controller \u0026 Proxmox GUI Checked VLAN 99 trunking on Cisco switch Secured VLAN 99\nBlocked all external access to VLAN 99 Allowed only OpenVPN tunnel access Tested Full Remote Management Over VPN\nOutcome Full recovery of Proxmox and Omada Controller Management services isolated to VLAN 99 VLAN trunking corrected on switch Secure remote access via OpenVPN tunnel All executed off-site using a mobile SSH client Screenshots \u0026 CLI Snippets (To be added) Network configuration diagrams VLAN trunking layout (Cisco Catalyst Switch) show vlan brief 1 default active 14 GUEST active 21 PRODUCTION active 99 MANAGEMENT active 666 BLACKHOLE active show interfaces trunk Port Mode Encapsulation Status Native vlan Fa0/7 on 802.1q trunking 666 Fa0/8 on 802.1q trunking 666 Gi0/2 on 802.1q trunking 666 Port Vlans allowed on trunk Fa0/7 1,14,21,99,666 Fa0/8 1,14,21,99,666 Gi0/2 1,14,21,99,666 Port Vlans allowed and active in management domain Fa0/7 1,14,21,99,666 Fa0/8 1,14,21,99,666 Gi0/2 1,14,21,99,666 Proxmox Interfaces cat /etc/network/interfaces auto lo iface lo inet loopback iface enp4s0 inet manual #Proxmox Management iface enp1s0 inet manual #MGMT Bridge Link iface enx60189502f716 inet manual iface enp2s0 inet manual #PfSense LAN iface enp3s0 inet manual #PfSense WAN auto vmbr0 iface vmbr0 inet static address fallback.management.ip/24 bridge-ports enp4s0 bridge-stp off bridge-fd 0 bridge-vlan-aware yes bridge-vids 2-4094 dns-nameservers 1.1.1.1 8.8.8.8 #Native Proxmox Management auto vmbr1 iface vmbr1 inet manual bridge-ports enp1s0 bridge-stp off bridge-fd 0 bridge-vlan-aware yes bridge-vids 2-4094 #MGMT Bridge auto vmbr1.99 iface vmbr1.99 inet static address management.ip/24 gateway management.gateway.ip #Proxmox MGMT 99 source /etc/network/interfaces.d/* Omada Controller Network Config cat /etc/network/interfaces #TP-Link Omada Controller (Ubuntu 22.04) arch: amd64 cores: 1 features: nesting=1 hostname: omada memory: 2304 net0:name=eth0,bridge=vmbr1,firewall=1,gw=management.gateway.ip,hwaddr=macaddress,ip=management.ip/24,tag=99,type=veth onboot: 1 ostype: ubuntu rootfs: local-lvm:vm-200-disk-0,size=8G startup: order=3,up=30,down=120 swap: 512 unprivileged: 1 openvpn status Lessons Learned Always test VLAN changes with fallback access Proxmox shell is essential for remote recovery OpenVPN enables secure remote SDN administration Avoid dual gateway configurations on bridges Future Improvements Add fallback management IP on separate VLAN Setup out-of-band access (serial/IPMI) Automate Proxmox network config backups Resume Bullet Performed live remote SDN infrastructure recovery using OpenVPN and SSH from a mobile device; reconfigured VLAN-tagged Proxmox bridges, updated pfSense firewall rules, and restored access to critical network services including Omada Controller and LXC containers on an isolated management VLAN. ",
   "wordCount" : "674",
@@ -441,16 +441,13 @@ I transitioned my home lab management network to VLAN 99 to achieve full traffic
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://blog.tillynet.com/tags/tillynet/">Tillynet</a></li>
-      <li><a href="https://blog.tillynet.com/tags/homelab/">Homelab</a></li>
-      <li><a href="https://blog.tillynet.com/tags/remote_recovery/">Remote_recovery</a></li>
-      <li><a href="https://blog.tillynet.com/tags/network_isolation/">Network_isolation</a></li>
-      <li><a href="https://blog.tillynet.com/tags/networkisolation/">Networkisolation</a></li>
       <li><a href="https://blog.tillynet.com/tags/proxmox/">Proxmox</a></li>
-      <li><a href="https://blog.tillynet.com/tags/hypervisor/">Hypervisor</a></li>
-      <li><a href="https://blog.tillynet.com/tags/vpn/">Vpn</a></li>
       <li><a href="https://blog.tillynet.com/tags/openvpn/">Openvpn</a></li>
-      <li><a href="https://blog.tillynet.com/tags/virtual_network/">Virtual_network</a></li>
+      <li><a href="https://blog.tillynet.com/tags/omada/">Omada</a></li>
+      <li><a href="https://blog.tillynet.com/tags/firewall/">Firewall</a></li>
+      <li><a href="https://blog.tillynet.com/tags/vlan/">Vlan</a></li>
+      <li><a href="https://blog.tillynet.com/tags/network-isolation/">Network-Isolation</a></li>
+      <li><a href="https://blog.tillynet.com/tags/homelab/">Homelab</a></li>
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/">

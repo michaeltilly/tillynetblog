@@ -68,5 +68,130 @@
 &lt;/table&gt;
 &lt;p&gt;Each VLAN is routed via a pfSense firewall using a router-on-a-stick model over a single trunk interface connected to a managed Cisco Catalyst switch.&lt;/p&gt;</description>
     </item>
+    <item>
+      <title>The Big Bang (How it All Began)</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</link>
+      <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</guid>
+      <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;
+&lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault VP2420 (Intel J6412, 4 NICs)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Internal Services:&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Pi-hole (LXC) – local recursive DNS + ad-blocking&lt;/li&gt;
+&lt;li&gt;Omada Controller (LXC) – TP-Link AP management&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LAN Devices:&lt;/strong&gt; Proxmox host, personal workstation, AP, switch&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Guest Devices:&lt;/strong&gt; IoT &amp;amp; roommate devices on isolated VLAN 14&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;infrastructure-at-a-glance&#34;&gt;Infrastructure at a Glance&lt;/h2&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;Component&lt;/th&gt;
+          &lt;th&gt;Description&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;pfSense&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;VM with two PCI-passthrough NICs (WAN + LAN)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;vmbr0&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Bridge for LAN (Proxmox + LXCs)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;vmbr1&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Reserved for future VLAN tagging (e.g., mgmt)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;LXC container for DNS (on LAN)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Omada Ctrl&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;LXC container managing TP-Link EAP670 AP&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Cisco Switch&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Access switch trunking VLANs to Proxmox/AP&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;&lt;strong&gt;Guest VLAN 14&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;WiFi-only VLAN for roommate &amp;amp; IoT devices&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;setup-timeline&#34;&gt;Setup Timeline&lt;/h2&gt;
+&lt;h3 id=&#34;phase-1--core-infrastructure&#34;&gt;Phase 1 – Core Infrastructure&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Flashed Proxmox onto Protectli Vault&lt;/li&gt;
+&lt;li&gt;Created pfSense VM with 2 passthrough NICs:
+&lt;ul&gt;
+&lt;li&gt;WAN: connected to ISP modem&lt;/li&gt;
+&lt;li&gt;LAN: connected to Cisco switch (trunk-ready)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Configured &lt;code&gt;vmbr0&lt;/code&gt; as LAN bridge in Proxmox&lt;/li&gt;
+&lt;li&gt;Gave Proxmox host static IP on the LAN network&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;phase-2--internal-services&#34;&gt;Phase 2 – Internal Services&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Provisioned LXC container for Pi-hole
+&lt;ul&gt;
+&lt;li&gt;Static IP assigned&lt;/li&gt;
+&lt;li&gt;Configured upstream DNS servers (e.g., Cloudflare)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Provisioned LXC container for Omada Controller
+&lt;ul&gt;
+&lt;li&gt;Used to manage TP-Link EAP670 AP&lt;/li&gt;
+&lt;li&gt;Served on LAN via Omada web GUI (port 8043)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;phase-3--wireless--guest-vlan&#34;&gt;Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Set up VLAN 14 in pfSense (Guest Network)&lt;/li&gt;
+&lt;li&gt;Trunked VLANs through switch port to Omada AP&lt;/li&gt;
+&lt;li&gt;Created isolated wireless SSID mapped to VLAN 14&lt;/li&gt;
+&lt;li&gt;Configured firewall rules in pfSense:
+&lt;ul&gt;
+&lt;li&gt;Guests can access WAN only&lt;/li&gt;
+&lt;li&gt;Blocked access to LAN and Pi-hole&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Verified DHCP lease and internet access for guests&lt;/li&gt;
+&lt;li&gt;Observed isolated traffic from personal network&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;security-practices&#34;&gt;Security Practices&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Created distinct VLANs for guest vs personal network&lt;/li&gt;
+&lt;li&gt;Isolated Pi-hole to LAN access only&lt;/li&gt;
+&lt;li&gt;Disabled inter-VLAN routing from Guest → LAN&lt;/li&gt;
+&lt;li&gt;Assigned firewall rules by interface in pfSense&lt;/li&gt;
+&lt;li&gt;Reserved management services for trusted VLAN only&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;to-do--next-steps&#34;&gt;To-Do / Next Steps&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Create VLAN 99 for network management&lt;/li&gt;
+&lt;li&gt;Move Proxmox GUI and Omada Controller to VLAN 99&lt;/li&gt;
+&lt;li&gt;Add remote access via OpenVPN (completed later)&lt;/li&gt;
+&lt;li&gt;Diagram full topology and backup strategy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;network-diagram&#34;&gt;Network Diagram&lt;/h2&gt;
+&lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/TillyNet_OG.drawio.png&#34;&gt;&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
