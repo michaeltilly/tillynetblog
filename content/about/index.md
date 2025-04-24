@@ -6,33 +6,30 @@ type: page
 
 # About Me
 
-I'm the creator of **TillyNet**, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.
+I'm the creator of **TillyNet**—a self-hosted, segmented lab environment that simulates enterprise-grade infrastructure. Built from the ground up using open-source tools and industry-standard practices, TillyNet includes VLAN-based network segmentation, centralized firewalling, containerized services, internal DNS, and automated deployment pipelines. This lab serves as both a learning environment and a proving ground for real-world IT architecture and network design.
 
-I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.  
-  
-I bring hands-on experience with enterprise tools such as Active Directory, PowerShell, and BMC Remedy, and have developed automation workflows and SOPs to support secure environments. I also hold an active DoD Tier 3 Secret Clearance, allowing me to operate confidently in both classified and unclassified enclaves.  
-  
-While I’m not currently in a dedicated networking role, I’m fully committed to building real-world networking experience—spending my own time studying, labbing, and staying current with modern routing, switching, and network security practices.  
-  
-I’m eager to join a team where I can apply my existing skill set, grow as a network engineer, and contribute to building reliable, secure, and scalable IT infrastructure.  
-  
-Let’s connect—especially if you're looking for someone with the motivation to learn fast, the discipline of a DoD environment, and the technical drive to grow into a high-performing networking professional.
+Professionally, I have a solid background in systems support, cybersecurity compliance, and enterprise operations. I currently support The Department of Defense networks with a focus on asset lifecycle management, automation, and secure IT service delivery. I hold active Cisco CCNA (200-301) and CompTIA Security+ certifications and am currently working toward the Cisco CCNP as I continue developing my technical depth in modern networking.
 
+I bring hands-on experience with enterprise tools such as Active Directory, PowerShell, and Python, and have authored automation workflows and SOPs that improve IT processes in highly regulated environments. I also maintain an active DoD Tier 3 Secret Clearance, enabling me to operate confidently across both classified and unclassified enclaves.
+
+Although I’m not yet in a dedicated networking role, I’m actively building production-style experience in my lab—exploring modern routing and switching, infrastructure-as-code, and SDN concepts.
+
+I’m excited to apply my skills to environments that value security, reliability, and scalable infrastructure—and to continue growing into a high-performing network engineer.
 
 ---
 
 ## Why I Built TillyNet
 
-I wanted hands-on experience that went beyond certification books — so I built a real-world network with isolated VLANs, LXC containers, local recursive DNS, firewall segmentation, and full automation pipelines. I even performed remote network recovery using OpenVPN tunnels from my phone.
+I needed hands-on experience that extended beyond textbooks and certifications. TillyNet reflects my initiative to recreate enterprise-level infrastructure: isolated VLANs, containerized services, local recursive DNS, access controls, virtual firewalls, remote VPN connectivity, and full-stack service automation. It’s a platform for learning, testing, breaking, and rebuilding—exactly like production.
 
 ---
 
 ## What You'll Find Here
 
-- **Step-by-step blog posts** from each phase of the network buildout
-- **Fixes and troubleshooting** from hands-on networking
-- **Automation scripts** with Python, Hugo, and GitHub Actions
-- **Infrastructure-as-code** ambitions powered by Netmiko, Nornir, and cron jobs
+- **Blog posts** detailing each phase of the network and service buildout
+- **Troubleshooting insights** gained from hands-on diagnostics
+- **Python automation** and workflows using GitHub Actions and cron jobs
+- **Infrastructure-as-code** experiments with scripting tools that work with network devices
 
 ---
 
@@ -43,4 +40,4 @@ I wanted hands-on experience that went beyond certification books — so I built
 
 ---
 
-Thanks for reading!
+Thanks for visiting!
