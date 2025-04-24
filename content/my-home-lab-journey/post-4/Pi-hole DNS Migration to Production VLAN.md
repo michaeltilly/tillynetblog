@@ -1,7 +1,7 @@
 ---
 title: "Pi-hole DNS Migration to Production VLAN"
 date: 2025-04-20
-tags: ["tillynet", "homelab", "pihole", "vlan", "dns", "network_isolation"]
+tags: ["pihole", "dns", "pihole", "vlan", "firewall", "homelab"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---

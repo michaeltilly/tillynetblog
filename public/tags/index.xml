@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 22 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Firewall-Rules</title>
-      <link>https://blog.tillynet.com/tags/firewall-rules/</link>
+      <title>Firewall</title>
+      <link>https://blog.tillynet.com/tags/firewall/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/firewall-rules/</guid>
+      <guid>https://blog.tillynet.com/tags/firewall/</guid>
       <description></description>
     </item>
     <item>
@@ -20,20 +20,6 @@
       <link>https://blog.tillynet.com/tags/homelab/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/homelab/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Infrastructure-as-Code</title>
-      <link>https://blog.tillynet.com/tags/infrastructure-as-code/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/infrastructure-as-code/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Linux-Networking</title>
-      <link>https://blog.tillynet.com/tags/linux-networking/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/linux-networking/</guid>
       <description></description>
     </item>
     <item>
@@ -51,24 +37,10 @@
       <description></description>
     </item>
     <item>
-      <title>Networking</title>
-      <link>https://blog.tillynet.com/tags/networking/</link>
+      <title>Omada</title>
+      <link>https://blog.tillynet.com/tags/omada/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/networking/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Omada-Controller</title>
-      <link>https://blog.tillynet.com/tags/omada-controller/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/omada-controller/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Open-Source</title>
-      <link>https://blog.tillynet.com/tags/open-source/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/open-source/</guid>
+      <guid>https://blog.tillynet.com/tags/omada/</guid>
       <description></description>
     </item>
     <item>
@@ -79,10 +51,10 @@
       <description></description>
     </item>
     <item>
-      <title>Pi-Hole</title>
-      <link>https://blog.tillynet.com/tags/pi-hole/</link>
+      <title>Pihole</title>
+      <link>https://blog.tillynet.com/tags/pihole/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/pi-hole/</guid>
+      <guid>https://blog.tillynet.com/tags/pihole/</guid>
       <description></description>
     </item>
     <item>
@@ -93,24 +65,10 @@
       <description></description>
     </item>
     <item>
-      <title>Router-on-a-Stick</title>
-      <link>https://blog.tillynet.com/tags/router-on-a-stick/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/router-on-a-stick/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Self-Hosted</title>
       <link>https://blog.tillynet.com/tags/self-hosted/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/self-hosted/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tillynet</title>
-      <link>https://blog.tillynet.com/tags/tillynet/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/tillynet/</guid>
       <description></description>
     </item>
     <item>
@@ -121,13 +79,6 @@
       <description></description>
     </item>
     <item>
-      <title>Diagrams</title>
-      <link>https://blog.tillynet.com/tags/diagrams/</link>
-      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/diagrams/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Graphviz</title>
       <link>https://blog.tillynet.com/tags/graphviz/</link>
       <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
@@ -135,10 +86,10 @@
       <description></description>
     </item>
     <item>
-      <title>Network_topology</title>
-      <link>https://blog.tillynet.com/tags/network_topology/</link>
+      <title>Network-Topology</title>
+      <link>https://blog.tillynet.com/tags/network-topology/</link>
       <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/network_topology/</guid>
+      <guid>https://blog.tillynet.com/tags/network-topology/</guid>
       <description></description>
     </item>
     <item>
@@ -184,13 +135,6 @@
       <description></description>
     </item>
     <item>
-      <title>Network_isolation</title>
-      <link>https://blog.tillynet.com/tags/network_isolation/</link>
-      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/network_isolation/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Obsidian</title>
       <link>https://blog.tillynet.com/tags/obsidian/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
@@ -198,24 +142,10 @@
       <description></description>
     </item>
     <item>
-      <title>Pihole</title>
-      <link>https://blog.tillynet.com/tags/pihole/</link>
-      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/pihole/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Hypervisor</title>
-      <link>https://blog.tillynet.com/tags/hypervisor/</link>
+      <title>Network-Isolation</title>
+      <link>https://blog.tillynet.com/tags/network-isolation/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/hypervisor/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Networkisolation</title>
-      <link>https://blog.tillynet.com/tags/networkisolation/</link>
-      <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/networkisolation/</guid>
+      <guid>https://blog.tillynet.com/tags/network-isolation/</guid>
       <description></description>
     </item>
     <item>
@@ -223,34 +153,6 @@
       <link>https://blog.tillynet.com/tags/openvpn/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/openvpn/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Remote_recovery</title>
-      <link>https://blog.tillynet.com/tags/remote_recovery/</link>
-      <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/remote_recovery/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Virtual_network</title>
-      <link>https://blog.tillynet.com/tags/virtual_network/</link>
-      <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/virtual_network/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Vpn</title>
-      <link>https://blog.tillynet.com/tags/vpn/</link>
-      <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/vpn/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Setup</title>
-      <link>https://blog.tillynet.com/tags/setup/</link>
-      <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/tags/setup/</guid>
       <description></description>
     </item>
   </channel>

@@ -1,7 +1,7 @@
 ---
 title: "Remote SDN Recovery & VLAN Isolation via VPN & Shell Access"
 date: 2025-04-18
-tags: ["tillynet", "homelab", "remote_recovery", "vpn", "network_isolation", "networkisolation", "proxmox", "hypervisor", "vpn", "openvpn", "virtual_network"]
+tags: ["proxmox", "openvpn", "omada", "firewall", "vlan", "network-isolation", "homelab"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---

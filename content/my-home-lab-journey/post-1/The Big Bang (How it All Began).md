@@ -1,7 +1,7 @@
 ---
 title: "The Big Bang (How it All Began)"
 date: 2025-04-10
-tags: ["tillynet", "homelab", "setup", "network_topology"]
+tags: ["homelab", "network-topology", "proxmox", "pfsense", "vlan", "lxc", "pihole", "omada", "firewall"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---

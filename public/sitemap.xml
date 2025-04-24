@@ -14,16 +14,10 @@
     <loc>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/firewall-rules/</loc>
+    <loc>https://blog.tillynet.com/tags/firewall/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/homelab/</loc>
-    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/infrastructure-as-code/</loc>
-    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/linux-networking/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/lxc/</loc>
@@ -38,25 +32,16 @@
     <loc>https://blog.tillynet.com/tags/network-segmentation/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/networking/</loc>
-    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/omada-controller/</loc>
-    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/open-source/</loc>
+    <loc>https://blog.tillynet.com/tags/omada/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/pfsense/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/pi-hole/</loc>
+    <loc>https://blog.tillynet.com/tags/pihole/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/proxmox/</loc>
-    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/router-on-a-stick/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/self-hosted/</loc>
@@ -65,14 +50,8 @@
     <loc>https://blog.tillynet.com/tags/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/tillynet/</loc>
-    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/vlan/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/diagrams/</loc>
-    <lastmod>2025-04-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/</loc>
     <lastmod>2025-04-21T00:00:00+00:00</lastmod>
@@ -80,7 +59,7 @@
     <loc>https://blog.tillynet.com/tags/graphviz/</loc>
     <lastmod>2025-04-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/network_topology/</loc>
+    <loc>https://blog.tillynet.com/tags/network-topology/</loc>
     <lastmod>2025-04-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/python/</loc>
@@ -104,22 +83,13 @@
     <loc>https://blog.tillynet.com/tags/hugo/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/network_isolation/</loc>
-    <lastmod>2025-04-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/obsidian/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/pihole/</loc>
-    <lastmod>2025-04-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/hypervisor/</loc>
-    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/networkisolation/</loc>
+    <loc>https://blog.tillynet.com/tags/network-isolation/</loc>
     <lastmod>2025-04-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/openvpn/</loc>
@@ -128,20 +98,8 @@
     <loc>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</loc>
     <lastmod>2025-04-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/remote_recovery/</loc>
-    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/virtual_network/</loc>
-    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/vpn/</loc>
-    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/setup/</loc>
-    <lastmod>2025-04-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</loc>
     <lastmod>2025-04-10T00:00:00+00:00</lastmod>

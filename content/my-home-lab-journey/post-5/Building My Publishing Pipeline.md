@@ -1,7 +1,7 @@
 ---
 title: "Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger"
 date: 2025-04-20
-tags: ["tillynet", "automation", "hugo", "obsidian", "python", "github", "hostinger"]
+tags: ["obsidian", "hugo", "github", "automation", "python", "homelab", "hostinger"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---

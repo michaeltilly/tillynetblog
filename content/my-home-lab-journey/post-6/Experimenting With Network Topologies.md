@@ -1,7 +1,7 @@
 ---
 title: "Experimenting With Network Topologies"
 date: 2025-04-21
-tags: ["tillynet", "network_topology", "graphviz", "python", "diagrams"]
+tags: ["network-topology", "graphviz", "python", "homelab"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---

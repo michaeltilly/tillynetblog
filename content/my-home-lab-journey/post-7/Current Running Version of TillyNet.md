@@ -1,7 +1,7 @@
 ---
 title: "Current Running Version of TillyNet"
 date: 2025-04-22
-tags: [ "tillynet", "homelab", "networking", "proxmox", "pfsense", "vlan", "lxc", "linux-networking", "pi-hole", "omada-controller", "firewall-rules", "router-on-a-stick", "infrastructure-as-code", "network-segmentation", "self-hosted", "open-source"]
+tags: [ "homelab", "proxmox", "pfsense", "lxc", "vlan", "firewall", "pihole", "omada", "network-segmentation", "self-hosted"]
 categories: ["My Home Lab Journey"]
 draft: false
 ---
