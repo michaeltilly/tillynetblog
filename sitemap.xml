@@ -11,43 +11,52 @@
     <loc>https://blog.tillynet.com/categories/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://blog.tillynet.com/tags/debian/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/home-lab/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/linux-bridge/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/categories/my-home-lab-journey/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/nat/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/networking/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/pfsense/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/proxmox/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/static-route/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://blog.tillynet.com/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/debian/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/home-lab/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/linux-bridge/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/categories/my-home-lab-journey/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/networking/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/pfsense/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/proxmox/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/static-route/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
+    <loc>https://blog.tillynet.com/tags/troubleshooting/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/wi-fi/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</loc>
     <lastmod>2025-04-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</loc>

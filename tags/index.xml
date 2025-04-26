@@ -6,61 +6,75 @@
     <description>Recent content in Tags on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 23 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Debian</title>
       <link>https://blog.tillynet.com/tags/debian/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/debian/</guid>
       <description></description>
     </item>
     <item>
       <title>Home Lab</title>
       <link>https://blog.tillynet.com/tags/home-lab/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/home-lab/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux Bridge</title>
       <link>https://blog.tillynet.com/tags/linux-bridge/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/linux-bridge/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>NAT</title>
+      <link>https://blog.tillynet.com/tags/nat/</link>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/nat/</guid>
       <description></description>
     </item>
     <item>
       <title>Networking</title>
       <link>https://blog.tillynet.com/tags/networking/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/networking/</guid>
       <description></description>
     </item>
     <item>
       <title>PfSense</title>
       <link>https://blog.tillynet.com/tags/pfsense/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/pfsense/</guid>
       <description></description>
     </item>
     <item>
       <title>Proxmox</title>
       <link>https://blog.tillynet.com/tags/proxmox/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/proxmox/</guid>
       <description></description>
     </item>
     <item>
       <title>Static Route</title>
       <link>https://blog.tillynet.com/tags/static-route/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/static-route/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Troubleshooting</title>
+      <link>https://blog.tillynet.com/tags/troubleshooting/</link>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/troubleshooting/</guid>
       <description></description>
     </item>
     <item>
       <title>Wi-Fi</title>
       <link>https://blog.tillynet.com/tags/wi-fi/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/wi-fi/</guid>
       <description></description>
     </item>
