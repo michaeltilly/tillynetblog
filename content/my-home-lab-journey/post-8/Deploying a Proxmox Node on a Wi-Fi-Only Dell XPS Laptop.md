@@ -101,6 +101,8 @@ iface vmbr0 inet static
     bridge_fd 0
 ```
 
+**Do not use** `bridge-ports`, `bridge-stp`, or `bridge-fd` — those will fail validation in Debian/Proxmox deployment.
+
 ### Enable IP Forwarding
 
 ```bash
