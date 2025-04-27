@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Proxmox on Tilly Net</title>
     <link>https://blog.tillynet.com/tags/proxmox/</link>
     <description>Recent content in Proxmox on Tilly Net</description>
-    <generator>Hugo -- 0.146.6</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 24 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/proxmox/index.xml" rel="self" type="application/rss+xml" />
@@ -13,340 +13,42 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</link>
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;This post documents the troubleshooting process I followed to resolve an internet connectivity issue affecting virtual machines (VMs) hosted on a Proxmox VE node running on a Wi-Fi-only Dell XPS 15. The VMs were deployed on a routed internal subnet (&lt;code&gt;172.30.30.0/24&lt;/code&gt;) with static routes configured through a pfSense firewall. While the VMs could communicate with internal hosts—including DNS and gateway IPs—they were unable to reach external internet addresses such as &lt;code&gt;8.8.8.8&lt;/code&gt;.&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;&#xA;&lt;p&gt;This post documents the troubleshooting process I followed to resolve an internet connectivity issue affecting virtual machines (VMs) hosted on a Proxmox VE node running on a Wi-Fi-only Dell XPS 15. The VMs were deployed on a routed internal subnet (&lt;code&gt;172.30.30.0/24&lt;/code&gt;) with static routes configured through a pfSense firewall. While the VMs could communicate with internal hosts—including DNS and gateway IPs—they were unable to reach external internet addresses such as &lt;code&gt;8.8.8.8&lt;/code&gt;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Deploying a Proxmox Node on a Wi-Fi-Only Dell XPS Laptop</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</link>
       <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</guid>
-      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;
-&lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;&#xA;&lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Current Running Version of TillyNet</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</guid>
-      <description>&lt;h1 id=&#34;current-running-version-of-tillynet&#34;&gt;Current Running Version of TillyNet&lt;/h1&gt;
-&lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-topology&#34;&gt;Network Topology&lt;/h2&gt;
-&lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/tillynet_mermaid.png&#34;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-design-objectives&#34;&gt;Network Design Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Layer 2/3 segmentation&lt;/strong&gt; using VLANs&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Centralized routing and firewalling&lt;/strong&gt; with pfSense&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hypervisor-based infrastructure&lt;/strong&gt; using Proxmox VE&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Containerized services&lt;/strong&gt; for DNS and wireless controller management&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Policy-based access control&lt;/strong&gt; enforced through inter-VLAN firewall rules&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Minimal trust zones&lt;/strong&gt; with internal DNS filtering and strict pathing&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;vlan-overview&#34;&gt;VLAN Overview&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;VLAN ID&lt;/th&gt;
-          &lt;th&gt;Purpose&lt;/th&gt;
-          &lt;th&gt;Subnet&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;1&lt;/td&gt;
-          &lt;td&gt;Default/legacy&lt;/td&gt;
-          &lt;td&gt;172.16.7.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;14&lt;/td&gt;
-          &lt;td&gt;Guest Wi-Fi&lt;/td&gt;
-          &lt;td&gt;172.16.14.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;21&lt;/td&gt;
-          &lt;td&gt;Production DNS&lt;/td&gt;
-          &lt;td&gt;172.21.21.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;99&lt;/td&gt;
-          &lt;td&gt;Management Access&lt;/td&gt;
-          &lt;td&gt;172.16.99.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;666&lt;/td&gt;
-          &lt;td&gt;Native Trunk VLAN&lt;/td&gt;
-          &lt;td&gt;N/A&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;Each VLAN is routed via a pfSense firewall using a router-on-a-stick model over a single trunk interface connected to a managed Cisco Catalyst switch.&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;current-running-version-of-tillynet&#34;&gt;Current Running Version of TillyNet&lt;/h1&gt;&#xA;&lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;network-topology&#34;&gt;Network Topology&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://blog.tillynet.com/images/tillynet_mermaid.png&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;network-design-objectives&#34;&gt;Network Design Objectives&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Layer 2/3 segmentation&lt;/strong&gt; using VLANs&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Centralized routing and firewalling&lt;/strong&gt; with pfSense&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Hypervisor-based infrastructure&lt;/strong&gt; using Proxmox VE&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Containerized services&lt;/strong&gt; for DNS and wireless controller management&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Policy-based access control&lt;/strong&gt; enforced through inter-VLAN firewall rules&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Minimal trust zones&lt;/strong&gt; with internal DNS filtering and strict pathing&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;vlan-overview&#34;&gt;VLAN Overview&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;VLAN ID&lt;/th&gt;&#xA;          &lt;th&gt;Purpose&lt;/th&gt;&#xA;          &lt;th&gt;Subnet&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;1&lt;/td&gt;&#xA;          &lt;td&gt;Default/legacy&lt;/td&gt;&#xA;          &lt;td&gt;172.16.7.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;14&lt;/td&gt;&#xA;          &lt;td&gt;Guest Wi-Fi&lt;/td&gt;&#xA;          &lt;td&gt;172.16.14.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;21&lt;/td&gt;&#xA;          &lt;td&gt;Production DNS&lt;/td&gt;&#xA;          &lt;td&gt;172.21.21.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;99&lt;/td&gt;&#xA;          &lt;td&gt;Management Access&lt;/td&gt;&#xA;          &lt;td&gt;172.16.99.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;666&lt;/td&gt;&#xA;          &lt;td&gt;Native Trunk VLAN&lt;/td&gt;&#xA;          &lt;td&gt;N/A&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;Each VLAN is routed via a pfSense firewall using a router-on-a-stick model over a single trunk interface connected to a managed Cisco Catalyst switch.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</guid>
-      <description>&lt;h2 id=&#34;remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
-&lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;
-&lt;p&gt;In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely &lt;strong&gt;off-site&lt;/strong&gt;, using only a mobile device connected via an &lt;strong&gt;OpenVPN tunnel&lt;/strong&gt;.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;
-&lt;p&gt;I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;&#xA;&lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;&#xA;&lt;p&gt;In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely &lt;strong&gt;off-site&lt;/strong&gt;, using only a mobile device connected via an &lt;strong&gt;OpenVPN tunnel&lt;/strong&gt;.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;&#xA;&lt;p&gt;I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Creating Network Management Isolation</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</link>
       <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</guid>
-      <description>&lt;h1 id=&#34;02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
-&lt;p&gt;This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Remove critical services from default/native VLAN&lt;/li&gt;
-&lt;li&gt;Assign a dedicated, isolated VLAN (VLAN 99) for:
-&lt;ul&gt;
-&lt;li&gt;Proxmox management GUI&lt;/li&gt;
-&lt;li&gt;Omada Controller (LXC)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Trunk management VLAN through switch to Proxmox&lt;/li&gt;
-&lt;li&gt;Implement firewall rules to allow remote admin access only&lt;/li&gt;
-&lt;li&gt;Preserve service availability during transition&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;pre-migration-topology&#34;&gt;Pre-Migration Topology&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Network&lt;/th&gt;
-          &lt;th&gt;VLAN&lt;/th&gt;
-          &lt;th&gt;Interface&lt;/th&gt;
-          &lt;th&gt;Description&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Proxmox Host&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;Static IP via native VLAN&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Omada Controller&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;LXC container, web GUI on port 8043&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;DNS LXC&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;VPN Tunnel&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;pfSense&lt;/td&gt;
-          &lt;td&gt;Remote client-to-site access&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;post-migration-topology&#34;&gt;Post-Migration Topology&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Network&lt;/th&gt;
-          &lt;th&gt;VLAN&lt;/th&gt;
-          &lt;th&gt;Interface&lt;/th&gt;
-          &lt;th&gt;Description&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Proxmox Host&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Management&lt;/td&gt;
-          &lt;td&gt;VLAN 99&lt;/td&gt;
-          &lt;td&gt;vmbr1.99&lt;/td&gt;
-          &lt;td&gt;Tagged IP for GUI access via &lt;code&gt;vmbr1&lt;/code&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Omada Controller&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Management&lt;/td&gt;
-          &lt;td&gt;VLAN 99&lt;/td&gt;
-          &lt;td&gt;vmbr1 (tagged)&lt;/td&gt;
-          &lt;td&gt;LXC container with VLAN tag 99&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;LXC container&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Trunk Port (Switch)&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Trunked Port&lt;/td&gt;
-          &lt;td&gt;1,99,14&lt;/td&gt;
-          &lt;td&gt;enp1s0&lt;/td&gt;
-          &lt;td&gt;Connected to VLAN-aware bridge &lt;code&gt;vmbr1&lt;/code&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;VPN Tunnel&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Routed to MGMT&lt;/td&gt;
-          &lt;td&gt;VLAN 99&lt;/td&gt;
-          &lt;td&gt;pfSense&lt;/td&gt;
-          &lt;td&gt;Allows external admin access to VLAN 99&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;migration-steps&#34;&gt;Migration Steps&lt;/h2&gt;
-&lt;h3 id=&#34;1-create-vlan-99-in-pfsense&#34;&gt;1. Create VLAN 99 in pfSense&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Created VLAN 99 on the LAN parent interface&lt;/li&gt;
-&lt;li&gt;Assigned it as a new interface and renamed it to &lt;code&gt;MGMT&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Enabled the interface and set a static IP (management subnet)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-configure-proxmox-bridge-for-vlan-tagging&#34;&gt;2. Configure Proxmox Bridge for VLAN Tagging&lt;/h3&gt;
-&lt;p&gt;Created a new VLAN-aware bridge and subinterface in &lt;code&gt;/etc/network/interfaces&lt;/code&gt;:&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;&#xA;&lt;p&gt;This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Remove critical services from default/native VLAN&lt;/li&gt;&#xA;&lt;li&gt;Assign a dedicated, isolated VLAN (VLAN 99) for:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Proxmox management GUI&lt;/li&gt;&#xA;&lt;li&gt;Omada Controller (LXC)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Trunk management VLAN through switch to Proxmox&lt;/li&gt;&#xA;&lt;li&gt;Implement firewall rules to allow remote admin access only&lt;/li&gt;&#xA;&lt;li&gt;Preserve service availability during transition&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;pre-migration-topology&#34;&gt;Pre-Migration Topology&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;Component&lt;/th&gt;&#xA;          &lt;th&gt;Network&lt;/th&gt;&#xA;          &lt;th&gt;VLAN&lt;/th&gt;&#xA;          &lt;th&gt;Interface&lt;/th&gt;&#xA;          &lt;th&gt;Description&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Proxmox Host&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LAN&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 1&lt;/td&gt;&#xA;          &lt;td&gt;vmbr0&lt;/td&gt;&#xA;          &lt;td&gt;Static IP via native VLAN&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Omada Controller&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LAN&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 1&lt;/td&gt;&#xA;          &lt;td&gt;vmbr0&lt;/td&gt;&#xA;          &lt;td&gt;LXC container, web GUI on port 8043&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LAN&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 1&lt;/td&gt;&#xA;          &lt;td&gt;vmbr0&lt;/td&gt;&#xA;          &lt;td&gt;DNS LXC&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;VPN Tunnel&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LAN&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 1&lt;/td&gt;&#xA;          &lt;td&gt;pfSense&lt;/td&gt;&#xA;          &lt;td&gt;Remote client-to-site access&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;post-migration-topology&#34;&gt;Post-Migration Topology&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;Component&lt;/th&gt;&#xA;          &lt;th&gt;Network&lt;/th&gt;&#xA;          &lt;th&gt;VLAN&lt;/th&gt;&#xA;          &lt;th&gt;Interface&lt;/th&gt;&#xA;          &lt;th&gt;Description&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Proxmox Host&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Management&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 99&lt;/td&gt;&#xA;          &lt;td&gt;vmbr1.99&lt;/td&gt;&#xA;          &lt;td&gt;Tagged IP for GUI access via &lt;code&gt;vmbr1&lt;/code&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Omada Controller&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Management&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 99&lt;/td&gt;&#xA;          &lt;td&gt;vmbr1 (tagged)&lt;/td&gt;&#xA;          &lt;td&gt;LXC container with VLAN tag 99&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LAN&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 1&lt;/td&gt;&#xA;          &lt;td&gt;vmbr0&lt;/td&gt;&#xA;          &lt;td&gt;LXC container&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Trunk Port (Switch)&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Trunked Port&lt;/td&gt;&#xA;          &lt;td&gt;1,99,14&lt;/td&gt;&#xA;          &lt;td&gt;enp1s0&lt;/td&gt;&#xA;          &lt;td&gt;Connected to VLAN-aware bridge &lt;code&gt;vmbr1&lt;/code&gt;&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;VPN Tunnel&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Routed to MGMT&lt;/td&gt;&#xA;          &lt;td&gt;VLAN 99&lt;/td&gt;&#xA;          &lt;td&gt;pfSense&lt;/td&gt;&#xA;          &lt;td&gt;Allows external admin access to VLAN 99&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;migration-steps&#34;&gt;Migration Steps&lt;/h2&gt;&#xA;&lt;h3 id=&#34;1-create-vlan-99-in-pfsense&#34;&gt;1. Create VLAN 99 in pfSense&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;li&gt;Created VLAN 99 on the LAN parent interface&lt;/li&gt;&#xA;&lt;li&gt;Assigned it as a new interface and renamed it to &lt;code&gt;MGMT&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;Enabled the interface and set a static IP (management subnet)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;2-configure-proxmox-bridge-for-vlan-tagging&#34;&gt;2. Configure Proxmox Bridge for VLAN Tagging&lt;/h3&gt;&#xA;&lt;p&gt;Created a new VLAN-aware bridge and subinterface in &lt;code&gt;/etc/network/interfaces&lt;/code&gt;:&lt;/p&gt;</description>
     </item>
     <item>
       <title>The Big Bang (How it All Began)</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</link>
       <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</guid>
-      <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;
-&lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault VP2420 (Intel J6412, 4 NICs)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Internal Services:&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;Pi-hole (LXC) – local recursive DNS + ad-blocking&lt;/li&gt;
-&lt;li&gt;Omada Controller (LXC) – TP-Link AP management&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;LAN Devices:&lt;/strong&gt; Proxmox host, personal workstation, AP, switch&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Guest Devices:&lt;/strong&gt; IoT &amp;amp; roommate devices on isolated VLAN 14&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;infrastructure-at-a-glance&#34;&gt;Infrastructure at a Glance&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Description&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;pfSense&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;VM with two PCI-passthrough NICs (WAN + LAN)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;vmbr0&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Bridge for LAN (Proxmox + LXCs)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;vmbr1&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Reserved for future VLAN tagging (e.g., mgmt)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LXC container for DNS (on LAN)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Omada Ctrl&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LXC container managing TP-Link EAP670 AP&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Cisco Switch&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Access switch trunking VLANs to Proxmox/AP&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Guest VLAN 14&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;WiFi-only VLAN for roommate &amp;amp; IoT devices&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;setup-timeline&#34;&gt;Setup Timeline&lt;/h2&gt;
-&lt;h3 id=&#34;phase-1--core-infrastructure&#34;&gt;Phase 1 – Core Infrastructure&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Flashed Proxmox onto Protectli Vault&lt;/li&gt;
-&lt;li&gt;Created pfSense VM with 2 passthrough NICs:
-&lt;ul&gt;
-&lt;li&gt;WAN: connected to ISP modem&lt;/li&gt;
-&lt;li&gt;LAN: connected to Cisco switch (trunk-ready)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Configured &lt;code&gt;vmbr0&lt;/code&gt; as LAN bridge in Proxmox&lt;/li&gt;
-&lt;li&gt;Gave Proxmox host static IP on the LAN network&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;phase-2--internal-services&#34;&gt;Phase 2 – Internal Services&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Provisioned LXC container for Pi-hole
-&lt;ul&gt;
-&lt;li&gt;Static IP assigned&lt;/li&gt;
-&lt;li&gt;Configured upstream DNS servers (e.g., Cloudflare)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Provisioned LXC container for Omada Controller
-&lt;ul&gt;
-&lt;li&gt;Used to manage TP-Link EAP670 AP&lt;/li&gt;
-&lt;li&gt;Served on LAN via Omada web GUI (port 8043)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;phase-3--wireless--guest-vlan&#34;&gt;Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Set up VLAN 14 in pfSense (Guest Network)&lt;/li&gt;
-&lt;li&gt;Trunked VLANs through switch port to Omada AP&lt;/li&gt;
-&lt;li&gt;Created isolated wireless SSID mapped to VLAN 14&lt;/li&gt;
-&lt;li&gt;Configured firewall rules in pfSense:
-&lt;ul&gt;
-&lt;li&gt;Guests can access WAN only&lt;/li&gt;
-&lt;li&gt;Blocked access to LAN and Pi-hole&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Verified DHCP lease and internet access for guests&lt;/li&gt;
-&lt;li&gt;Observed isolated traffic from personal network&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;security-practices&#34;&gt;Security Practices&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Created distinct VLANs for guest vs personal network&lt;/li&gt;
-&lt;li&gt;Isolated Pi-hole to LAN access only&lt;/li&gt;
-&lt;li&gt;Disabled inter-VLAN routing from Guest → LAN&lt;/li&gt;
-&lt;li&gt;Assigned firewall rules by interface in pfSense&lt;/li&gt;
-&lt;li&gt;Reserved management services for trusted VLAN only&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;to-do--next-steps&#34;&gt;To-Do / Next Steps&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Create VLAN 99 for network management&lt;/li&gt;
-&lt;li&gt;Move Proxmox GUI and Omada Controller to VLAN 99&lt;/li&gt;
-&lt;li&gt;Add remote access via OpenVPN (completed later)&lt;/li&gt;
-&lt;li&gt;Diagram full topology and backup strategy&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-diagram&#34;&gt;Network Diagram&lt;/h2&gt;
-&lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/TillyNet_OG.drawio.png&#34;&gt;&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;&#xA;&lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault VP2420 (Intel J6412, 4 NICs)&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Internal Services:&lt;/strong&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Pi-hole (LXC) – local recursive DNS + ad-blocking&lt;/li&gt;&#xA;&lt;li&gt;Omada Controller (LXC) – TP-Link AP management&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;LAN Devices:&lt;/strong&gt; Proxmox host, personal workstation, AP, switch&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Guest Devices:&lt;/strong&gt; IoT &amp;amp; roommate devices on isolated VLAN 14&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;infrastructure-at-a-glance&#34;&gt;Infrastructure at a Glance&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;Component&lt;/th&gt;&#xA;          &lt;th&gt;Description&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;pfSense&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;VM with two PCI-passthrough NICs (WAN + LAN)&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;vmbr0&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Bridge for LAN (Proxmox + LXCs)&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;vmbr1&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Reserved for future VLAN tagging (e.g., mgmt)&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LXC container for DNS (on LAN)&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Omada Ctrl&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;LXC container managing TP-Link EAP670 AP&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Cisco Switch&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;Access switch trunking VLANs to Proxmox/AP&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;&lt;strong&gt;Guest VLAN 14&lt;/strong&gt;&lt;/td&gt;&#xA;          &lt;td&gt;WiFi-only VLAN for roommate &amp;amp; IoT devices&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;setup-timeline&#34;&gt;Setup Timeline&lt;/h2&gt;&#xA;&lt;h3 id=&#34;phase-1--core-infrastructure&#34;&gt;Phase 1 – Core Infrastructure&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Flashed Proxmox onto Protectli Vault&lt;/li&gt;&#xA;&lt;li&gt;Created pfSense VM with 2 passthrough NICs:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;WAN: connected to ISP modem&lt;/li&gt;&#xA;&lt;li&gt;LAN: connected to Cisco switch (trunk-ready)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Configured &lt;code&gt;vmbr0&lt;/code&gt; as LAN bridge in Proxmox&lt;/li&gt;&#xA;&lt;li&gt;Gave Proxmox host static IP on the LAN network&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;phase-2--internal-services&#34;&gt;Phase 2 – Internal Services&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Provisioned LXC container for Pi-hole&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Static IP assigned&lt;/li&gt;&#xA;&lt;li&gt;Configured upstream DNS servers (e.g., Cloudflare)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Provisioned LXC container for Omada Controller&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Used to manage TP-Link EAP670 AP&lt;/li&gt;&#xA;&lt;li&gt;Served on LAN via Omada web GUI (port 8043)&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h3 id=&#34;phase-3--wireless--guest-vlan&#34;&gt;Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Set up VLAN 14 in pfSense (Guest Network)&lt;/li&gt;&#xA;&lt;li&gt;Trunked VLANs through switch port to Omada AP&lt;/li&gt;&#xA;&lt;li&gt;Created isolated wireless SSID mapped to VLAN 14&lt;/li&gt;&#xA;&lt;li&gt;Configured firewall rules in pfSense:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Guests can access WAN only&lt;/li&gt;&#xA;&lt;li&gt;Blocked access to LAN and Pi-hole&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Verified DHCP lease and internet access for guests&lt;/li&gt;&#xA;&lt;li&gt;Observed isolated traffic from personal network&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;security-practices&#34;&gt;Security Practices&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Created distinct VLANs for guest vs personal network&lt;/li&gt;&#xA;&lt;li&gt;Isolated Pi-hole to LAN access only&lt;/li&gt;&#xA;&lt;li&gt;Disabled inter-VLAN routing from Guest → LAN&lt;/li&gt;&#xA;&lt;li&gt;Assigned firewall rules by interface in pfSense&lt;/li&gt;&#xA;&lt;li&gt;Reserved management services for trusted VLAN only&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;to-do--next-steps&#34;&gt;To-Do / Next Steps&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Create VLAN 99 for network management&lt;/li&gt;&#xA;&lt;li&gt;Move Proxmox GUI and Omada Controller to VLAN 99&lt;/li&gt;&#xA;&lt;li&gt;Add remote access via OpenVPN (completed later)&lt;/li&gt;&#xA;&lt;li&gt;Diagram full topology and backup strategy&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;network-diagram&#34;&gt;Network Diagram&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://blog.tillynet.com/images/TillyNet_OG.drawio.png&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
