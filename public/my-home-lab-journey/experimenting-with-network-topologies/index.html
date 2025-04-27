@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Experimenting With Network Topologies | Tilly Net</title>
+<meta name="keywords" content="network-topology, graphviz, python, homelab">
+<meta name="description" content="Creating a Network Topology Using Graphviz and diagrams Package in Python
+This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the graphviz engine with the diagrams Python package, I decided to experiment with it.
+The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="Experimenting With Network Topologies">
+  <meta property="og:description" content="Creating a Network Topology Using Graphviz and diagrams Package in Python This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the graphviz engine with the diagrams Python package, I decided to experiment with it.
+The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="my-home-lab-journey">
+    <meta property="article:published_time" content="2025-04-21T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-04-21T00:00:00+00:00">
+    <meta property="article:tag" content="Network-Topology">
+    <meta property="article:tag" content="Graphviz">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Homelab">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Experimenting With Network Topologies">
+<meta name="twitter:description" content="Creating a Network Topology Using Graphviz and diagrams Package in Python
+This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the graphviz engine with the diagrams Python package, I decided to experiment with it.
+The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "My-Home-Lab-Journeys",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Experimenting With Network Topologies",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Experimenting With Network Topologies",
+  "name": "Experimenting With Network Topologies",
+  "description": "Creating a Network Topology Using Graphviz and diagrams Package in Python This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the graphviz engine with the diagrams Python package, I decided to experiment with it.\nThe toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.\n",
+  "keywords": [
+    "network-topology", "graphviz", "python", "homelab"
+  ],
+  "articleBody": "Creating a Network Topology Using Graphviz and diagrams Package in Python This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the graphviz engine with the diagrams Python package, I decided to experiment with it.\nThe toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.\nTools Used Python – Scripting language used to build the topology diagram. Graphviz – Graph rendering engine that powers diagram generation. Diagrams – Python library for programmatically defining and visualizing infrastructure components. Installation Installation is straightforward. Follow the official documentation on the diagrams website.\nWindows users: Be sure to add the Graphviz\\bin directory to your system’s user PATH:\nPress Win + R and type sysdm.cpl to open System Properties. Navigate to the Advanced tab and click Environment Variables. Under User variables, select Path, then click Edit. Add a new entry pointing to your Graphviz bin directory. Click OK to save and close the dialogs. My Graphviz Python Script from diagrams import Cluster, Diagram from diagrams.onprem.network import Internet from diagrams.generic.network import Switch from diagrams.generic.os import Windows from diagrams.generic.device import Mobile from diagrams.onprem.network import Pfsense from diagrams.onprem.proxmox import Pve from diagrams.onprem.proxmox import ProxmoxVE from diagrams.generic.network import Router from diagrams.generic.network import VPN with Diagram(\"TillyNet Home Lab Topology\", show=True, direction=\"LR\"): internet = Internet(\"ISP\") switch = Switch(\"Catalyst 2960-C\") openvpn = VPN(\"OpenVPN Tunnel\") with Cluster(\".\\nVirtualizated Stack\"): pfsense = Pfsense(\"pfSense FW\") proxmox = Pve(\"Hypervisor\") with Cluster(\"VLAN 99 - Management\"): mgmt_pc = Windows(\"Win Mgmt PC\") ap_mgmt = Router(\"EAP670 AP\",) omada = ProxmoxVE(\"Omada Controller\") proxmox_mgmt = Pve(\"Proxmox Management\") with Cluster(\"VLAN 14 - Guest\"): guest_wifi = Mobile(\"Guest Devices\") with Cluster(\".\\nVLAN 21 - Production\"): pihole = ProxmoxVE(\"Pi-hole\") with Cluster(\".\\nRemote Management\"): remote_mgmt = Mobile(\"Remote Manager\") # Connections internet \u003e\u003e pfsense pfsense \u003e\u003e switch switch \u003e\u003e [mgmt_pc, omada, proxmox_mgmt, ap_mgmt, pihole] ap_mgmt \u003e\u003e guest_wifi remote_mgmt \u003e\u003e openvpn openvpn \u003e\u003e mgmt_pc Generated Network Topology Current TillyNet Home Lab Environment - Summary The TillyNet home lab is a virtualized, VLAN-segmented network environment designed to simulate enterprise-grade infrastructure and support hands-on experimentation with routing, firewalling, and network automation technologies. It is built around a Proxmox VE hypervisor hosted on a Protectli Vault VP2420, which runs multiple virtual machines and LXC containers to provide core network services.\nKey components include:\nProxmox VE: Serves as the core hypervisor with both VM and container-based workloads. It utilizes PCI passthrough for direct access to physical NICs.\npfSense Firewall (VM): Operates as the primary gateway using a router-on-a-stick configuration via a trunked LAN interface to a Cisco Catalyst 2960-C switch. It handles all inter-VLAN routing, DHCP, and firewall policies.\nVLAN Configuration:\nVLAN 1 – Native LAN\nVLAN 14 – Guest network, isolated and tagged for wireless SSID on the access point\nVLAN 21 – Production network housing internal services like DNS (Pi-hole)\nVLAN 99 – Management network, used for administrative access to Proxmox, Omada Controller, and the access point\nPi-hole (LXC): Runs as the local recursive DNS resolver for the production VLAN.\nOmada Controller (LXC): Manages the TP-Link EAP670 access point and wireless network provisioning.\nTP-Link EAP670 (AP): Connected via a trunk port to the Catalyst switch to support both VLAN 14 (guest) and VLAN 99 (management).\nCisco Catalyst 2960-C Switch: Provides L2 switching with trunk and access port configurations to support VLAN segmentation and inter-device communication.\nThis architecture allows for advanced testing of enterprise networking scenarios, including network segmentation, access control, VLAN trunking, recursive DNS, and wireless network integration — all within a self-hosted environment.\nFinal Thoughts The diagrams library combined with graphviz is a powerful tool for basic network visualization. While it may not be suited for highly detailed or dynamic environments, it offers a clean way to represent logical infrastructure layouts. I plan to continue exploring more advanced or specialized network visualization tools, but this is a solid foundation for documenting my home lab.\n",
+  "wordCount" : "686",
+  "inLanguage": "en",
+  "datePublished": "2025-04-21T00:00:00Z",
+  "dateModified": "2025-04-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/my-home-lab-journey/" title="My Home Lab Journey">
+                    <span>My Home Lab Journey</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Experimenting With Network Topologies
+    </h1>
+    <div class="post-meta"><span title='2025-04-21 00:00:00 +0000 UTC'>April 21, 2025</span>&nbsp;·&nbsp;4 min
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="creating-a-network-topology-using-graphviz-and-diagrams-package-in-python">Creating a Network Topology Using Graphviz and diagrams Package in Python<a hidden class="anchor" aria-hidden="true" href="#creating-a-network-topology-using-graphviz-and-diagrams-package-in-python">#</a></h1>
+<p>This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the <code>graphviz</code> engine with the <code>diagrams</code> Python package, I decided to experiment with it.</p>
+<p>The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.</p>
+<hr>
+<h2 id="tools-used">Tools Used<a hidden class="anchor" aria-hidden="true" href="#tools-used">#</a></h2>
+<ul>
+<li><strong>Python</strong> – Scripting language used to build the topology diagram.</li>
+<li><strong>Graphviz</strong> – Graph rendering engine that powers diagram generation.</li>
+<li><strong>Diagrams</strong> – Python library for programmatically defining and visualizing infrastructure components.</li>
+</ul>
+<hr>
+<h2 id="installation">Installation<a hidden class="anchor" aria-hidden="true" href="#installation">#</a></h2>
+<p>Installation is straightforward. Follow the official documentation on the <a href="https://diagrams.mingrammer.com/docs/getting-started/installation">diagrams website</a>.</p>
+<blockquote>
+<p><strong>Windows users:</strong> Be sure to add the <code>Graphviz\bin</code> directory to your system&rsquo;s user PATH:</p></blockquote>
+<ol>
+<li>Press <code>Win + R</code> and type <code>sysdm.cpl</code> to open System Properties.</li>
+<li>Navigate to the <strong>Advanced</strong> tab and click <strong>Environment Variables</strong>.</li>
+<li>Under <strong>User variables</strong>, select <code>Path</code>, then click <strong>Edit</strong>.</li>
+<li>Add a new entry pointing to your Graphviz <code>bin</code> directory.</li>
+<li>Click OK to save and close the dialogs.</li>
+</ol>
+<hr>
+<h2 id="my-graphviz-python-script">My Graphviz Python Script<a hidden class="anchor" aria-hidden="true" href="#my-graphviz-python-script">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams</span> <span class="kn">import</span> <span class="n">Cluster</span><span class="p">,</span> <span class="n">Diagram</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.onprem.network</span> <span class="kn">import</span> <span class="n">Internet</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.generic.network</span> <span class="kn">import</span> <span class="n">Switch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.generic.os</span> <span class="kn">import</span> <span class="n">Windows</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.generic.device</span> <span class="kn">import</span> <span class="n">Mobile</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.onprem.network</span> <span class="kn">import</span> <span class="n">Pfsense</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.onprem.proxmox</span> <span class="kn">import</span> <span class="n">Pve</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.onprem.proxmox</span> <span class="kn">import</span> <span class="n">ProxmoxVE</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.generic.network</span> <span class="kn">import</span> <span class="n">Router</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">diagrams.generic.network</span> <span class="kn">import</span> <span class="n">VPN</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="n">Diagram</span><span class="p">(</span><span class="s2">&#34;TillyNet Home Lab Topology&#34;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&#34;LR&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">internet</span> <span class="o">=</span> <span class="n">Internet</span><span class="p">(</span><span class="s2">&#34;ISP&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">switch</span> <span class="o">=</span> <span class="n">Switch</span><span class="p">(</span><span class="s2">&#34;Catalyst 2960-C&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">openvpn</span> <span class="o">=</span> <span class="n">VPN</span><span class="p">(</span><span class="s2">&#34;OpenVPN Tunnel&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">Cluster</span><span class="p">(</span><span class="s2">&#34;.</span><span class="se">\n</span><span class="s2">Virtualizated Stack&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pfsense</span> <span class="o">=</span> <span class="n">Pfsense</span><span class="p">(</span><span class="s2">&#34;pfSense FW&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">proxmox</span> <span class="o">=</span> <span class="n">Pve</span><span class="p">(</span><span class="s2">&#34;Hypervisor&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">Cluster</span><span class="p">(</span><span class="s2">&#34;VLAN 99 - Management&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mgmt_pc</span> <span class="o">=</span> <span class="n">Windows</span><span class="p">(</span><span class="s2">&#34;Win Mgmt PC&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ap_mgmt</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="s2">&#34;EAP670 AP&#34;</span><span class="p">,)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">omada</span> <span class="o">=</span> <span class="n">ProxmoxVE</span><span class="p">(</span><span class="s2">&#34;Omada Controller&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">proxmox_mgmt</span> <span class="o">=</span> <span class="n">Pve</span><span class="p">(</span><span class="s2">&#34;Proxmox Management&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">Cluster</span><span class="p">(</span><span class="s2">&#34;VLAN 14 - Guest&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">guest_wifi</span> <span class="o">=</span> <span class="n">Mobile</span><span class="p">(</span><span class="s2">&#34;Guest Devices&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">Cluster</span><span class="p">(</span><span class="s2">&#34;.</span><span class="se">\n</span><span class="s2">VLAN 21 - Production&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pihole</span> <span class="o">=</span> <span class="n">ProxmoxVE</span><span class="p">(</span><span class="s2">&#34;Pi-hole&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">Cluster</span><span class="p">(</span><span class="s2">&#34;.</span><span class="se">\n</span><span class="s2">Remote Management&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">remote_mgmt</span> <span class="o">=</span> <span class="n">Mobile</span><span class="p">(</span><span class="s2">&#34;Remote Manager&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># Connections</span>
+</span></span><span class="line"><span class="cl">    <span class="n">internet</span> <span class="o">&gt;&gt;</span> <span class="n">pfsense</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pfsense</span> <span class="o">&gt;&gt;</span> <span class="n">switch</span>
+</span></span><span class="line"><span class="cl">    <span class="n">switch</span> <span class="o">&gt;&gt;</span> <span class="p">[</span><span class="n">mgmt_pc</span><span class="p">,</span> <span class="n">omada</span><span class="p">,</span> <span class="n">proxmox_mgmt</span><span class="p">,</span> <span class="n">ap_mgmt</span><span class="p">,</span> <span class="n">pihole</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ap_mgmt</span> <span class="o">&gt;&gt;</span> <span class="n">guest_wifi</span>
+</span></span><span class="line"><span class="cl">    <span class="n">remote_mgmt</span> <span class="o">&gt;&gt;</span> <span class="n">openvpn</span>
+</span></span><span class="line"><span class="cl">    <span class="n">openvpn</span> <span class="o">&gt;&gt;</span> <span class="n">mgmt_pc</span>
+</span></span></code></pre></div><hr>
+<h2 id="generated-network-topology">Generated Network Topology<a hidden class="anchor" aria-hidden="true" href="#generated-network-topology">#</a></h2>
+<p><img alt="Image" loading="lazy" src="/images/tillynet_graphviz.png"></p>
+<hr>
+<h2 id="current-tillynet-home-lab-environment---summary">Current TillyNet Home Lab Environment - Summary<a hidden class="anchor" aria-hidden="true" href="#current-tillynet-home-lab-environment---summary">#</a></h2>
+<p>The TillyNet home lab is a virtualized, VLAN-segmented network environment designed to simulate enterprise-grade infrastructure and support hands-on experimentation with routing, firewalling, and network automation technologies. It is built around a Proxmox VE hypervisor hosted on a Protectli Vault VP2420, which runs multiple virtual machines and LXC containers to provide core network services.</p>
+<p>Key components include:</p>
+<ul>
+<li>
+<p><strong>Proxmox VE</strong>: Serves as the core hypervisor with both VM and container-based workloads. It utilizes PCI passthrough for direct access to physical NICs.</p>
+</li>
+<li>
+<p><strong>pfSense Firewall (VM)</strong>: Operates as the primary gateway using a router-on-a-stick configuration via a trunked LAN interface to a Cisco Catalyst 2960-C switch. It handles all inter-VLAN routing, DHCP, and firewall policies.</p>
+</li>
+<li>
+<p><strong>VLAN Configuration</strong>:</p>
+<ul>
+<li>
+<p><strong>VLAN 1</strong> – Native LAN</p>
+</li>
+<li>
+<p><strong>VLAN 14</strong> – Guest network, isolated and tagged for wireless SSID on the access point</p>
+</li>
+<li>
+<p><strong>VLAN 21</strong> – Production network housing internal services like DNS (Pi-hole)</p>
+</li>
+<li>
+<p><strong>VLAN 99</strong> – Management network, used for administrative access to Proxmox, Omada Controller, and the access point</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Pi-hole (LXC)</strong>: Runs as the local recursive DNS resolver for the production VLAN.</p>
+</li>
+<li>
+<p><strong>Omada Controller (LXC)</strong>: Manages the TP-Link EAP670 access point and wireless network provisioning.</p>
+</li>
+<li>
+<p><strong>TP-Link EAP670 (AP)</strong>: Connected via a trunk port to the Catalyst switch to support both VLAN 14 (guest) and VLAN 99 (management).</p>
+</li>
+<li>
+<p><strong>Cisco Catalyst 2960-C Switch</strong>: Provides L2 switching with trunk and access port configurations to support VLAN segmentation and inter-device communication.</p>
+</li>
+</ul>
+<p>This architecture allows for advanced testing of enterprise networking scenarios, including network segmentation, access control, VLAN trunking, recursive DNS, and wireless network integration — all within a self-hosted environment.</p>
+<hr>
+<h2 id="final-thoughts">Final Thoughts<a hidden class="anchor" aria-hidden="true" href="#final-thoughts">#</a></h2>
+<p>The <code>diagrams</code> library combined with <code>graphviz</code> is a powerful tool for basic network visualization. While it may not be suited for highly detailed or dynamic environments, it offers a clean way to represent logical infrastructure layouts. I plan to continue exploring more advanced or specialized network visualization tools, but this is a solid foundation for documenting my home lab.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/network-topology/">Network-Topology</a></li>
+      <li><a href="https://blog.tillynet.com/tags/graphviz/">Graphviz</a></li>
+      <li><a href="https://blog.tillynet.com/tags/python/">Python</a></li>
+      <li><a href="https://blog.tillynet.com/tags/homelab/">Homelab</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Current Running Version of TillyNet</span>
+  </a>
+  <a class="next" href="https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
