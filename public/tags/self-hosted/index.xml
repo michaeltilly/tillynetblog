@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Self-Hosted on Tilly Net</title>
     <link>https://blog.tillynet.com/tags/self-hosted/</link>
     <description>Recent content in Self-Hosted on Tilly Net</description>
-    <generator>Hugo -- 0.146.6</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Tue, 22 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/self-hosted/index.xml" rel="self" type="application/rss+xml" />
@@ -13,60 +13,7 @@
       <link>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</guid>
-      <description>&lt;h1 id=&#34;current-running-version-of-tillynet&#34;&gt;Current Running Version of TillyNet&lt;/h1&gt;
-&lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-topology&#34;&gt;Network Topology&lt;/h2&gt;
-&lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/tillynet_mermaid.png&#34;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-design-objectives&#34;&gt;Network Design Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Layer 2/3 segmentation&lt;/strong&gt; using VLANs&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Centralized routing and firewalling&lt;/strong&gt; with pfSense&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hypervisor-based infrastructure&lt;/strong&gt; using Proxmox VE&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Containerized services&lt;/strong&gt; for DNS and wireless controller management&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Policy-based access control&lt;/strong&gt; enforced through inter-VLAN firewall rules&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Minimal trust zones&lt;/strong&gt; with internal DNS filtering and strict pathing&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;vlan-overview&#34;&gt;VLAN Overview&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;VLAN ID&lt;/th&gt;
-          &lt;th&gt;Purpose&lt;/th&gt;
-          &lt;th&gt;Subnet&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;1&lt;/td&gt;
-          &lt;td&gt;Default/legacy&lt;/td&gt;
-          &lt;td&gt;172.16.7.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;14&lt;/td&gt;
-          &lt;td&gt;Guest Wi-Fi&lt;/td&gt;
-          &lt;td&gt;172.16.14.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;21&lt;/td&gt;
-          &lt;td&gt;Production DNS&lt;/td&gt;
-          &lt;td&gt;172.21.21.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;99&lt;/td&gt;
-          &lt;td&gt;Management Access&lt;/td&gt;
-          &lt;td&gt;172.16.99.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;666&lt;/td&gt;
-          &lt;td&gt;Native Trunk VLAN&lt;/td&gt;
-          &lt;td&gt;N/A&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;Each VLAN is routed via a pfSense firewall using a router-on-a-stick model over a single trunk interface connected to a managed Cisco Catalyst switch.&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;current-running-version-of-tillynet&#34;&gt;Current Running Version of TillyNet&lt;/h1&gt;&#xA;&lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;network-topology&#34;&gt;Network Topology&lt;/h2&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://blog.tillynet.com/images/tillynet_mermaid.png&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;network-design-objectives&#34;&gt;Network Design Objectives&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Layer 2/3 segmentation&lt;/strong&gt; using VLANs&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Centralized routing and firewalling&lt;/strong&gt; with pfSense&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Hypervisor-based infrastructure&lt;/strong&gt; using Proxmox VE&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Containerized services&lt;/strong&gt; for DNS and wireless controller management&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Policy-based access control&lt;/strong&gt; enforced through inter-VLAN firewall rules&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Minimal trust zones&lt;/strong&gt; with internal DNS filtering and strict pathing&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr&gt;&#xA;&lt;h2 id=&#34;vlan-overview&#34;&gt;VLAN Overview&lt;/h2&gt;&#xA;&lt;table&gt;&#xA;  &lt;thead&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;th&gt;VLAN ID&lt;/th&gt;&#xA;          &lt;th&gt;Purpose&lt;/th&gt;&#xA;          &lt;th&gt;Subnet&lt;/th&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/thead&gt;&#xA;  &lt;tbody&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;1&lt;/td&gt;&#xA;          &lt;td&gt;Default/legacy&lt;/td&gt;&#xA;          &lt;td&gt;172.16.7.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;14&lt;/td&gt;&#xA;          &lt;td&gt;Guest Wi-Fi&lt;/td&gt;&#xA;          &lt;td&gt;172.16.14.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;21&lt;/td&gt;&#xA;          &lt;td&gt;Production DNS&lt;/td&gt;&#xA;          &lt;td&gt;172.21.21.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;99&lt;/td&gt;&#xA;          &lt;td&gt;Management Access&lt;/td&gt;&#xA;          &lt;td&gt;172.16.99.0/24&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;      &lt;tr&gt;&#xA;          &lt;td&gt;666&lt;/td&gt;&#xA;          &lt;td&gt;Native Trunk VLAN&lt;/td&gt;&#xA;          &lt;td&gt;N/A&lt;/td&gt;&#xA;      &lt;/tr&gt;&#xA;  &lt;/tbody&gt;&#xA;&lt;/table&gt;&#xA;&lt;p&gt;Each VLAN is routed via a pfSense firewall using a router-on-a-stick model over a single trunk interface connected to a managed Cisco Catalyst switch.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

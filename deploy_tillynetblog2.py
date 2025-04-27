@@ -4,10 +4,10 @@ import subprocess
 import re
 
 # === CONFIGURATION ===
-obsidian_dir = r"C:\Users\micha\Documents\Local_Obsidian_Vault\my-home-lab-journey"
-hugo_root_dir = r"C:\Users\micha\Documents\tillynetblog"
+obsidian_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\my-home-lab-journey"
+hugo_root_dir = r"C:\Users\tillyadmin\Documents\tillynetblog"
 hugo_content_dir = os.path.join(hugo_root_dir, "content", "my-home-lab-journey")
-attachments_dir = r"C:\Users\micha\Documents\Local_Obsidian_Vault\assets\images"
+attachments_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\assets\images"
 static_images_dir = os.path.join(hugo_root_dir, "static", "images")
 about_src = r"C:\Users\micha\Documents\Local_Obsidian_Vault\pages\about.md"
 about_dst_dir = os.path.join(hugo_root_dir, "content", "about")

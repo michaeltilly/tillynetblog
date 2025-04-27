@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>About on Tilly Net</title>
     <link>https://blog.tillynet.com/categories/about/</link>
     <description>Recent content in About on Tilly Net</description>
-    <generator>Hugo -- 0.146.6</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Thu, 24 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/categories/about/index.xml" rel="self" type="application/rss+xml" />
@@ -13,9 +13,7 @@
       <link>https://blog.tillynet.com/about/</link>
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/about/</guid>
-      <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;
-&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.&lt;/p&gt;
-&lt;p&gt;I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;&#xA;&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.&lt;/p&gt;&#xA;&lt;p&gt;I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
