@@ -55,8 +55,19 @@ if os.path.exists(public_dir):
     print("✔ Cleaned existing public/ folder.")
 
 # === STEP 5: Build Hugo Site with baseURL ===
-subprocess.run(["hugo", "--buildDrafts", "--buildFuture", "-b", base_url], cwd=hugo_root_dir, check=True)
-print("✔ Hugo site built with baseURL.")
+build_result = subprocess.run(["hugo", "--buildDrafts", "--buildFuture", "-b", base_url], cwd=hugo_root_dir)
+
+if build_result.returncode != 0:
+    print("❌ Hugo build failed. Aborting deployment.")
+    exit(1)
+
+# Safety check: confirm public/ folder has content
+if not os.listdir(public_dir):
+    print("❌ Hugo public/ folder is empty after build. Aborting deployment.")
+    exit(1)
+
+print("✔ Hugo site built successfully with content.")
+
 
 # === STEP 6: Push changes to GitHub master ===
 subprocess.run(["git", "checkout", "master"], cwd=hugo_root_dir, check=True)
