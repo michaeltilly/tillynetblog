@@ -6,8 +6,40 @@
     <description>Recent content on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 26 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
+      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
+      <description>&lt;p&gt;This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Samba 4 AD&lt;/strong&gt; acts as the LDAP and Kerberos provider.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Authentik&lt;/strong&gt; serves as the Identity Provider (IdP) using the LDAP source for authentication.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</link>
+      <pubDate>Mon, 28 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</guid>
+      <description>&lt;p&gt;This guide documents the step-by-step process used to provision an &lt;a href=&#34;https://goauthentik.io&#34;&gt;Authentik&lt;/a&gt; identity provider server on a self-hosted Ubuntu Server using Docker and Docker Compose. This setup is suitable for advanced home lab environments and follows production-grade containerization practices.&lt;/p&gt;
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;A fresh or existing Ubuntu 22.04 or 24.04 LTS server.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sudo&lt;/code&gt; privileges on the system.&lt;/li&gt;
+&lt;li&gt;Static IP and DNS configuration recommended.&lt;/li&gt;
+&lt;li&gt;System updates applied.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;step-1-install-docker-engine&#34;&gt;Step 1: Install Docker Engine&lt;/h2&gt;
+&lt;p&gt;Follow the official Docker post-install guide to install and configure Docker for non-root use:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Provisioning Samba Active Directory Domain Controller and Windows Domain Integration</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
@@ -68,8 +100,8 @@
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/about/</guid>
       <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;
-&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;—a self-hosted, segmented lab environment that simulates enterprise-grade infrastructure. Built from the ground up using open-source tools and industry-standard practices, TillyNet includes VLAN-based network segmentation, centralized firewalling, containerized services, internal DNS, and automated deployment pipelines. This lab serves as both a learning environment and a proving ground for real-world IT architecture and network design.&lt;/p&gt;
-&lt;p&gt;Professionally, I have a solid background in systems support, cybersecurity compliance, and enterprise operations. I currently support The Department of Defense networks with a focus on asset lifecycle management, automation, and secure IT service delivery. I hold active Cisco CCNA (200-301) and CompTIA Security+ certifications and am currently working toward the Cisco CCNP as I continue developing my technical depth in modern networking.&lt;/p&gt;</description>
+&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.&lt;/p&gt;
+&lt;p&gt;I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet</title>
