@@ -3,24 +3,66 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.tillynet.com/tags/active-directory/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/authentication/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/authentik/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/categories/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/domain-controller/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/home-lab/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/ldap/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/ldap-server/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/ldaps/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/categories/my-home-lab-journey/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/network-security/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/samba/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/docker/</loc>
+    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/docker-compose/</loc>
+    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</loc>
+    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/sso/</loc>
+    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/ubuntu-server/</loc>
+    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/domain-controller/</loc>
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/networking/</loc>
@@ -29,19 +71,13 @@
     <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</loc>
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/samba/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/</loc>
-    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/windows-domain/</loc>
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/about/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/categories/about/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/debian/</loc>
