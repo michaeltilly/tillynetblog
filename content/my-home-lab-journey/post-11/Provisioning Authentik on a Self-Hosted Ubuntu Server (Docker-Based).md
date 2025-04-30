@@ -136,5 +136,5 @@ https://<your server's IP or hostname>:9443/if/flow/initial-setup/
 ---
 ## Related Posts
 
-([[Provisioning Samba Active Directory Domain Controller and Windows Domain Integration]])
-[[Integrating Samba 4 Active Directory with Authentik via LDAPS]]
+[Provisioning Samba Active Directory Domain Controller and Windows Domain Integration](https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/)
+[Integrating Samba 4 Active Directory with Authentik via LDAPS](https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/)

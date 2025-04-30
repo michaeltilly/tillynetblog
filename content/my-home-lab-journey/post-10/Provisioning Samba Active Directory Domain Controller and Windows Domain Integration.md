@@ -177,11 +177,8 @@ draft: false
 
 ---
 
-# Status Summary
+## Related Posts
 
-- Samba AD DC provisioned successfully.
-    
-- Windows domain join successful.
-    
-
+[Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)](https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/)  
+[Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)](https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/)
 

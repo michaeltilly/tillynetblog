@@ -172,3 +172,10 @@ Assign a strong password and note the DN (e.g., `CN=authentik-bind,CN=Users,DC=e
 ## Outcome
 
 With this setup, Authentik now authenticates users against Samba 4 AD using secure LDAPS. Authentik remains the central SSO provider for web applications, while Samba manages users and groups.
+
+---
+
+## Related Posts
+
+[Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)](https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/)
+[Provisioning Samba Active Directory Domain Controller and Windows Domain Integration](https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/)

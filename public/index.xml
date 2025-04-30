@@ -100,8 +100,8 @@
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/about/</guid>
       <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;
-&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.&lt;/p&gt;
-&lt;p&gt;I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.&lt;/p&gt;</description>
+&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;—a self-hosted, segmented lab environment that simulates enterprise-grade infrastructure. Built from the ground up using open-source tools and industry-standard practices, TillyNet includes VLAN-based network segmentation, centralized firewalling, containerized services, internal DNS, and automated deployment pipelines. This lab serves as both a learning environment and a proving ground for real-world IT architecture and network design.&lt;/p&gt;
+&lt;p&gt;Professionally, I have a solid background in systems support, cybersecurity compliance, and enterprise operations. I currently support The Department of Defense networks with a focus on asset lifecycle management, automation, and secure IT service delivery. I hold active Cisco CCNA (200-301) and CompTIA Security+ certifications and am currently working toward the Cisco CCNP as I continue developing my technical depth in modern networking.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet</title>
