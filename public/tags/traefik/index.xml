@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Network Security on Tilly Net</title>
-    <link>https://blog.tillynet.com/tags/network-security/</link>
-    <description>Recent content in Network Security on Tilly Net</description>
+    <title>Traefik on Tilly Net</title>
+    <link>https://blog.tillynet.com/tags/traefik/</link>
+    <description>Recent content in Traefik on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
     <lastBuildDate>Fri, 02 May 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://blog.tillynet.com/tags/network-security/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://blog.tillynet.com/tags/traefik/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
@@ -34,21 +34,6 @@
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Operating System: Ubuntu Server&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
-      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
-      <description>&lt;p&gt;This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Samba 4 AD&lt;/strong&gt; acts as the LDAP and Kerberos provider.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Authentik&lt;/strong&gt; serves as the Identity Provider (IdP) using the LDAP source for authentication.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

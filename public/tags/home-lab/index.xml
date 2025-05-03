@@ -6,8 +6,35 @@
     <description>Recent content in Home Lab on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 29 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 02 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/home-lab/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
+      <pubDate>Fri, 02 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.&lt;/p&gt;
+&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Deploy Traefik using Docker Compose&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enable HTTPS via static and dynamic configuration&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Load a custom certificate signed by an internal CA&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Validate secure access to the Traefik dashboard&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;environment&#34;&gt;Environment&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Operating System: Ubuntu Server&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
