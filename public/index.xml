@@ -6,8 +6,23 @@
     <description>Recent content on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 02 May 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</title>
+      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
+      <pubDate>Tue, 13 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This guide details how I provisioned &lt;strong&gt;Authentik&lt;/strong&gt; as a middleware authentication provider integrated with &lt;strong&gt;Traefik&lt;/strong&gt; reverse proxy, using TLS certificates issued by my internal &lt;strong&gt;Samba Active Directory Certificate Authority (CA)&lt;/strong&gt;. The result is a secure, SSO-enabled reverse proxy setup that leverages &lt;strong&gt;LDAPS&lt;/strong&gt; to enforce access control for authorized users in my Active Directory.&lt;/p&gt;
+&lt;p&gt;This solution enables:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Trusted HTTPS access to services proxied through Traefik.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;SSO enforcement using Authentik via the forwardAuth middleware.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
       <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>

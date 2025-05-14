@@ -2,49 +2,64 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.tillynet.com/tags/active-directory/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/authentik/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/authentik-outposts/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://blog.tillynet.com/categories/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/docker/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/docker-compose/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/home-lab/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/internal-ca/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/middleware/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/categories/my-home-lab-journey/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/network-security/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/reverse-proxy/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/samba/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/traefik/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</loc>
     <lastmod>2025-05-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/reverse-proxy/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/samba/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/traefik/</loc>
-    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/active-directory/</loc>
-    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/authentication/</loc>
-    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/authentik/</loc>
     <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</loc>
@@ -58,12 +73,6 @@
   </url><url>
     <loc>https://blog.tillynet.com/tags/ldaps/</loc>
     <lastmod>2025-04-29T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/docker/</loc>
-    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/docker-compose/</loc>
-    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</loc>
     <lastmod>2025-04-28T00:00:00+00:00</lastmod>

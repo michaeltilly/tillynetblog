@@ -36,7 +36,7 @@ This guide documents the process of deploying the Traefik reverse proxy using Do
 
 ## Directory Structure
 
-```
+```bash
 ~/traefik/
 ├── traefik.yml               # Static configuration
 ├── docker-compose.yml        # Docker service definition
@@ -52,7 +52,7 @@ This guide documents the process of deploying the Traefik reverse proxy using Do
 
 ### 1. Static Configuration (`traefik.yml`)
 
-```
+```yml
 entryPoints:
   web:
     address: ":80"
@@ -73,7 +73,7 @@ providers:
 
 ### 2. Dynamic Configuration (`config/dynamic.yml`)
 
-```
+```yml
 tls:
   certificates:
     - certFile: /home/user/traefik/certs/example.lan.crt
@@ -91,7 +91,7 @@ http:
 
 ### 3. Docker Compose File (`docker-compose.yml`)
 
-```
+```yml
 version: "3.8"
 services:
   traefik:

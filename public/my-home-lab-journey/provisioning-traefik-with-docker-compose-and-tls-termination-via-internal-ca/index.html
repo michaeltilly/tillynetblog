@@ -150,7 +150,7 @@ Operating System: Ubuntu Server">
   "keywords": [
     "Traefik", "Reverse Proxy", "Samba", "Internal CA", "Network Security", "Home Lab"
   ],
-  "articleBody": "Overview This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.\nObjectives Deploy Traefik using Docker Compose\nEnable HTTPS via static and dynamic configuration\nLoad a custom certificate signed by an internal CA\nValidate secure access to the Traefik dashboard\nEnvironment Operating System: Ubuntu Server\nTraefik Version: 2.11\nDocker \u0026 Docker Compose\nInternal PKI: Self-hosted CA issuing trusted certificates\nDomain: Custom internal domain (e.g., *.example.lan)\nDirectory Structure ~/traefik/\r├── traefik.yml # Static configuration\r├── docker-compose.yml # Docker service definition\r├── config/\r│ └── dynamic.yml # Dynamic configuration\r└── certs/\r├── example.lan.crt # Server certificate\r├── example.lan.key # Private key\r└── ca.crt # Root CA certificate (optional for clients) Step-by-Step Configuration 1. Static Configuration (traefik.yml) entryPoints:\rweb:\raddress: \":80\"\rwebsecure:\raddress: \":443\"\rapi:\rdashboard: true\rlog:\rlevel: DEBUG\rproviders:\rfile:\rfilename: /home/user/traefik/config/dynamic.yml\rwatch: true 2. Dynamic Configuration (config/dynamic.yml) tls:\rcertificates:\r- certFile: /home/user/traefik/certs/example.lan.crt\rkeyFile: /home/user/traefik/certs/example.lan.key\rhttp:\rrouters:\rtraefik-dashboard:\rrule: \"Host(`traefik.example.lan`)\"\rentryPoints:\r- websecure\rservice: api@internal\rtls: true 3. Docker Compose File (docker-compose.yml) version: \"3.8\"\rservices:\rtraefik:\rimage: traefik:v2.11\rcontainer_name: traefik\rrestart: unless-stopped\rports:\r- \"80:80\"\r- \"443:443\"\rvolumes:\r- ./traefik.yml:/home/user/traefik/traefik.yml\r- ./config/dynamic.yml:/home/user/traefik/config/dynamic.yml\r- ./certs:/home/user/traefik/certs Note: All file paths are absolute within the container for consistency.\nTroubleshooting Process Problem: Curl to HTTPS endpoint failed (Connection Refused) Symptoms:\ncurl -vk https://traefik.example.lan returns connection refused.\nPort 443 shown as open via ss -tuln, but no container binding occurred.\nResolutions Attempted:\nVerified ports 80/443 availability (netstat, lsof, ss)\nEnsured docker-compose down fully removed container states\nRestarted Docker service to release potentially held ports\nProblem: No Traefik logs visible Symptoms: docker logs traefik showed no output\nFix: Added log.level: DEBUG to traefik.yml and confirmed config was mounted properly\nProblem: Dashboard loads with default self-signed certificate Symptoms: Dashboard displayed a browser warning for TRAEFIK DEFAULT CERT\nFix:\nVerified dynamic config was correctly referenced and mounted\nConfirmed cert and key filenames were correct\nRestarted Traefik after changing mount paths to match container expectations\nFinal Fix: Proper Mounting and Configuration Paths All paths in the YAML files were made fully absolute and consistently mounted into the container\nDocker Compose volumes were validated against container paths\nAfter restarting the container stack, the browser showed the correct certificate issued by the internal CA\nFinal Validation Verified TLS certificate via browser: matched CN=traefik.example.lan, signed by internal root CA\nAccessed dashboard via https://traefik.example.lan:443\nNo browser warnings when root CA was installed in local trust store\nConclusion This deployment demonstrates a secure and customizable method to run Traefik with HTTPS backed by an internal certificate authority. The setup supports Docker-based dynamic service exposure and can serve as a foundation for SSO, mTLS, or zero-trust architectures.\nFuture steps may include:\nIntegrating with Authentik for OIDC\nAdding automatic TLS renewal via internal CA workflows\nUsing Traefik middlewares for authentication, rate-limiting, or header injection\n",
+  "articleBody": "Overview This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.\nObjectives Deploy Traefik using Docker Compose\nEnable HTTPS via static and dynamic configuration\nLoad a custom certificate signed by an internal CA\nValidate secure access to the Traefik dashboard\nEnvironment Operating System: Ubuntu Server\nTraefik Version: 2.11\nDocker \u0026 Docker Compose\nInternal PKI: Self-hosted CA issuing trusted certificates\nDomain: Custom internal domain (e.g., *.example.lan)\nDirectory Structure ~/traefik/ ├── traefik.yml # Static configuration ├── docker-compose.yml # Docker service definition ├── config/ │ └── dynamic.yml # Dynamic configuration └── certs/ ├── example.lan.crt # Server certificate ├── example.lan.key # Private key └── ca.crt # Root CA certificate (optional for clients) Step-by-Step Configuration 1. Static Configuration (traefik.yml) entryPoints: web: address: \":80\" websecure: address: \":443\" api: dashboard: true log: level: DEBUG providers: file: filename: /home/user/traefik/config/dynamic.yml watch: true 2. Dynamic Configuration (config/dynamic.yml) tls: certificates: - certFile: /home/user/traefik/certs/example.lan.crt keyFile: /home/user/traefik/certs/example.lan.key http: routers: traefik-dashboard: rule: \"Host(`traefik.example.lan`)\" entryPoints: - websecure service: api@internal tls: true 3. Docker Compose File (docker-compose.yml) version: \"3.8\" services: traefik: image: traefik:v2.11 container_name: traefik restart: unless-stopped ports: - \"80:80\" - \"443:443\" volumes: - ./traefik.yml:/home/user/traefik/traefik.yml - ./config/dynamic.yml:/home/user/traefik/config/dynamic.yml - ./certs:/home/user/traefik/certs Note: All file paths are absolute within the container for consistency.\nTroubleshooting Process Problem: Curl to HTTPS endpoint failed (Connection Refused) Symptoms:\ncurl -vk https://traefik.example.lan returns connection refused.\nPort 443 shown as open via ss -tuln, but no container binding occurred.\nResolutions Attempted:\nVerified ports 80/443 availability (netstat, lsof, ss)\nEnsured docker-compose down fully removed container states\nRestarted Docker service to release potentially held ports\nProblem: No Traefik logs visible Symptoms: docker logs traefik showed no output\nFix: Added log.level: DEBUG to traefik.yml and confirmed config was mounted properly\nProblem: Dashboard loads with default self-signed certificate Symptoms: Dashboard displayed a browser warning for TRAEFIK DEFAULT CERT\nFix:\nVerified dynamic config was correctly referenced and mounted\nConfirmed cert and key filenames were correct\nRestarted Traefik after changing mount paths to match container expectations\nFinal Fix: Proper Mounting and Configuration Paths All paths in the YAML files were made fully absolute and consistently mounted into the container\nDocker Compose volumes were validated against container paths\nAfter restarting the container stack, the browser showed the correct certificate issued by the internal CA\nFinal Validation Verified TLS certificate via browser: matched CN=traefik.example.lan, signed by internal root CA\nAccessed dashboard via https://traefik.example.lan:443\nNo browser warnings when root CA was installed in local trust store\nConclusion This deployment demonstrates a secure and customizable method to run Traefik with HTTPS backed by an internal certificate authority. The setup supports Docker-based dynamic service exposure and can serve as a foundation for SSO, mTLS, or zero-trust architectures.\nFuture steps may include:\nIntegrating with Authentik for OIDC\nAdding automatic TLS renewal via internal CA workflows\nUsing Traefik middlewares for authentication, rate-limiting, or header injection\n",
   "wordCount" : "484",
   "inLanguage": "en",
   "datePublished": "2025-05-02T00:00:00Z",
@@ -282,62 +282,62 @@ Operating System: Ubuntu Server">
 </li>
 </ul>
 <h2 id="directory-structure">Directory Structure<a hidden class="anchor" aria-hidden="true" href="#directory-structure">#</a></h2>
-<pre tabindex="0"><code>~/traefik/
-├── traefik.yml               # Static configuration
-├── docker-compose.yml        # Docker service definition
-├── config/
-│   └── dynamic.yml           # Dynamic configuration
-└── certs/
-    ├── example.lan.crt       # Server certificate
-    ├── example.lan.key       # Private key
-    └── ca.crt                # Root CA certificate (optional for clients)
-</code></pre><h2 id="step-by-step-configuration">Step-by-Step Configuration<a hidden class="anchor" aria-hidden="true" href="#step-by-step-configuration">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~/traefik/
+</span></span><span class="line"><span class="cl">├── traefik.yml               <span class="c1"># Static configuration</span>
+</span></span><span class="line"><span class="cl">├── docker-compose.yml        <span class="c1"># Docker service definition</span>
+</span></span><span class="line"><span class="cl">├── config/
+</span></span><span class="line"><span class="cl">│   └── dynamic.yml           <span class="c1"># Dynamic configuration</span>
+</span></span><span class="line"><span class="cl">└── certs/
+</span></span><span class="line"><span class="cl">    ├── example.lan.crt       <span class="c1"># Server certificate</span>
+</span></span><span class="line"><span class="cl">    ├── example.lan.key       <span class="c1"># Private key</span>
+</span></span><span class="line"><span class="cl">    └── ca.crt                <span class="c1"># Root CA certificate (optional for clients)</span>
+</span></span></code></pre></div><h2 id="step-by-step-configuration">Step-by-Step Configuration<a hidden class="anchor" aria-hidden="true" href="#step-by-step-configuration">#</a></h2>
 <h3 id="1-static-configuration-traefikyml">1. Static Configuration (<code>traefik.yml</code>)<a hidden class="anchor" aria-hidden="true" href="#1-static-configuration-traefikyml">#</a></h3>
-<pre tabindex="0"><code>entryPoints:
-  web:
-    address: &#34;:80&#34;
-  websecure:
-    address: &#34;:443&#34;
-
-api:
-  dashboard: true
-
-log:
-  level: DEBUG
-
-providers:
-  file:
-    filename: /home/user/traefik/config/dynamic.yml
-    watch: true
-</code></pre><h3 id="2-dynamic-configuration-configdynamicyml">2. Dynamic Configuration (<code>config/dynamic.yml</code>)<a hidden class="anchor" aria-hidden="true" href="#2-dynamic-configuration-configdynamicyml">#</a></h3>
-<pre tabindex="0"><code>tls:
-  certificates:
-    - certFile: /home/user/traefik/certs/example.lan.crt
-      keyFile: /home/user/traefik/certs/example.lan.key
-
-http:
-  routers:
-    traefik-dashboard:
-      rule: &#34;Host(`traefik.example.lan`)&#34;
-      entryPoints:
-        - websecure
-      service: api@internal
-      tls: true
-</code></pre><h3 id="3-docker-compose-file-docker-composeyml">3. Docker Compose File (<code>docker-compose.yml</code>)<a hidden class="anchor" aria-hidden="true" href="#3-docker-compose-file-docker-composeyml">#</a></h3>
-<pre tabindex="0"><code>version: &#34;3.8&#34;
-services:
-  traefik:
-    image: traefik:v2.11
-    container_name: traefik
-    restart: unless-stopped
-    ports:
-      - &#34;80:80&#34;
-      - &#34;443:443&#34;
-    volumes:
-      - ./traefik.yml:/home/user/traefik/traefik.yml
-      - ./config/dynamic.yml:/home/user/traefik/config/dynamic.yml
-      - ./certs:/home/user/traefik/certs
-</code></pre><blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">entryPoints</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">websecure</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;:443&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">api</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">dashboard</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">log</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">DEBUG</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">providers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">file</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filename</span><span class="p">:</span><span class="w"> </span><span class="l">/home/user/traefik/config/dynamic.yml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">watch</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><h3 id="2-dynamic-configuration-configdynamicyml">2. Dynamic Configuration (<code>config/dynamic.yml</code>)<a hidden class="anchor" aria-hidden="true" href="#2-dynamic-configuration-configdynamicyml">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">tls</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">certificates</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">certFile</span><span class="p">:</span><span class="w"> </span><span class="l">/home/user/traefik/certs/example.lan.crt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">keyFile</span><span class="p">:</span><span class="w"> </span><span class="l">/home/user/traefik/certs/example.lan.key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">routers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">traefik-dashboard</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">rule</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Host(`traefik.example.lan`)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">entryPoints</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">websecure</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">api@internal</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><h3 id="3-docker-compose-file-docker-composeyml">3. Docker Compose File (<code>docker-compose.yml</code>)<a hidden class="anchor" aria-hidden="true" href="#3-docker-compose-file-docker-composeyml">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;3.8&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">traefik</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">traefik:v2.11</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">traefik</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;80:80&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;443:443&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./traefik.yml:/home/user/traefik/traefik.yml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./config/dynamic.yml:/home/user/traefik/config/dynamic.yml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">./certs:/home/user/traefik/certs</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
 <p>Note: All file paths are absolute within the container for consistency.</p></blockquote>
 <h2 id="troubleshooting-process">Troubleshooting Process<a hidden class="anchor" aria-hidden="true" href="#troubleshooting-process">#</a></h2>
 <h3 id="problem-curl-to-https-endpoint-failed-connection-refused">Problem: Curl to HTTPS endpoint failed (Connection Refused)<a hidden class="anchor" aria-hidden="true" href="#problem-curl-to-https-endpoint-failed-connection-refused">#</a></h3>
@@ -449,6 +449,11 @@ services:
       <li><a href="https://blog.tillynet.com/tags/home-lab/">Home Lab</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</span>
+  </a>
   <a class="next" href="https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/">
     <span class="title">Next »</span>
     <br>
