@@ -111,15 +111,53 @@ providers:
     watch: true
 ```
 
-This file defines:
+#### Global Settings
 
-- The two Traefik entrypoints (HTTP and HTTPS)
+-`global`: root-level settings for global Traefik behavior
+- `checkNewVersion: false`: Disables automatic checking for new Traefik versions (I prefer to update manually)
+- `sendAnonymousUsage: false`: Prevents ending anonymous usage statistics to Traefik devs
+
+#### AccessLog Configuration
+
+- `accessLog: {}`: Enables access logging with default settings (empty config block)
+
+#### General Logging Configuration
+
+- `log.level: TRACE`: Sets the logging level to the most verbose (`TRACE`), useful for debugging and troubleshooting
+
+#### API and Dashboard
+
+- `api.dasbhoard: true`: Enables the Traefik web dashboard
+- `api.insecure: false`: Dashboard is only accessible via a secure entry point (not exposed on HTTP)
+- `api.debug: false`: Disables the debug endpoint, which can expose sensitive info
+
+#### Entry Points (Ports)
+
+- `entryPoints`: Defines how Traefik listens for incoming traffic
+- `web.address: :80`: Listens on port 80 (HTTP)
+- `http.redirections.entryPoint.to: websecure`: Redirects all HTTP traffic to HTTPS
+- `scheme: https`: Specifies the protocol for redirection
+- `websecure.address: :443`: Listens on port 443 (HTTPS)
+
+#### TLS Transport Options
+
+- `serversTransport.insecureSkipVerify: true`: Disables certificate verification when Traefik communicates with backend services. **Use only for internal services or testing**, as it bypasses TLS validation.
+
+#### Providers
+
+- `providers.docker`: Enables Docker as a dynamic configuration provider.
     
-- Enabling the dashboard
+- `exposedByDefault: false`: Services are **not automatically exposed** to Traefik unless explicitly enabled via labels.
     
-- Providers (Docker and external files)
+- `endpoint`: Communicates with Docker through the local Unix socket.
     
-- Disabling strict TLS validation for initial setup
+- `watch: true`: Automatically reloads config when Docker changes (e.g., containers start/stop).
+- `providers.file`: Enables static/dynamic config from a file directory.
+    
+- `directory: /etc/traefik/conf/`: Path to directory containing additional dynamic configuration files (like routers, middlewares, TLS certs).
+    
+- `watch: true`: Traefik watches this directory for live changes and reloads as needed.
+
 
 ### `conf/middleware.yml`
 
@@ -146,6 +184,17 @@ http:
 ```
 
 This `middleware.yml` file configures Traefik to forward requests to the Authentik outpost container to enforce authentication and pass key user identity headers.
+
+- `http`: This is the root section for all HTTP-related dynamic configuration in Traefik (e.g., routers, services, middlewares).
+- `middlewares`: Begins the definition of one or more middleware objects that can be referenced by routers.
+- `authentik`: The name you've assigned to this middleware. This will be used when attaching it to a router using the label `traefik.http.routers.<name>.middlewares=authentik@file`.
+- `forwardAuth`: Specifies that this middleware uses a **forward authentication** model, where Traefik sends each incoming request to an external authentication server (in this case, Authentik) before passing it to the backend service.
+- `address`: The URL that Traefik will forward incoming requests to for authentication.
+	- This must point to the **Authentik Outpost** service’s endpoint that is designed to work with Traefik as a forwardAuth provider.
+- `trustForwardHeader: true`: Tells Traefik to forward `X-Forwarded-*` headers from the client (e.g., real client IP, host info). This is important when the authentication server (Authentik) needs those headers to make access decisions.
+- `authResponseHeaders`: This section lists headers returned from Authentik that should be **passed through** to the final backend service.
+    
+- These headers typically contain user metadata, group memberships, entitlements, and JWT tokens. They're essential for the application to know **who is logged in** and **what they're authorized to do**.
 
 ### `conf/tls.yml`
 
@@ -180,6 +229,50 @@ tls:
 
 The `tls.yml` file Specifies TLS certificate and key files signed by the internal Samba CA.
 
+#### Summary
+This configuration:
+
+- Defines and serves multiple domain-specific certificates.
+    
+- Uses strong security defaults (TLS 1.2+, strict SNI, PFS ciphers).
+    
+- Ensures fallback TLS service via the default certificate store.
+
+#### Root Key
+- `tls`: Root section for configuring TLS certificates, stores, and security options.
+
+#### TLS Certificates
+- `certificates`: List of TLS certificates that Traefik will serve.
+    
+    - `certFile`: Path to the public certificate file (PEM format).
+        
+    - `keyFile`: Path to the associated private key.
+        
+- Each certificate is matched against incoming requests by their **SNI (Server Name Indication)** hostname (e.g., `traefik.example.lan`, `authentik.example.lan`).
+
+#### Default Certificate Store
+- `stores`: Defines named TLS stores. The default store is used when no matching SNI is found.
+- `defaultCertificate`: A fallback certificate that Traefik will use if no specific certificate matches the request's hostname.
+
+#### TLS Security Options
+- `options`: Defines reusable TLS options (like security policies).
+    
+- `default`: The default TLS policy to apply if not overridden.
+    
+    - `minVersion: VersionTLS12`: Only allow TLS 1.2 or higher (disables older, insecure TLS versions).
+        
+    - `sniStrict: true`: Requires that a matching certificate for the SNI is present, otherwise Traefik will reject the connection.
+
+#### Curve Preferences
+- `curvePreferences`: Preferred elliptic curves for ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) key exchange.
+    
+- This list defines the order of preference for stronger cryptographic curves.
+
+#### Cipher Suites
+- `cipherSuites`: Explicitly defines the allowed cipher suites for TLS 1.2 connections (TLS 1.3 has its own fixed ciphers).
+    
+- Suites here support strong AEAD encryption and PFS (Perfect Forward Secrecy) via ECDHE.
+
 ---
 ## 2. Docker Compose Configuration
 
@@ -204,12 +297,12 @@ services:
       - frontend
       - backend
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.rule=Host(`traefik.example.lan`)
-      - traefik.http.routers.traefik.entrypoints=websecure
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.middlewares=authentik@file
-      - traefik.http.routers.traefik.service=api@internal
+      - traefik.enable=true #enables Traefik reverse proxy for this container
+      - traefik.http.routers.traefik.rule=Host(`traefik.example.lan`) #defines a router that activates when requests match the domain specified
+      - traefik.http.routers.traefik.entrypoints=websecure #binds the router to HTTPS (websecure) entry point
+      - traefik.http.routers.traefik.tls=true #enables TLS for this router
+      - traefik.http.routers.traefik.middlewares=authentik@file #applies the middleware named authentik from the file provider (in my case middleware.yml) for auth
+      - traefik.http.routers.traefik.service=api@internal #tells Traefik to serve its internal API/dasbhoard when this route is hit
     restart: unless-stopped
   authentik-outpost:
     container_name: traefik-authentik-outpost
@@ -222,11 +315,11 @@ services:
       - backend
     environment:
       - AUTHENTIK_HOST=https://authentik.example.lan
-      - AUTHENTIK_INSECURE=false
-      - REQUESTS_CA_BUNDLE=/certs/ca.crt
+      - AUTHENTIK_INSECURE=false #requires valid HTTPS connection (doesn't skip tls checks)
+      - REQUESTS_CA_BUNDLE=/certs/ca.crt #instructs Python-based tools (used by Authentik Proxy) to trust internal CA for TLS
       - LOG_LEVEL=debug
-      - AUTHENTIK_HOST_BROWSER=https://authentik.example.lan
-      - AUTHENTIK_TOKEN=xxxxxxxxxxxxxxx   # Replace with Authentik outpost token
+      - AUTHENTIK_HOST_BROWSER=https://authentik.example.lan #used when public and internal addresses differ
+      - AUTHENTIK_TOKEN=xxxxxxxxxxxxxxx   # Replace with Authentik outpost token. Token is necessary to authenticate the outpost with the Authentik server. DO NOT EXPOSE
 
 networks:
   frontend:
