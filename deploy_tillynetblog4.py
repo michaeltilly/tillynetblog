@@ -41,7 +41,7 @@ def process_content_directory(source_dir, destination_dir, content_type):
                 with open(md_path, "r", encoding="utf-8") as file:
                     content = file.read()
 
-                # Find Obsidian-style image embeds (keeping your original regex for consistency)
+                # Find Obsidian-style image embeds
                 images = re.findall(r'\[\[([^]]*\.png)\]\]', content)
                 for image in images:
                     markdown_image = f"![Image](/images/{image.replace(' ', '%20')})"
