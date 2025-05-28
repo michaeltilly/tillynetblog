@@ -6,8 +6,15 @@
     <description>Recent content in Categories on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 20 May 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 27 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cloud Engineering Labs</title>
+      <link>https://blog.tillynet.com/categories/cloud-engineering-labs/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/categories/cloud-engineering-labs/</guid>
+      <description></description>
+    </item>
     <item>
       <title>My Home Lab Journey</title>
       <link>https://blog.tillynet.com/categories/my-home-lab-journey/</link>
