@@ -36,20 +36,20 @@ params:
 
     # This determines which sections are displayed on the homepage
   mainSections: 
-    - "my-home-lab-journey"
+    - "on-premise-engineering-labs"
     - "cloud-engineering-labs"
 
   mainFeedSections:
-    - "my-home-lab-journey" 
+    - "on-premise-engineering-labs" 
     - "cloud-engineering-labs"
-    
+
 menu:
   main:
     - name: "Home"
       url: "/"
       weight: 1
-    - name: "My Home Lab Journey"
-      url: "/my-home-lab-journey/"
+    - name: "On-Premise Engineering Labs"
+      url: "/on-premise-engineering-labs/"
       weight: 2
     - name: "Cloud Engineering Labs"
       url: "/cloud-engineering-labs"
@@ -72,7 +72,7 @@ taxonomies:
   category: "categories"
 
 permalinks:
-  my-home-lab-journey: "/my-home-lab-journey/:slug/"
+  on-premise-engineering-labs: "/on-premise-engineering-labs/:slug/"
 
 markup:
   highlight:

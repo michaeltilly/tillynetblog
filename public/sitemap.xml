@@ -47,7 +47,10 @@
     <loc>https://blog.tillynet.com/tags/authentik/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</loc>
+    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/chain-of-trust/</loc>
@@ -83,6 +86,12 @@
     <loc>https://blog.tillynet.com/tags/oidc/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://blog.tillynet.com/categories/on-premise-engineering-labs/</loc>
+    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/</loc>
+    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://blog.tillynet.com/tags/pki/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
@@ -101,16 +110,25 @@
     <loc>https://blog.tillynet.com/tags/middleware/</loc>
     <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</loc>
     <lastmod>2025-05-13T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</loc>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</loc>
+    <lastmod>2025-05-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</loc>
+    <lastmod>2025-05-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</loc>
     <lastmod>2025-05-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/authentication/</loc>
     <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</loc>
+    <lastmod>2025-04-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/integrating-samba-4-active-directory-with-authentik-via-ldaps/</loc>
     <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/ldap/</loc>
@@ -119,7 +137,10 @@
     <loc>https://blog.tillynet.com/tags/ldap-server/</loc>
     <lastmod>2025-04-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</loc>
+    <lastmod>2025-04-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</loc>
     <lastmod>2025-04-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/sso/</loc>
@@ -134,7 +155,10 @@
     <loc>https://blog.tillynet.com/tags/networking/</loc>
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</loc>
+    <lastmod>2025-04-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</loc>
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/windows-domain/</loc>
@@ -158,7 +182,10 @@
     <loc>https://blog.tillynet.com/tags/proxmox/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-9/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/static-route/</loc>
@@ -170,10 +197,16 @@
     <loc>https://blog.tillynet.com/tags/wi-fi/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-8/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</loc>
     <lastmod>2025-04-23T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</loc>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</loc>
+    <lastmod>2025-04-23T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-7/current-running-version-of-tillynet/</loc>
+    <lastmod>2025-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/current-running-version-of-tillynet/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/firewall/</loc>
@@ -200,7 +233,10 @@
     <loc>https://blog.tillynet.com/tags/vlan/</loc>
     <lastmod>2025-04-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-6/experimenting-with-network-topologies/</loc>
+    <lastmod>2025-04-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/experimenting-with-network-topologies/</loc>
     <lastmod>2025-04-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/graphviz/</loc>
@@ -215,7 +251,10 @@
     <loc>https://blog.tillynet.com/tags/automation/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-5/building-my-publishing-pipeline/</loc>
+    <lastmod>2025-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/dns/</loc>
@@ -233,7 +272,10 @@
     <loc>https://blog.tillynet.com/tags/obsidian/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-4/pi-hole-dns-migration-to-production-vlan/</loc>
+    <lastmod>2025-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/pi-hole-dns-migration-to-production-vlan/</loc>
     <lastmod>2025-04-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/network-isolation/</loc>
@@ -242,13 +284,22 @@
     <loc>https://blog.tillynet.com/tags/openvpn/</loc>
     <lastmod>2025-04-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</loc>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-3/remote-vlan-recovery--proxmox-network-repair-over-vpn/</loc>
     <lastmod>2025-04-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</loc>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</loc>
+    <lastmod>2025-04-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-2/creating-network-management-isolation/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</loc>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/creating-network-management-isolation/</loc>
+    <lastmod>2025-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/my-home-lab-journey/post-1/the-big-bang-how-it-all-began/</loc>
+    <lastmod>2025-04-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/the-big-bang-how-it-all-began/</loc>
     <lastmod>2025-04-10T00:00:00+00:00</lastmod>
   </url>
 </urlset>

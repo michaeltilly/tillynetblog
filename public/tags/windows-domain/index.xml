@@ -10,9 +10,63 @@
     <atom:link href="https://blog.tillynet.com/tags/windows-domain/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Provisioning Samba Active Directory Domain Controller and Windows Domain Integration</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
       <pubDate>Sat, 26 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</guid>
+      <description>&lt;h2 id=&#34;1-server-preparation&#34;&gt;1. Server Preparation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;OS:&lt;/strong&gt; Ubuntu Server 24.04.2 LTS&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Initial Setup:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Static IP address manually configured&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;IP: &lt;code&gt;172.30.30.30/24&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Gateway: &lt;code&gt;172.30.30.1&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;DNS (initially): &lt;code&gt;172.21.21.21&lt;/code&gt; (Pi-hole)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Installed basic utilities (OpenSSH, networking tools)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-samba-installation-and-configuration&#34;&gt;2. Samba Installation and Configuration&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Installation Commands:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt full-upgrade
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt install samba krb5-config krb5-user winbind smbclient
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Service Management:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Disabled default Samba services to prepare for AD DC mode:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl disable smbd nmbd winbind
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl stop smbd nmbd winbind
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Provision Domain Controller:&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Provisioning Samba Active Directory Domain Controller and Windows Domain Integration</title>
+      <link>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
+      <pubDate>Sat, 26 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</guid>
       <description>&lt;h2 id=&#34;1-server-preparation&#34;&gt;1. Server Preparation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;

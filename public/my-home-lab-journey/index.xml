@@ -10,9 +10,9 @@
     <atom:link href="https://blog.tillynet.com/my-home-lab-journey/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Proper PKI Chain of Trust in a Samba AD Lab</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
       <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</guid>
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This post documents how I implemented a production-style Public Key Infrastructure (PKI) inside my Samba 4 Active Directory (AD) lab. The project simulates how enterprise environments separate certificate authority responsibilities to promote security and manageability. I built a trust chain starting with an offline Root CA, promoted my Samba DC as an Intermediate CA, and automated service certificate signing for applications like Traefik and Authentik.&lt;/p&gt;
 &lt;hr&gt;
@@ -21,9 +21,9 @@
     </item>
     <item>
       <title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
       <pubDate>Tue, 13 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;This guide details how I provisioned &lt;strong&gt;Authentik&lt;/strong&gt; as a middleware authentication provider integrated with &lt;strong&gt;Traefik&lt;/strong&gt; reverse proxy, using TLS certificates issued by my internal &lt;strong&gt;Samba Active Directory Certificate Authority (CA)&lt;/strong&gt;. The result is a secure, SSO-enabled reverse proxy setup that leverages &lt;strong&gt;LDAPS&lt;/strong&gt; to enforce access control for authorized users in my Active Directory.&lt;/p&gt;
 &lt;p&gt;This solution enables:&lt;/p&gt;
@@ -36,9 +36,9 @@
     </item>
     <item>
       <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
       <pubDate>Fri, 02 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.&lt;/p&gt;
 &lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
@@ -63,9 +63,9 @@
     </item>
     <item>
       <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
       <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
       <description>&lt;p&gt;This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
@@ -78,9 +78,9 @@
     </item>
     <item>
       <title>Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</link>
       <pubDate>Mon, 28 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</guid>
       <description>&lt;p&gt;This guide documents the step-by-step process used to provision an &lt;a href=&#34;https://goauthentik.io&#34;&gt;Authentik&lt;/a&gt; identity provider server on a self-hosted Ubuntu Server using Docker and Docker Compose. This setup is suitable for advanced home lab environments and follows production-grade containerization practices.&lt;/p&gt;
 &lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
 &lt;ul&gt;
@@ -95,9 +95,9 @@
     </item>
     <item>
       <title>Provisioning Samba Active Directory Domain Controller and Windows Domain Integration</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
       <pubDate>Sat, 26 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</guid>
       <description>&lt;h2 id=&#34;1-server-preparation&#34;&gt;1. Server Preparation&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -149,26 +149,26 @@
     </item>
     <item>
       <title>Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-9/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</link>
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-9/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;This post documents the troubleshooting process I followed to resolve an internet connectivity issue affecting virtual machines (VMs) hosted on a Proxmox VE node running on a Wi-Fi-only Dell XPS 15. The VMs were deployed on a routed internal subnet (&lt;code&gt;172.30.30.0/24&lt;/code&gt;) with static routes configured through a pfSense firewall. While the VMs could communicate with internal hosts—including DNS and gateway IPs—they were unable to reach external internet addresses such as &lt;code&gt;8.8.8.8&lt;/code&gt;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Deploying a Proxmox Node on a Wi-Fi-Only Dell XPS Laptop</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-8/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</link>
       <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-8/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</guid>
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;
 &lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Current Running Version of TillyNet</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-7/current-running-version-of-tillynet/</link>
       <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/current-running-version-of-tillynet/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-7/current-running-version-of-tillynet/</guid>
       <description>&lt;h1 id=&#34;current-running-version-of-tillynet&#34;&gt;Current Running Version of TillyNet&lt;/h1&gt;
 &lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;
 &lt;hr&gt;
@@ -226,18 +226,18 @@
     </item>
     <item>
       <title>Experimenting With Network Topologies</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-6/experimenting-with-network-topologies/</link>
       <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/experimenting-with-network-topologies/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-6/experimenting-with-network-topologies/</guid>
       <description>&lt;h1 id=&#34;creating-a-network-topology-using-graphviz-and-diagrams-package-in-python&#34;&gt;Creating a Network Topology Using Graphviz and diagrams Package in Python&lt;/h1&gt;
 &lt;p&gt;This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the &lt;code&gt;graphviz&lt;/code&gt; engine with the &lt;code&gt;diagrams&lt;/code&gt; Python package, I decided to experiment with it.&lt;/p&gt;
 &lt;p&gt;The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-5/building-my-publishing-pipeline/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/building-my-publishing-pipeline-obsidian-hugo-github-hostinger/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-5/building-my-publishing-pipeline/</guid>
       <description>&lt;h1 id=&#34;obsidian--hugo--github--hostinger-automation-workflow&#34;&gt;Obsidian → Hugo → GitHub → Hostinger Automation Workflow&lt;/h1&gt;
 &lt;p&gt;This post documents the full setup of my &lt;strong&gt;static site publishing pipeline&lt;/strong&gt; that automates taking blog posts from &lt;strong&gt;Obsidian&lt;/strong&gt;, rendering them with &lt;strong&gt;Hugo&lt;/strong&gt;, pushing the output to &lt;strong&gt;GitHub&lt;/strong&gt;, and then having &lt;strong&gt;Hostinger&lt;/strong&gt; automatically update my website via webhook.&lt;/p&gt;
 &lt;hr&gt;
@@ -416,9 +416,9 @@
     </item>
     <item>
       <title>Pi-hole DNS Migration to Production VLAN</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-4/pi-hole-dns-migration-to-production-vlan/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/pi-hole-dns-migration-to-production-vlan/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-4/pi-hole-dns-migration-to-production-vlan/</guid>
       <description>&lt;h1 id=&#34;pi-hole-dns-migration-to-production-vlan&#34;&gt;Pi-hole DNS Migration to Production VLAN&lt;/h1&gt;
 &lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated &lt;strong&gt;Production VLAN&lt;/strong&gt;. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.&lt;/p&gt;
@@ -486,9 +486,9 @@
     </item>
     <item>
       <title>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-3/remote-vlan-recovery--proxmox-network-repair-over-vpn/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-3/remote-vlan-recovery--proxmox-network-repair-over-vpn/</guid>
       <description>&lt;h2 id=&#34;remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
 &lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;
 &lt;p&gt;In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely &lt;strong&gt;off-site&lt;/strong&gt;, using only a mobile device connected via an &lt;strong&gt;OpenVPN tunnel&lt;/strong&gt;.&lt;/p&gt;
@@ -498,9 +498,9 @@
     </item>
     <item>
       <title>Creating Network Management Isolation</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-2/creating-network-management-isolation/</link>
       <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/creating-network-management-isolation/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-2/creating-network-management-isolation/</guid>
       <description>&lt;h1 id=&#34;02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
 &lt;p&gt;This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.&lt;/p&gt;
 &lt;hr&gt;
@@ -624,9 +624,9 @@
     </item>
     <item>
       <title>The Big Bang (How it All Began)</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-1/the-big-bang-how-it-all-began/</link>
       <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/the-big-bang-how-it-all-began/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-1/the-big-bang-how-it-all-began/</guid>
       <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;
 &lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;
 &lt;hr&gt;

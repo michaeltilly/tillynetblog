@@ -4,11 +4,11 @@ import subprocess
 import re
 
 # === CONFIGURATION ===
-obsidian_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\my-home-lab-journey"
-cloud_labs_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\cloud-engineering-labs"  # NEW
+obsidian_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\on-premise-engineering-labs"
+cloud_labs_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\cloud-engineering-labs"
 hugo_root_dir = r"C:\Users\tillyadmin\Documents\tillynetblog"
-hugo_content_dir = os.path.join(hugo_root_dir, "content", "my-home-lab-journey")
-hugo_cloud_labs_dir = os.path.join(hugo_root_dir, "content", "cloud-labs")  # NEW
+hugo_content_dir = os.path.join(hugo_root_dir, "content", "on-premise-engineering-labs")
+hugo_cloud_labs_dir = os.path.join(hugo_root_dir, "content", "cloud-engineering-labs")
 attachments_dir = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\assets\images"
 static_images_dir = os.path.join(hugo_root_dir, "static", "images")
 about_src = r"C:\Users\tillyadmin\Documents\TillyDomain_Obsidian_Vault\pages\about.md"
@@ -55,11 +55,11 @@ def process_content_directory(source_dir, destination_dir, content_type):
     
     print(f"✔ Processed images and updated markdown links for {content_type}.")
 
-# === STEP 1: Sync Markdown Posts from Obsidian (Home Lab Journey) ===
-process_content_directory(obsidian_dir, hugo_content_dir, "Home Lab Journey")
+# === STEP 1: Sync Markdown Posts from Obsidian (On Premise Engineering Labs) ===
+process_content_directory(obsidian_dir, hugo_content_dir, "On-Premise Engineering Labs")
 
-# === STEP 2: Sync Markdown Posts from Obsidian (Cloud Labs) ===
-process_content_directory(cloud_labs_dir, hugo_cloud_labs_dir, "Cloud Labs")
+# === STEP 2: Sync Markdown Posts from Obsidian (Cloud Engineering Labs) ===
+process_content_directory(cloud_labs_dir, hugo_cloud_labs_dir, "Cloud Engineering Labs")
 
 # === STEP 3: Copy About Page to /about/ as index.md ===
 if os.path.exists(about_src):

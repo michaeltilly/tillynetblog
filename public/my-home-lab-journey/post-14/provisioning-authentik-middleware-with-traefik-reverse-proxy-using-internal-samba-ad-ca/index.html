@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA | Tilly Net</title>
+<meta name="keywords" content="Traefik, Reverse Proxy, Authentik, Authentik Outposts, Middleware, Samba, Active Directory, Internal CA, Network Security, Docker, Docker Compose, Home Lab">
+<meta name="description" content="Introduction
+This guide details how I provisioned Authentik as a middleware authentication provider integrated with Traefik reverse proxy, using TLS certificates issued by my internal Samba Active Directory Certificate Authority (CA). The result is a secure, SSO-enabled reverse proxy setup that leverages LDAPS to enforce access control for authorized users in my Active Directory.
+This solution enables:
+
+
+Trusted HTTPS access to services proxied through Traefik.
+
+
+SSO enforcement using Authentik via the forwardAuth middleware.">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA">
+  <meta property="og:description" content="Introduction This guide details how I provisioned Authentik as a middleware authentication provider integrated with Traefik reverse proxy, using TLS certificates issued by my internal Samba Active Directory Certificate Authority (CA). The result is a secure, SSO-enabled reverse proxy setup that leverages LDAPS to enforce access control for authorized users in my Active Directory.
+This solution enables:
+Trusted HTTPS access to services proxied through Traefik.
+SSO enforcement using Authentik via the forwardAuth middleware.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="my-home-lab-journey">
+    <meta property="article:published_time" content="2025-05-13T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-05-13T00:00:00+00:00">
+    <meta property="article:tag" content="Traefik">
+    <meta property="article:tag" content="Reverse Proxy">
+    <meta property="article:tag" content="Authentik">
+    <meta property="article:tag" content="Authentik Outposts">
+    <meta property="article:tag" content="Middleware">
+    <meta property="article:tag" content="Samba">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA">
+<meta name="twitter:description" content="Introduction
+This guide details how I provisioned Authentik as a middleware authentication provider integrated with Traefik reverse proxy, using TLS certificates issued by my internal Samba Active Directory Certificate Authority (CA). The result is a secure, SSO-enabled reverse proxy setup that leverages LDAPS to enforce access control for authorized users in my Active Directory.
+This solution enables:
+
+
+Trusted HTTPS access to services proxied through Traefik.
+
+
+SSO enforcement using Authentik via the forwardAuth middleware.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "My-Home-Lab-Journeys",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA",
+      "item": "https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA",
+  "name": "Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA",
+  "description": "Introduction This guide details how I provisioned Authentik as a middleware authentication provider integrated with Traefik reverse proxy, using TLS certificates issued by my internal Samba Active Directory Certificate Authority (CA). The result is a secure, SSO-enabled reverse proxy setup that leverages LDAPS to enforce access control for authorized users in my Active Directory.\nThis solution enables:\nTrusted HTTPS access to services proxied through Traefik.\nSSO enforcement using Authentik via the forwardAuth middleware.\n",
+  "keywords": [
+    "Traefik", "Reverse Proxy", "Authentik", "Authentik Outposts", "Middleware", "Samba", "Active Directory", "Internal CA", "Network Security", "Docker", "Docker Compose", "Home Lab"
+  ],
+  "articleBody": "Introduction This guide details how I provisioned Authentik as a middleware authentication provider integrated with Traefik reverse proxy, using TLS certificates issued by my internal Samba Active Directory Certificate Authority (CA). The result is a secure, SSO-enabled reverse proxy setup that leverages LDAPS to enforce access control for authorized users in my Active Directory.\nThis solution enables:\nTrusted HTTPS access to services proxied through Traefik.\nSSO enforcement using Authentik via the forwardAuth middleware.\nCertificate-based trust rooted in my Samba 4 AD CA.\nAuthentik outpost (proxy) deployment as a sidecar container to manage authentication flows.\nPrerequisites Working Traefik reverse proxy deployed via Docker Compose\nAuthentik server accessible at https://authentik.example.lan\nValid internal CA-signed certificates for both Traefik and Authentik\nSamba 4 running as internal CA with LDAPS enabled\nDocker and Docker Compose installed\nDNS records pointing to correct internal service IPs (e.g., traefik.example.lan)\nAuthentik Setup Notes Authentik was configured to use LDAPS for user directory integration against Samba AD.\nUsers from a specific group (e.g., AuthorizedSSOUsers) were assigned access to the Traefik application.\nAn embedded outpost was initially tested, but the dedicated container provided cleaner integration.\nDirectory Layout 📁 Directory Layout /home/username/traefik-authentik/ ├── docker-compose.yml # Main Docker Compose file ├── Dockerfile # Custom Dockerfile for the Authentik outpost ├── .env # (Optional) Environment variables file ├── certs/ # Internal CA and TLS certs │ ├── ca.crt # Internal Samba AD CA certificate (PEM format) │ ├── authentik.example.lan.crt # Authentik SSL certificate │ ├── authentik.example.lan.key # Authentik SSL key │ ├── traefik.example.lan.crt # Traefik dashboard SSL certificate │ └── traefik.example.lan.key # Traefik dashboard SSL key ├── traefik/ │ ├── traefik.yml # Static Traefik configuration │ ├── middleware.yml # Middleware definition for Authentik SSO │ └── tls.yml # TLS options and certificate stores Notes: The certs/ folder is mounted into containers to provide all necessary trusted CA and TLS materials. All certificates must be in PEM format. The Dockerfile should use a multi-stage approach or add the CA and call update-ca-certificates as root. The traefik/ folder holds Traefik’s dynamic configuration files. You can substitute /home/username/traefik-authentik/ with any appropriate directory, but all relative volume mounts in docker-compose.yml should align. 1. Traefik Configuration Overview traefik.yml global: checkNewVersion: false sendAnonymousUsage: false accessLog: {} log: level: TRACE api: dashboard: true insecure: false debug: false entryPoints: web: address: :80 http: redirections: entryPoint: to: websecure scheme: https websecure: address: :443 serversTransport: insecureSkipVerify: true # Useful during internal CA testing phase providers: docker: exposedByDefault: false endpoint: 'unix:///var/run/docker.sock' watch: true file: directory: /etc/traefik/conf/ watch: true Global Settings -global: root-level settings for global Traefik behavior\ncheckNewVersion: false: Disables automatic checking for new Traefik versions (I prefer to update manually) sendAnonymousUsage: false: Prevents ending anonymous usage statistics to Traefik devs AccessLog Configuration accessLog: {}: Enables access logging with default settings (empty config block) General Logging Configuration log.level: TRACE: Sets the logging level to the most verbose (TRACE), useful for debugging and troubleshooting API and Dashboard api.dasbhoard: true: Enables the Traefik web dashboard api.insecure: false: Dashboard is only accessible via a secure entry point (not exposed on HTTP) api.debug: false: Disables the debug endpoint, which can expose sensitive info Entry Points (Ports) entryPoints: Defines how Traefik listens for incoming traffic web.address: :80: Listens on port 80 (HTTP) http.redirections.entryPoint.to: websecure: Redirects all HTTP traffic to HTTPS scheme: https: Specifies the protocol for redirection websecure.address: :443: Listens on port 443 (HTTPS) TLS Transport Options serversTransport.insecureSkipVerify: true: Disables certificate verification when Traefik communicates with backend services. Use only for internal services or testing, as it bypasses TLS validation. Providers providers.docker: Enables Docker as a dynamic configuration provider.\nexposedByDefault: false: Services are not automatically exposed to Traefik unless explicitly enabled via labels.\nendpoint: Communicates with Docker through the local Unix socket.\nwatch: true: Automatically reloads config when Docker changes (e.g., containers start/stop).\nproviders.file: Enables static/dynamic config from a file directory.\ndirectory: /etc/traefik/conf/: Path to directory containing additional dynamic configuration files (like routers, middlewares, TLS certs).\nwatch: true: Traefik watches this directory for live changes and reloads as needed.\nconf/middleware.yml http: middlewares: authentik: forwardAuth: address: http://NAME-OF-AUTHENTIK-OUTPOST:9000/outpost.goauthentik.io/auth/traefik trustForwardHeader: true authResponseHeaders: - X-authentik-username - X-authentik-groups - X-authentik-entitlements - X-authentik-email - X-authentik-name - X-authentik-uid - X-authentik-jwt - X-authentik-meta-jwks - X-authentik-meta-outpost - X-authentik-meta-provider - X-authentik-meta-app - X-authentik-meta-version This middleware.yml file configures Traefik to forward requests to the Authentik outpost container to enforce authentication and pass key user identity headers.\nhttp: This is the root section for all HTTP-related dynamic configuration in Traefik (e.g., routers, services, middlewares).\nmiddlewares: Begins the definition of one or more middleware objects that can be referenced by routers.\nauthentik: The name you’ve assigned to this middleware. This will be used when attaching it to a router using the label traefik.http.routers..middlewares=authentik@file.\nforwardAuth: Specifies that this middleware uses a forward authentication model, where Traefik sends each incoming request to an external authentication server (in this case, Authentik) before passing it to the backend service.\naddress: The URL that Traefik will forward incoming requests to for authentication.\nThis must point to the Authentik Outpost service’s endpoint that is designed to work with Traefik as a forwardAuth provider. trustForwardHeader: true: Tells Traefik to forward X-Forwarded-* headers from the client (e.g., real client IP, host info). This is important when the authentication server (Authentik) needs those headers to make access decisions.\nauthResponseHeaders: This section lists headers returned from Authentik that should be passed through to the final backend service.\nThese headers typically contain user metadata, group memberships, entitlements, and JWT tokens. They’re essential for the application to know who is logged in and what they’re authorized to do.\nconf/tls.yml tls: certificates - certFile: /var/traefik/certs/traefik.example.lan.crt keyFile: /var/traefik/certs/traefik.example.lan.key - certFile: /var/traefik/certs/authentik.example.lan.crt keyFile: /var/traefik/certs/authentik.example.lan.key stores: default: defaultCertificate: certFile: /var/traefik/certs/traefik.example.lan.crt keyFile: /var/traefik/certs/traefik.example.lan.key options: default: minVersion: VersionTLS12 sniStrict: true curvePreferences: - CurveP256 - CurveP384 - CurveP521 cipherSuites: - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305 The tls.yml file Specifies TLS certificate and key files signed by the internal Samba CA.\nSummary This configuration:\nDefines and serves multiple domain-specific certificates.\nUses strong security defaults (TLS 1.2+, strict SNI, PFS ciphers).\nEnsures fallback TLS service via the default certificate store.\nRoot Key tls: Root section for configuring TLS certificates, stores, and security options. TLS Certificates certificates: List of TLS certificates that Traefik will serve.\ncertFile: Path to the public certificate file (PEM format).\nkeyFile: Path to the associated private key.\nEach certificate is matched against incoming requests by their SNI (Server Name Indication) hostname (e.g., traefik.example.lan, authentik.example.lan).\nDefault Certificate Store stores: Defines named TLS stores. The default store is used when no matching SNI is found. defaultCertificate: A fallback certificate that Traefik will use if no specific certificate matches the request’s hostname. TLS Security Options options: Defines reusable TLS options (like security policies).\ndefault: The default TLS policy to apply if not overridden.\nminVersion: VersionTLS12: Only allow TLS 1.2 or higher (disables older, insecure TLS versions).\nsniStrict: true: Requires that a matching certificate for the SNI is present, otherwise Traefik will reject the connection.\nCurve Preferences curvePreferences: Preferred elliptic curves for ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) key exchange.\nThis list defines the order of preference for stronger cryptographic curves.\nCipher Suites cipherSuites: Explicitly defines the allowed cipher suites for TLS 1.2 connections (TLS 1.3 has its own fixed ciphers).\nSuites here support strong AEAD encryption and PFS (Perfect Forward Secrecy) via ECDHE.\n2. Docker Compose Configuration docker-compose.yml Create a unified docker-compose.yml that includes both traefik and the authentik-outpost:\nservices: traefik: container_name: traefik image: traefik:latest ports: - 80:80 - 443:443 volumes: - /var/run/docker.sock:/var/run/docker.sock:ro - filepathto/traefik.yml:/etc/traefik/traefik.yml:ro - filepathto/traefik/config/:/etc/traefik/conf:ro - filepathto/traefik/certs/:/var/traefik/certs/:rw networks: - frontend - backend labels: - traefik.enable=true #enables Traefik reverse proxy for this container - traefik.http.routers.traefik.rule=Host(`traefik.example.lan`) #defines a router that activates when requests match the domain specified - traefik.http.routers.traefik.entrypoints=websecure #binds the router to HTTPS (websecure) entry point - traefik.http.routers.traefik.tls=true #enables TLS for this router - traefik.http.routers.traefik.middlewares=authentik@file #applies the middleware named authentik from the file provider (in my case middleware.yml) for auth - traefik.http.routers.traefik.service=api@internal #tells Traefik to serve its internal API/dasbhoard when this route is hit restart: unless-stopped authentik-outpost: container_name: traefik-authentik-outpost image: custom-authentik-outpost #use custom image to load trusted internal CA cert into container volumes: - filepathto/certs:/certs:ro restart: unless-stopped networks: - frontend - backend environment: - AUTHENTIK_HOST=https://authentik.example.lan - AUTHENTIK_INSECURE=false #requires valid HTTPS connection (doesn't skip tls checks) - REQUESTS_CA_BUNDLE=/certs/ca.crt #instructs Python-based tools (used by Authentik Proxy) to trust internal CA for TLS - LOG_LEVEL=debug - AUTHENTIK_HOST_BROWSER=https://authentik.example.lan #used when public and internal addresses differ - AUTHENTIK_TOKEN=xxxxxxxxxxxxxxx # Replace with Authentik outpost token. Token is necessary to authenticate the outpost with the Authentik server. DO NOT EXPOSE networks: frontend: external: true backend: external: true Highlights:\nTraefik loads configuration from mounted YAML files.\nAuthentik outpost uses the internal CA to validate Authentik’s certificate.\nIf AUTHENTIK_INSECURE=false fails due to CA trust, temporarily flip it to true.\nNote: Replace custom-authentik-outpost with the name of the custom image (see next step).\n3. Custom Dockerfile for Outpost (Trust Internal CA) To resolve certificate validation issues, a custom image was created by appending your Samba AD CA to the container’s trust store:\nDockerfile for Custom Outpost Image To trust my internal Samba CA, I built a custom image for the Authentik proxy outpost:\nDockerfile – name the file exactly like this\nFROM ghcr.io/goauthentik/proxy:latest\rCOPY ./certs/ca.crt /usr/local/share/ca-certificates/ca.crt\rRUN update-ca-certificates Then build the file with:\nsudo docker build -t custom-authentik-outpost . This step ensured the Authentik outpost container would trust my internal certificate hierarchy.\n4. Authentik Configuration In the Authentik dashboard:\nApplication Name: traefik-dashboard\nSlug: traefik-dashboard\nLaunch URL: https://traefik.example.lan/dashboard/\nProvider: The created proxy provider (in my case traefik-forward-auth)\nPolicy engine mode: any\nProvider (Proxy) Type: Proxy\nName: traefik-forward-auth\nAuthorization flow: default-provider-authorization-explicit-consent (Authorize Application)\nUse forward auth (single application)\nthe external host address should be the FQDN that you’ll want to access the application at in my case that is: https://traefik.tillynet.lan since I want to protect my Traefik dashboard with Authentik Token Validity: hours=24\nOutpost Create a new Authentik Outpost to deploy in the same docker compose config file as traefik (see the traefik docker-compose.yml above for deploying the outpost as a docker container)\nName: traefik-authentik-outpost\nType: Proxy\nIntegration: Local Docker connection\nApplications: Link your traefik-dashboard application\nToken: After outpost copy your Authentik token and paste it in docker-compose.yml\nHealthy check: Ensure Authentik sees outpost as healthy after the docker container for the outpost has been deployed\n6. Start the Stack docker compose up -d You should now be able to access:\nhttps://traefik.example.lan/dashboard/ — protected by Authentik SSO 6. Troubleshooting Tips Ensure your internal CA is correctly mounted and trusted in the custom container.\nIf you see x509: certificate signed by unknown authority, the CA is likely missing.\nUse docker logs for both Traefik and Outpost to trace errors.\nCheck firewall/NAT between 172.x Docker bridge and your internal CA if connection reset by peer occurs. MAKE SURE YOU ARE NOT USING THE DEFAULT DOCKER NETWORK.\n7. ## Final Outcome You should now be able to:\nVisit https://traefik.example.lan/dashboard/\nBe redirected to Authentik SSO\nLog in via your authorized AD credentials using LDAPS\nGain access to the secured dashboard with a valid TLS certificate\nThis project brought together reverse proxying, identity management, and internal PKI in a way that’s reproducible and production-ready for any homelab setup.\n",
+  "wordCount" : "1843",
+  "inLanguage": "en",
+  "datePublished": "2025-05-13T00:00:00Z",
+  "dateModified": "2025-05-13T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/on-premise-engineering-labs/" title="On-Premise Engineering Labs">
+                    <span>On-Premise Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/cloud-engineering-labs" title="Cloud Engineering Labs">
+                    <span>Cloud Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA
+    </h1>
+    <div class="post-meta"><span title='2025-05-13 00:00:00 +0000 UTC'>May 13, 2025</span>&nbsp;·&nbsp;9 min
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>This guide details how I provisioned <strong>Authentik</strong> as a middleware authentication provider integrated with <strong>Traefik</strong> reverse proxy, using TLS certificates issued by my internal <strong>Samba Active Directory Certificate Authority (CA)</strong>. The result is a secure, SSO-enabled reverse proxy setup that leverages <strong>LDAPS</strong> to enforce access control for authorized users in my Active Directory.</p>
+<p>This solution enables:</p>
+<ul>
+<li>
+<p>Trusted HTTPS access to services proxied through Traefik.</p>
+</li>
+<li>
+<p>SSO enforcement using Authentik via the forwardAuth middleware.</p>
+</li>
+<li>
+<p>Certificate-based trust rooted in my Samba 4 AD CA.</p>
+</li>
+<li>
+<p>Authentik outpost (proxy) deployment as a sidecar container to manage authentication flows.</p>
+</li>
+</ul>
+<h2 id="prerequisites">Prerequisites<a hidden class="anchor" aria-hidden="true" href="#prerequisites">#</a></h2>
+<ul>
+<li>
+<p>Working Traefik reverse proxy deployed via Docker Compose</p>
+</li>
+<li>
+<p>Authentik server accessible at <code>https://authentik.example.lan</code></p>
+</li>
+<li>
+<p>Valid internal CA-signed certificates for both Traefik and Authentik</p>
+</li>
+<li>
+<p>Samba 4 running as internal CA with LDAPS enabled</p>
+</li>
+<li>
+<p>Docker and Docker Compose installed</p>
+</li>
+<li>
+<p>DNS records pointing to correct internal service IPs (e.g., <code>traefik.example.lan</code>)</p>
+</li>
+</ul>
+<hr>
+<h2 id="authentik-setup-notes">Authentik Setup Notes<a hidden class="anchor" aria-hidden="true" href="#authentik-setup-notes">#</a></h2>
+<ul>
+<li>
+<p>Authentik was configured to use <strong>LDAPS</strong> for user directory integration against Samba AD.</p>
+</li>
+<li>
+<p>Users from a specific group (e.g., <code>AuthorizedSSOUsers</code>) were assigned access to the Traefik application.</p>
+</li>
+<li>
+<p>An embedded outpost was initially tested, but the dedicated container provided cleaner integration.</p>
+</li>
+</ul>
+<hr>
+<h2 id="directory-layout">Directory Layout<a hidden class="anchor" aria-hidden="true" href="#directory-layout">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">📁 Directory Layout
+</span></span><span class="line"><span class="cl">/home/username/traefik-authentik/  
+</span></span><span class="line"><span class="cl">├── docker-compose.yml <span class="c1"># Main Docker Compose file  </span>
+</span></span><span class="line"><span class="cl">├── Dockerfile <span class="c1"># Custom Dockerfile for the Authentik outpost  </span>
+</span></span><span class="line"><span class="cl">├── .env <span class="c1"># (Optional) Environment variables file  </span>
+</span></span><span class="line"><span class="cl">├── certs/ <span class="c1"># Internal CA and TLS certs  </span>
+</span></span><span class="line"><span class="cl">│ ├── ca.crt <span class="c1"># Internal Samba AD CA certificate (PEM format)  </span>
+</span></span><span class="line"><span class="cl">│ ├── authentik.example.lan.crt <span class="c1"># Authentik SSL certificate  </span>
+</span></span><span class="line"><span class="cl">│ ├── authentik.example.lan.key <span class="c1"># Authentik SSL key  </span>
+</span></span><span class="line"><span class="cl">│ ├── traefik.example.lan.crt <span class="c1"># Traefik dashboard SSL certificate  </span>
+</span></span><span class="line"><span class="cl">│ └── traefik.example.lan.key <span class="c1"># Traefik dashboard SSL key  </span>
+</span></span><span class="line"><span class="cl">├── traefik/  
+</span></span><span class="line"><span class="cl">│ ├── traefik.yml <span class="c1"># Static Traefik configuration  </span>
+</span></span><span class="line"><span class="cl">│ ├── middleware.yml <span class="c1"># Middleware definition for Authentik SSO  </span>
+</span></span><span class="line"><span class="cl">│ └── tls.yml <span class="c1"># TLS options and certificate stores  </span>
+</span></span></code></pre></div><h3 id="notes">Notes:<a hidden class="anchor" aria-hidden="true" href="#notes">#</a></h3>
+<ul>
+<li>The <code>certs/</code> folder is mounted into containers to provide all necessary trusted CA and TLS materials.</li>
+<li>All certificates must be in PEM format.</li>
+<li>The <code>Dockerfile</code> should use a multi-stage approach or add the CA and call <code>update-ca-certificates</code> as <code>root</code>.</li>
+<li>The <code>traefik/</code> folder holds Traefik&rsquo;s dynamic configuration files.</li>
+<li>You can substitute <code>/home/username/traefik-authentik/</code> with any appropriate directory, but all relative volume mounts in <code>docker-compose.yml</code> should align.</li>
+</ul>
+<hr>
+<h2 id="1-traefik-configuration-overview">1. Traefik Configuration Overview<a hidden class="anchor" aria-hidden="true" href="#1-traefik-configuration-overview">#</a></h2>
+<h3 id="traefikyml"><code>traefik.yml</code><a hidden class="anchor" aria-hidden="true" href="#traefikyml">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">global</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">checkNewVersion</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">sendAnonymousUsage</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">accessLog</span><span class="p">:</span><span class="w"> </span>{}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">log</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">TRACE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">api</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">dashboard</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">insecure</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">entryPoints</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">web</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="p">:</span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">redirections</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">entryPoint</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l">websecure</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">scheme</span><span class="p">:</span><span class="w"> </span><span class="l">https</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">websecure</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="p">:</span><span class="m">443</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">serversTransport</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">insecureSkipVerify</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># Useful during internal CA testing phase</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">providers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">docker</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">exposedByDefault</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;unix:///var/run/docker.sock&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">watch</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">file</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">directory</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/traefik/conf/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">watch</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><h4 id="global-settings">Global Settings<a hidden class="anchor" aria-hidden="true" href="#global-settings">#</a></h4>
+<p>-<code>global</code>: root-level settings for global Traefik behavior</p>
+<ul>
+<li><code>checkNewVersion: false</code>: Disables automatic checking for new Traefik versions (I prefer to update manually)</li>
+<li><code>sendAnonymousUsage: false</code>: Prevents ending anonymous usage statistics to Traefik devs</li>
+</ul>
+<h4 id="accesslog-configuration">AccessLog Configuration<a hidden class="anchor" aria-hidden="true" href="#accesslog-configuration">#</a></h4>
+<ul>
+<li><code>accessLog: {}</code>: Enables access logging with default settings (empty config block)</li>
+</ul>
+<h4 id="general-logging-configuration">General Logging Configuration<a hidden class="anchor" aria-hidden="true" href="#general-logging-configuration">#</a></h4>
+<ul>
+<li><code>log.level: TRACE</code>: Sets the logging level to the most verbose (<code>TRACE</code>), useful for debugging and troubleshooting</li>
+</ul>
+<h4 id="api-and-dashboard">API and Dashboard<a hidden class="anchor" aria-hidden="true" href="#api-and-dashboard">#</a></h4>
+<ul>
+<li><code>api.dasbhoard: true</code>: Enables the Traefik web dashboard</li>
+<li><code>api.insecure: false</code>: Dashboard is only accessible via a secure entry point (not exposed on HTTP)</li>
+<li><code>api.debug: false</code>: Disables the debug endpoint, which can expose sensitive info</li>
+</ul>
+<h4 id="entry-points-ports">Entry Points (Ports)<a hidden class="anchor" aria-hidden="true" href="#entry-points-ports">#</a></h4>
+<ul>
+<li><code>entryPoints</code>: Defines how Traefik listens for incoming traffic</li>
+<li><code>web.address: :80</code>: Listens on port 80 (HTTP)</li>
+<li><code>http.redirections.entryPoint.to: websecure</code>: Redirects all HTTP traffic to HTTPS</li>
+<li><code>scheme: https</code>: Specifies the protocol for redirection</li>
+<li><code>websecure.address: :443</code>: Listens on port 443 (HTTPS)</li>
+</ul>
+<h4 id="tls-transport-options">TLS Transport Options<a hidden class="anchor" aria-hidden="true" href="#tls-transport-options">#</a></h4>
+<ul>
+<li><code>serversTransport.insecureSkipVerify: true</code>: Disables certificate verification when Traefik communicates with backend services. <strong>Use only for internal services or testing</strong>, as it bypasses TLS validation.</li>
+</ul>
+<h4 id="providers">Providers<a hidden class="anchor" aria-hidden="true" href="#providers">#</a></h4>
+<ul>
+<li>
+<p><code>providers.docker</code>: Enables Docker as a dynamic configuration provider.</p>
+</li>
+<li>
+<p><code>exposedByDefault: false</code>: Services are <strong>not automatically exposed</strong> to Traefik unless explicitly enabled via labels.</p>
+</li>
+<li>
+<p><code>endpoint</code>: Communicates with Docker through the local Unix socket.</p>
+</li>
+<li>
+<p><code>watch: true</code>: Automatically reloads config when Docker changes (e.g., containers start/stop).</p>
+</li>
+<li>
+<p><code>providers.file</code>: Enables static/dynamic config from a file directory.</p>
+</li>
+<li>
+<p><code>directory: /etc/traefik/conf/</code>: Path to directory containing additional dynamic configuration files (like routers, middlewares, TLS certs).</p>
+</li>
+<li>
+<p><code>watch: true</code>: Traefik watches this directory for live changes and reloads as needed.</p>
+</li>
+</ul>
+<h3 id="confmiddlewareyml"><code>conf/middleware.yml</code><a hidden class="anchor" aria-hidden="true" href="#confmiddlewareyml">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">http</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">middlewares</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">authentik</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">forwardAuth</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">http://NAME-OF-AUTHENTIK-OUTPOST:9000/outpost.goauthentik.io/auth/traefik</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">trustForwardHeader</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">authResponseHeaders</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-username</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-groups</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-entitlements</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-email</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-uid</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-jwt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-meta-jwks</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-meta-outpost</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-meta-provider</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-meta-app</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="l">X-authentik-meta-version</span><span class="w">
+</span></span></span></code></pre></div><p>This <code>middleware.yml</code> file configures Traefik to forward requests to the Authentik outpost container to enforce authentication and pass key user identity headers.</p>
+<ul>
+<li>
+<p><code>http</code>: This is the root section for all HTTP-related dynamic configuration in Traefik (e.g., routers, services, middlewares).</p>
+</li>
+<li>
+<p><code>middlewares</code>: Begins the definition of one or more middleware objects that can be referenced by routers.</p>
+</li>
+<li>
+<p><code>authentik</code>: The name you&rsquo;ve assigned to this middleware. This will be used when attaching it to a router using the label <code>traefik.http.routers.&lt;name&gt;.middlewares=authentik@file</code>.</p>
+</li>
+<li>
+<p><code>forwardAuth</code>: Specifies that this middleware uses a <strong>forward authentication</strong> model, where Traefik sends each incoming request to an external authentication server (in this case, Authentik) before passing it to the backend service.</p>
+</li>
+<li>
+<p><code>address</code>: The URL that Traefik will forward incoming requests to for authentication.</p>
+<ul>
+<li>This must point to the <strong>Authentik Outpost</strong> service’s endpoint that is designed to work with Traefik as a forwardAuth provider.</li>
+</ul>
+</li>
+<li>
+<p><code>trustForwardHeader: true</code>: Tells Traefik to forward <code>X-Forwarded-*</code> headers from the client (e.g., real client IP, host info). This is important when the authentication server (Authentik) needs those headers to make access decisions.</p>
+</li>
+<li>
+<p><code>authResponseHeaders</code>: This section lists headers returned from Authentik that should be <strong>passed through</strong> to the final backend service.</p>
+</li>
+<li>
+<p>These headers typically contain user metadata, group memberships, entitlements, and JWT tokens. They&rsquo;re essential for the application to know <strong>who is logged in</strong> and <strong>what they&rsquo;re authorized to do</strong>.</p>
+</li>
+</ul>
+<h3 id="conftlsyml"><code>conf/tls.yml</code><a hidden class="anchor" aria-hidden="true" href="#conftlsyml">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">tls</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">certificates</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">certFile</span><span class="p">:</span><span class="w"> </span><span class="l">/var/traefik/certs/traefik.example.lan.crt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">keyFile</span><span class="p">:</span><span class="w"> </span><span class="l">/var/traefik/certs/traefik.example.lan.key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">certFile</span><span class="p">:</span><span class="w"> </span><span class="l">/var/traefik/certs/authentik.example.lan.crt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">keyFile</span><span class="p">:</span><span class="w"> </span><span class="l">/var/traefik/certs/authentik.example.lan.key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">stores</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">defaultCertificate</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">certFile</span><span class="p">:</span><span class="w"> </span><span class="l">/var/traefik/certs/traefik.example.lan.crt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">keyFile</span><span class="p">:</span><span class="w"> </span><span class="l">/var/traefik/certs/traefik.example.lan.key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">options</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">minVersion</span><span class="p">:</span><span class="w"> </span><span class="l">VersionTLS12</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">sniStrict</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">curvePreferences</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">CurveP256</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">CurveP384</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">CurveP521</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">cipherSuites</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305</span><span class="w">
+</span></span></span></code></pre></div><p>The <code>tls.yml</code> file Specifies TLS certificate and key files signed by the internal Samba CA.</p>
+<h4 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h4>
+<p>This configuration:</p>
+<ul>
+<li>
+<p>Defines and serves multiple domain-specific certificates.</p>
+</li>
+<li>
+<p>Uses strong security defaults (TLS 1.2+, strict SNI, PFS ciphers).</p>
+</li>
+<li>
+<p>Ensures fallback TLS service via the default certificate store.</p>
+</li>
+</ul>
+<h4 id="root-key">Root Key<a hidden class="anchor" aria-hidden="true" href="#root-key">#</a></h4>
+<ul>
+<li><code>tls</code>: Root section for configuring TLS certificates, stores, and security options.</li>
+</ul>
+<h4 id="tls-certificates">TLS Certificates<a hidden class="anchor" aria-hidden="true" href="#tls-certificates">#</a></h4>
+<ul>
+<li>
+<p><code>certificates</code>: List of TLS certificates that Traefik will serve.</p>
+<ul>
+<li>
+<p><code>certFile</code>: Path to the public certificate file (PEM format).</p>
+</li>
+<li>
+<p><code>keyFile</code>: Path to the associated private key.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Each certificate is matched against incoming requests by their <strong>SNI (Server Name Indication)</strong> hostname (e.g., <code>traefik.example.lan</code>, <code>authentik.example.lan</code>).</p>
+</li>
+</ul>
+<h4 id="default-certificate-store">Default Certificate Store<a hidden class="anchor" aria-hidden="true" href="#default-certificate-store">#</a></h4>
+<ul>
+<li><code>stores</code>: Defines named TLS stores. The default store is used when no matching SNI is found.</li>
+<li><code>defaultCertificate</code>: A fallback certificate that Traefik will use if no specific certificate matches the request&rsquo;s hostname.</li>
+</ul>
+<h4 id="tls-security-options">TLS Security Options<a hidden class="anchor" aria-hidden="true" href="#tls-security-options">#</a></h4>
+<ul>
+<li>
+<p><code>options</code>: Defines reusable TLS options (like security policies).</p>
+</li>
+<li>
+<p><code>default</code>: The default TLS policy to apply if not overridden.</p>
+<ul>
+<li>
+<p><code>minVersion: VersionTLS12</code>: Only allow TLS 1.2 or higher (disables older, insecure TLS versions).</p>
+</li>
+<li>
+<p><code>sniStrict: true</code>: Requires that a matching certificate for the SNI is present, otherwise Traefik will reject the connection.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="curve-preferences">Curve Preferences<a hidden class="anchor" aria-hidden="true" href="#curve-preferences">#</a></h4>
+<ul>
+<li>
+<p><code>curvePreferences</code>: Preferred elliptic curves for ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) key exchange.</p>
+</li>
+<li>
+<p>This list defines the order of preference for stronger cryptographic curves.</p>
+</li>
+</ul>
+<h4 id="cipher-suites">Cipher Suites<a hidden class="anchor" aria-hidden="true" href="#cipher-suites">#</a></h4>
+<ul>
+<li>
+<p><code>cipherSuites</code>: Explicitly defines the allowed cipher suites for TLS 1.2 connections (TLS 1.3 has its own fixed ciphers).</p>
+</li>
+<li>
+<p>Suites here support strong AEAD encryption and PFS (Perfect Forward Secrecy) via ECDHE.</p>
+</li>
+</ul>
+<hr>
+<h2 id="2-docker-compose-configuration">2. Docker Compose Configuration<a hidden class="anchor" aria-hidden="true" href="#2-docker-compose-configuration">#</a></h2>
+<h3 id="docker-composeyml"><code>docker-compose.yml</code><a hidden class="anchor" aria-hidden="true" href="#docker-composeyml">#</a></h3>
+<p>Create a unified <code>docker-compose.yml</code> that includes both <code>traefik</code> and the <code>authentik-outpost</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">traefik</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">traefik</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">traefik:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="m">80</span><span class="p">:</span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="m">443</span><span class="p">:</span><span class="m">443</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">/var/run/docker.sock:/var/run/docker.sock:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">filepathto/traefik.yml:/etc/traefik/traefik.yml:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">filepathto/traefik/config/:/etc/traefik/conf:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">filepathto/traefik/certs/:/var/traefik/certs/:rw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">frontend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">backend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">traefik.enable=true</span><span class="w"> </span><span class="c">#enables Traefik reverse proxy for this container</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">traefik.http.routers.traefik.rule=Host(`traefik.example.lan`)</span><span class="w"> </span><span class="c">#defines a router that activates when requests match the domain specified</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">traefik.http.routers.traefik.entrypoints=websecure</span><span class="w"> </span><span class="c">#binds the router to HTTPS (websecure) entry point</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">traefik.http.routers.traefik.tls=true</span><span class="w"> </span><span class="c">#enables TLS for this router</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">traefik.http.routers.traefik.middlewares=authentik@file</span><span class="w"> </span><span class="c">#applies the middleware named authentik from the file provider (in my case middleware.yml) for auth</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">traefik.http.routers.traefik.service=api@internal</span><span class="w"> </span><span class="c">#tells Traefik to serve its internal API/dasbhoard when this route is hit</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">authentik-outpost</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">traefik-authentik-outpost</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">custom-authentik-outpost</span><span class="w"> </span><span class="c">#use custom image to load trusted internal CA cert into container</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">filepathto/certs:/certs:ro</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l">unless-stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">frontend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">backend</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">environment</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">AUTHENTIK_HOST=https://authentik.example.lan</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">AUTHENTIK_INSECURE=false</span><span class="w"> </span><span class="c">#requires valid HTTPS connection (doesn&#39;t skip tls checks)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">REQUESTS_CA_BUNDLE=/certs/ca.crt</span><span class="w"> </span><span class="c">#instructs Python-based tools (used by Authentik Proxy) to trust internal CA for TLS</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">LOG_LEVEL=debug</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">AUTHENTIK_HOST_BROWSER=https://authentik.example.lan</span><span class="w"> </span><span class="c">#used when public and internal addresses differ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">AUTHENTIK_TOKEN=xxxxxxxxxxxxxxx  </span><span class="w"> </span><span class="c"># Replace with Authentik outpost token. Token is necessary to authenticate the outpost with the Authentik server. DO NOT EXPOSE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">frontend</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">backend</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><p><strong>Highlights:</strong></p>
+<ul>
+<li>
+<p>Traefik loads configuration from mounted YAML files.</p>
+</li>
+<li>
+<p>Authentik outpost uses the internal CA to validate Authentik&rsquo;s certificate.</p>
+</li>
+<li>
+<p>If <code>AUTHENTIK_INSECURE=false</code> fails due to CA trust, temporarily flip it to <code>true</code>.</p>
+</li>
+<li>
+<p>Note: Replace <code>custom-authentik-outpost</code> with the name of the custom image (see next step).</p>
+</li>
+</ul>
+<hr>
+<h2 id="3-custom-dockerfile-for-outpost-trust-internal-ca">3. Custom Dockerfile for Outpost (Trust Internal CA)<a hidden class="anchor" aria-hidden="true" href="#3-custom-dockerfile-for-outpost-trust-internal-ca">#</a></h2>
+<p>To resolve certificate validation issues, a custom image was created by appending your Samba AD CA to the container&rsquo;s trust store:</p>
+<h3 id="dockerfile-for-custom-outpost-image"><code>Dockerfile</code> for Custom Outpost Image<a hidden class="anchor" aria-hidden="true" href="#dockerfile-for-custom-outpost-image">#</a></h3>
+<p>To trust my internal Samba CA, I built a custom image for the Authentik proxy outpost:</p>
+<p><code>Dockerfile</code> &ndash; name the file exactly like this</p>
+<pre tabindex="0"><code>FROM ghcr.io/goauthentik/proxy:latest
+COPY ./certs/ca.crt /usr/local/share/ca-certificates/ca.crt
+RUN update-ca-certificates
+</code></pre><p>Then build the file with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo docker build -t custom-authentik-outpost .
+</span></span></code></pre></div><p>This step ensured the Authentik outpost container would trust my internal certificate hierarchy.</p>
+<hr>
+<h2 id="4-authentik-configuration">4. Authentik Configuration<a hidden class="anchor" aria-hidden="true" href="#4-authentik-configuration">#</a></h2>
+<p>In the Authentik dashboard:</p>
+<h3 id="application">Application<a hidden class="anchor" aria-hidden="true" href="#application">#</a></h3>
+<ul>
+<li>
+<p>Name: traefik-dashboard</p>
+</li>
+<li>
+<p>Slug: <code>traefik-dashboard</code></p>
+</li>
+<li>
+<p>Launch URL: <code>https://traefik.example.lan/dashboard/</code></p>
+</li>
+<li>
+<p>Provider: The created proxy provider (in my case traefik-forward-auth)</p>
+</li>
+<li>
+<p>Policy engine mode: any</p>
+</li>
+</ul>
+<h3 id="provider-proxy">Provider (Proxy)<a hidden class="anchor" aria-hidden="true" href="#provider-proxy">#</a></h3>
+<ul>
+<li>
+<p>Type: Proxy</p>
+</li>
+<li>
+<p>Name: traefik-forward-auth</p>
+</li>
+<li>
+<p>Authorization flow: default-provider-authorization-explicit-consent (Authorize Application)</p>
+</li>
+<li>
+<p>Use forward auth (single application)</p>
+<ul>
+<li>the external host address should be the FQDN that you&rsquo;ll want to access the application at</li>
+<li>in my case that is: <a href="https://traefik.tillynet.lan">https://traefik.tillynet.lan</a> since I want to protect my Traefik dashboard with Authentik</li>
+</ul>
+</li>
+<li>
+<p>Token Validity: hours=24</p>
+</li>
+</ul>
+<h3 id="outpost">Outpost<a hidden class="anchor" aria-hidden="true" href="#outpost">#</a></h3>
+<p>Create a new Authentik Outpost to deploy in the same docker compose config file as traefik (see the traefik <code>docker-compose.yml</code> above for deploying the outpost as a docker container)</p>
+<ul>
+<li>
+<p>Name: traefik-authentik-outpost</p>
+</li>
+<li>
+<p>Type: Proxy</p>
+</li>
+<li>
+<p>Integration: Local Docker connection</p>
+</li>
+<li>
+<p>Applications: Link your <code>traefik-dashboard</code> application</p>
+</li>
+<li>
+<p>Token: After outpost copy your Authentik token and paste it in <code>docker-compose.yml</code></p>
+</li>
+<li>
+<p>Healthy check: Ensure Authentik sees outpost as healthy after the docker container for the outpost has been deployed</p>
+</li>
+</ul>
+<hr>
+<h2 id="6-start-the-stack">6. Start the Stack<a hidden class="anchor" aria-hidden="true" href="#6-start-the-stack">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker compose up -d
+</span></span></code></pre></div><p>You should now be able to access:</p>
+<ul>
+<li><code>https://traefik.example.lan/dashboard/</code> — protected by Authentik SSO</li>
+</ul>
+<hr>
+<h2 id="6-troubleshooting-tips">6. Troubleshooting Tips<a hidden class="anchor" aria-hidden="true" href="#6-troubleshooting-tips">#</a></h2>
+<ul>
+<li>
+<p>Ensure your internal CA is correctly mounted and trusted in the custom container.</p>
+</li>
+<li>
+<p>If you see <code>x509: certificate signed by unknown authority</code>, the CA is likely missing.</p>
+</li>
+<li>
+<p>Use <code>docker logs</code> for both Traefik and Outpost to trace errors.</p>
+</li>
+<li>
+<p>Check firewall/NAT between 172.x Docker bridge and your internal CA if <code>connection reset by peer</code> occurs. MAKE SURE YOU ARE NOT USING THE DEFAULT DOCKER NETWORK.</p>
+</li>
+</ul>
+<hr>
+<h2 id="7--final-outcome">7. ## Final Outcome<a hidden class="anchor" aria-hidden="true" href="#7--final-outcome">#</a></h2>
+<p>You should now be able to:</p>
+<ul>
+<li>
+<p>Visit <code>https://traefik.example.lan/dashboard/</code></p>
+</li>
+<li>
+<p>Be redirected to Authentik SSO</p>
+</li>
+<li>
+<p>Log in via your authorized AD credentials using LDAPS</p>
+</li>
+<li>
+<p>Gain access to the secured dashboard with a valid TLS certificate</p>
+</li>
+</ul>
+<hr>
+<p>This project brought together reverse proxying, identity management, and internal PKI in a way that’s reproducible and production-ready for any homelab setup.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/traefik/">Traefik</a></li>
+      <li><a href="https://blog.tillynet.com/tags/reverse-proxy/">Reverse Proxy</a></li>
+      <li><a href="https://blog.tillynet.com/tags/authentik/">Authentik</a></li>
+      <li><a href="https://blog.tillynet.com/tags/authentik-outposts/">Authentik Outposts</a></li>
+      <li><a href="https://blog.tillynet.com/tags/middleware/">Middleware</a></li>
+      <li><a href="https://blog.tillynet.com/tags/samba/">Samba</a></li>
+      <li><a href="https://blog.tillynet.com/tags/active-directory/">Active Directory</a></li>
+      <li><a href="https://blog.tillynet.com/tags/internal-ca/">Internal CA</a></li>
+      <li><a href="https://blog.tillynet.com/tags/network-security/">Network Security</a></li>
+      <li><a href="https://blog.tillynet.com/tags/docker/">Docker</a></li>
+      <li><a href="https://blog.tillynet.com/tags/docker-compose/">Docker Compose</a></li>
+      <li><a href="https://blog.tillynet.com/tags/home-lab/">Home Lab</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

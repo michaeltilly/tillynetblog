@@ -10,9 +10,20 @@
     <atom:link href="https://blog.tillynet.com/tags/network-security/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a Proper PKI Chain of Trust in a Samba AD Lab</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
       <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This post documents how I implemented a production-style Public Key Infrastructure (PKI) inside my Samba 4 Active Directory (AD) lab. The project simulates how enterprise environments separate certificate authority responsibilities to promote security and manageability. I built a trust chain starting with an offline Root CA, promoted my Samba DC as an Intermediate CA, and automated service certificate signing for applications like Traefik and Authentik.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-a-pki-chain-of-trust&#34;&gt;Why a PKI Chain of Trust?&lt;/h2&gt;
+&lt;p&gt;In enterprise networks, it&amp;rsquo;s a best practice to:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Building a Proper PKI Chain of Trust in a Samba AD Lab</title>
+      <link>https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
+      <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</guid>
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This post documents how I implemented a production-style Public Key Infrastructure (PKI) inside my Samba 4 Active Directory (AD) lab. The project simulates how enterprise environments separate certificate authority responsibilities to promote security and manageability. I built a trust chain starting with an offline Root CA, promoted my Samba DC as an Intermediate CA, and automated service certificate signing for applications like Traefik and Authentik.&lt;/p&gt;
 &lt;hr&gt;
@@ -21,9 +32,24 @@
     </item>
     <item>
       <title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
       <pubDate>Tue, 13 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This guide details how I provisioned &lt;strong&gt;Authentik&lt;/strong&gt; as a middleware authentication provider integrated with &lt;strong&gt;Traefik&lt;/strong&gt; reverse proxy, using TLS certificates issued by my internal &lt;strong&gt;Samba Active Directory Certificate Authority (CA)&lt;/strong&gt;. The result is a secure, SSO-enabled reverse proxy setup that leverages &lt;strong&gt;LDAPS&lt;/strong&gt; to enforce access control for authorized users in my Active Directory.&lt;/p&gt;
+&lt;p&gt;This solution enables:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Trusted HTTPS access to services proxied through Traefik.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;SSO enforcement using Authentik via the forwardAuth middleware.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</title>
+      <link>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
+      <pubDate>Tue, 13 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;This guide details how I provisioned &lt;strong&gt;Authentik&lt;/strong&gt; as a middleware authentication provider integrated with &lt;strong&gt;Traefik&lt;/strong&gt; reverse proxy, using TLS certificates issued by my internal &lt;strong&gt;Samba Active Directory Certificate Authority (CA)&lt;/strong&gt;. The result is a secure, SSO-enabled reverse proxy setup that leverages &lt;strong&gt;LDAPS&lt;/strong&gt; to enforce access control for authorized users in my Active Directory.&lt;/p&gt;
 &lt;p&gt;This solution enables:&lt;/p&gt;
@@ -36,9 +62,36 @@
     </item>
     <item>
       <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
       <pubDate>Fri, 02 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.&lt;/p&gt;
+&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Deploy Traefik using Docker Compose&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enable HTTPS via static and dynamic configuration&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Load a custom certificate signed by an internal CA&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Validate secure access to the Traefik dashboard&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;environment&#34;&gt;Environment&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Operating System: Ubuntu Server&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
+      <link>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
+      <pubDate>Fri, 02 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.&lt;/p&gt;
 &lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
@@ -63,9 +116,24 @@
     </item>
     <item>
       <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
+      <link>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
       <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
+      <guid>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
+      <description>&lt;p&gt;This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Samba 4 AD&lt;/strong&gt; acts as the LDAP and Kerberos provider.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Authentik&lt;/strong&gt; serves as the Identity Provider (IdP) using the LDAP source for authentication.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
+      <link>https://blog.tillynet.com/on-premise-engineering-labs/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
+      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/on-premise-engineering-labs/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
       <description>&lt;p&gt;This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;

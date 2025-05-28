@@ -7,8 +7,6 @@ categories: ["Cloud Engineering Labs"]
 draft: false
 ---
 
-# AWS Cloud Security Deployment - Terraform
-
 ## Overview
 
 This document summarizes the technical work completed today to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.
