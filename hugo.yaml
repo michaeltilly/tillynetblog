@@ -34,6 +34,11 @@ params:
     - name: LinkedIn
       url: "https://www.linkedin.com/in/michaeltillman7/"
 
+    # This determines which sections are displayed on the homepage
+  mainSections: 
+    - "my-home-lab-journey"
+    - "cloud-engineering-labs"
+
 menu:
   main:
     - name: "Home"
