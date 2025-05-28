@@ -154,45 +154,7 @@ Authentik serves as the Identity Provider (IdP) using the LDAP source for authen
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-04-29 00:00:00 +0000 UTC'>April 29, 2025</span>&nbsp;·&nbsp;3 min</footer>
-  <a class="entry-link" aria-label="post link to Integrating Samba 4 Active Directory with Authentik via LDAPS" href="https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Integrating Samba 4 Active Directory with Authentik via LDAPS
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.
-Overview Samba 4 AD acts as the LDAP and Kerberos provider.
-Authentik serves as the Identity Provider (IdP) using the LDAP source for authentication.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-29 00:00:00 +0000 UTC'>April 29, 2025</span>&nbsp;·&nbsp;3 min</footer>
   <a class="entry-link" aria-label="post link to Integrating Samba 4 Active Directory with Authentik via LDAPS" href="https://blog.tillynet.com/on-premise-engineering-labs/integrating-samba-4-active-directory-with-authentik-via-ldaps/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Provisioning Samba Active Directory Domain Controller and Windows Domain Integration
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>1. Server Preparation OS: Ubuntu Server 24.04.2 LTS
-Initial Setup:
-Static IP address manually configured
-IP: 172.30.30.30/24
-Gateway: 172.30.30.1
-DNS (initially): 172.21.21.21 (Pi-hole)
-Installed basic utilities (OpenSSH, networking tools)
-2. Samba Installation and Configuration Installation Commands:
-sudo apt update sudo apt full-upgrade sudo apt install samba krb5-config krb5-user winbind smbclient Service Management:
-Disabled default Samba services to prepare for AD DC mode:
-sudo systemctl disable smbd nmbd winbind sudo systemctl stop smbd nmbd winbind Provision Domain Controller:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-26 00:00:00 +0000 UTC'>April 26, 2025</span>&nbsp;·&nbsp;2 min</footer>
-  <a class="entry-link" aria-label="post link to Provisioning Samba Active Directory Domain Controller and Windows Domain Integration" href="https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

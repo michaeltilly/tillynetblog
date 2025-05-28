@@ -153,35 +153,7 @@ Background I transitioned my home lab management network to VLAN 99 to achieve f
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-04-18 00:00:00 +0000 UTC'>April 18, 2025</span>&nbsp;·&nbsp;4 min</footer>
-  <a class="entry-link" aria-label="post link to Remote SDN Recovery & VLAN Isolation via VPN & Shell Access" href="https://blog.tillynet.com/my-home-lab-journey/post-3/remote-vlan-recovery--proxmox-network-repair-over-vpn/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access Overview In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely off-site, using only a mobile device connected via an OpenVPN tunnel.
-Background I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-18 00:00:00 +0000 UTC'>April 18, 2025</span>&nbsp;·&nbsp;4 min</footer>
   <a class="entry-link" aria-label="post link to Remote SDN Recovery & VLAN Isolation via VPN & Shell Access" href="https://blog.tillynet.com/on-premise-engineering-labs/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Creating Network Management Isolation
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>02 - Migrating to a Dedicated Management VLAN (VLAN 99) This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.
-Goals Remove critical services from default/native VLAN Assign a dedicated, isolated VLAN (VLAN 99) for: Proxmox management GUI Omada Controller (LXC) Trunk management VLAN through switch to Proxmox Implement firewall rules to allow remote admin access only Preserve service availability during transition Pre-Migration Topology Component Network VLAN Interface Description Proxmox Host LAN VLAN 1 vmbr0 Static IP via native VLAN Omada Controller LAN VLAN 1 vmbr0 LXC container, web GUI on port 8043 Pi-hole LAN VLAN 1 vmbr0 DNS LXC VPN Tunnel LAN VLAN 1 pfSense Remote client-to-site access Post-Migration Topology Component Network VLAN Interface Description Proxmox Host Management VLAN 99 vmbr1.99 Tagged IP for GUI access via vmbr1 Omada Controller Management VLAN 99 vmbr1 (tagged) LXC container with VLAN tag 99 Pi-hole LAN VLAN 1 vmbr0 LXC container Trunk Port (Switch) Trunked Port 1,99,14 enp1s0 Connected to VLAN-aware bridge vmbr1 VPN Tunnel Routed to MGMT VLAN 99 pfSense Allows external admin access to VLAN 99 Migration Steps 1. Create VLAN 99 in pfSense Interfaces &gt; Assignments &gt; VLANs Created VLAN 99 on the LAN parent interface Assigned it as a new interface and renamed it to MGMT Enabled the interface and set a static IP (management subnet) 2. Configure Proxmox Bridge for VLAN Tagging Created a new VLAN-aware bridge and subinterface in /etc/network/interfaces:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-15 00:00:00 +0000 UTC'>April 15, 2025</span>&nbsp;·&nbsp;2 min</footer>
-  <a class="entry-link" aria-label="post link to Creating Network Management Isolation" href="https://blog.tillynet.com/my-home-lab-journey/post-2/creating-network-management-isolation/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

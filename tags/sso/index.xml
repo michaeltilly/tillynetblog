@@ -10,23 +10,6 @@
     <atom:link href="https://blog.tillynet.com/tags/sso/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</link>
-      <pubDate>Mon, 28 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</guid>
-      <description>&lt;p&gt;This guide documents the step-by-step process used to provision an &lt;a href=&#34;https://goauthentik.io&#34;&gt;Authentik&lt;/a&gt; identity provider server on a self-hosted Ubuntu Server using Docker and Docker Compose. This setup is suitable for advanced home lab environments and follows production-grade containerization practices.&lt;/p&gt;
-&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;A fresh or existing Ubuntu 22.04 or 24.04 LTS server.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;sudo&lt;/code&gt; privileges on the system.&lt;/li&gt;
-&lt;li&gt;Static IP and DNS configuration recommended.&lt;/li&gt;
-&lt;li&gt;System updates applied.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;step-1-install-docker-engine&#34;&gt;Step 1: Install Docker Engine&lt;/h2&gt;
-&lt;p&gt;Follow the official Docker post-install guide to install and configure Docker for non-root use:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</link>
       <pubDate>Mon, 28 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-for-sso-on-a-self-hosted-ubuntu-server-docker-based/</guid>

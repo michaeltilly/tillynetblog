@@ -153,20 +153,6 @@ Why a PKI Chain of Trust? In enterprise networks, it’s a best practice to:
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-05-20 00:00:00 +0000 UTC'>May 20, 2025</span>&nbsp;·&nbsp;4 min</footer>
-  <a class="entry-link" aria-label="post link to Building a Proper PKI Chain of Trust in a Samba AD Lab" href="https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Building a Proper PKI Chain of Trust in a Samba AD Lab
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Overview This post documents how I implemented a production-style Public Key Infrastructure (PKI) inside my Samba 4 Active Directory (AD) lab. The project simulates how enterprise environments separate certificate authority responsibilities to promote security and manageability. I built a trust chain starting with an offline Root CA, promoted my Samba DC as an Intermediate CA, and automated service certificate signing for applications like Traefik and Authentik.
-Why a PKI Chain of Trust? In enterprise networks, it’s a best practice to:
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-05-20 00:00:00 +0000 UTC'>May 20, 2025</span>&nbsp;·&nbsp;4 min</footer>
   <a class="entry-link" aria-label="post link to Building a Proper PKI Chain of Trust in a Samba AD Lab" href="https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/"></a>
 </article>
 
@@ -183,41 +169,7 @@ SSO enforcement using Authentik via the forwardAuth middleware.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-05-13 00:00:00 +0000 UTC'>May 13, 2025</span>&nbsp;·&nbsp;9 min</footer>
-  <a class="entry-link" aria-label="post link to Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA" href="https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Introduction This guide details how I provisioned Authentik as a middleware authentication provider integrated with Traefik reverse proxy, using TLS certificates issued by my internal Samba Active Directory Certificate Authority (CA). The result is a secure, SSO-enabled reverse proxy setup that leverages LDAPS to enforce access control for authorized users in my Active Directory.
-This solution enables:
-Trusted HTTPS access to services proxied through Traefik.
-SSO enforcement using Authentik via the forwardAuth middleware.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-05-13 00:00:00 +0000 UTC'>May 13, 2025</span>&nbsp;·&nbsp;9 min</footer>
   <a class="entry-link" aria-label="post link to Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA" href="https://blog.tillynet.com/on-premise-engineering-labs/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Provisioning Traefik with Docker Compose and TLS Termination via Internal CA
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Overview This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.
-Objectives Deploy Traefik using Docker Compose
-Enable HTTPS via static and dynamic configuration
-Load a custom certificate signed by an internal CA
-Validate secure access to the Traefik dashboard
-Environment Operating System: Ubuntu Server
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-05-02 00:00:00 +0000 UTC'>May 2, 2025</span>&nbsp;·&nbsp;3 min</footer>
-  <a class="entry-link" aria-label="post link to Provisioning Traefik with Docker Compose and TLS Termination via Internal CA" href="https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

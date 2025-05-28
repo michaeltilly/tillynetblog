@@ -9,12 +9,13 @@
     <lastBuildDate>Tue, 27 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>AWS Cloud Security Deployment - Terraform</title>
+      <title>Building Secure AWS Infrastructure with Terraform - Complete Lab Guide</title>
       <link>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</link>
       <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</guid>
-      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This document summarizes the technical work completed today to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.&lt;/p&gt;
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This document summarizes the technical work completed to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure deployment steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
 &lt;ul&gt;
@@ -28,34 +29,6 @@
 &lt;p&gt;Secure access using Security Groups.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>AWS Cloud Security Deployment - Terraform</title>
-      <link>https://blog.tillynet.com/cloud-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</link>
-      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/cloud-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</guid>
-      <description>&lt;h1 id=&#34;aws-cloud-security-deployment---terraform&#34;&gt;AWS Cloud Security Deployment - Terraform&lt;/h1&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This document summarizes the technical work completed today to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Build a segmented AWS VPC network with public and private subnets.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Launch EC2 instances in both public and private subnets.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Building a Proper PKI Chain of Trust in a Samba AD Lab</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
-      <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-15/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</guid>
-      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This post documents how I implemented a production-style Public Key Infrastructure (PKI) inside my Samba 4 Active Directory (AD) lab. The project simulates how enterprise environments separate certificate authority responsibilities to promote security and manageability. I built a trust chain starting with an offline Root CA, promoted my Samba DC as an Intermediate CA, and automated service certificate signing for applications like Traefik and Authentik.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;why-a-pki-chain-of-trust&#34;&gt;Why a PKI Chain of Trust?&lt;/h2&gt;
-&lt;p&gt;In enterprise networks, it&amp;rsquo;s a best practice to:&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>Building a Proper PKI Chain of Trust in a Samba AD Lab</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
       <pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate>
@@ -65,21 +38,6 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;why-a-pki-chain-of-trust&#34;&gt;Why a PKI Chain of Trust?&lt;/h2&gt;
 &lt;p&gt;In enterprise networks, it&amp;rsquo;s a best practice to:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</link>
-      <pubDate>Tue, 13 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-14/provisioning-authentik-middleware-with-traefik-reverse-proxy-using-internal-samba-ad-ca/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;This guide details how I provisioned &lt;strong&gt;Authentik&lt;/strong&gt; as a middleware authentication provider integrated with &lt;strong&gt;Traefik&lt;/strong&gt; reverse proxy, using TLS certificates issued by my internal &lt;strong&gt;Samba Active Directory Certificate Authority (CA)&lt;/strong&gt;. The result is a secure, SSO-enabled reverse proxy setup that leverages &lt;strong&gt;LDAPS&lt;/strong&gt; to enforce access control for authorized users in my Active Directory.&lt;/p&gt;
-&lt;p&gt;This solution enables:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Trusted HTTPS access to services proxied through Traefik.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;SSO enforcement using Authentik via the forwardAuth middleware.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Provisioning Authentik Middleware with Traefik Reverse Proxy Using Internal Samba AD CA</title>
@@ -95,33 +53,6 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;SSO enforcement using Authentik via the forwardAuth middleware.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</link>
-      <pubDate>Fri, 02 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-13/provisioning-traefik-with-docker-compose-and-tls-termination-via-internal-ca/</guid>
-      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This guide documents the process of deploying the Traefik reverse proxy using Docker Compose with TLS termination handled by a self-hosted internal certificate authority (CA). It includes all key configuration decisions, troubleshooting steps, and final validation outcomes.&lt;/p&gt;
-&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Deploy Traefik using Docker Compose&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Enable HTTPS via static and dynamic configuration&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Load a custom certificate signed by an internal CA&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Validate secure access to the Traefik dashboard&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;environment&#34;&gt;Environment&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Operating System: Ubuntu Server&lt;/p&gt;</description>
     </item>
     <item>
       <title>Provisioning Traefik with Docker Compose and TLS Termination via Internal CA</title>
@@ -152,21 +83,6 @@
     </item>
     <item>
       <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
-      <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-12/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
-      <description>&lt;p&gt;This guide documents the process of securely binding a Samba 4 Active Directory (AD) server to Authentik using LDAPS. The integration allows Authentik to use the AD as an identity source, enabling centralized authentication across applications via SAML/OIDC while Samba 4 maintains the authoritative user directory.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Samba 4 AD&lt;/strong&gt; acts as the LDAP and Kerberos provider.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Authentik&lt;/strong&gt; serves as the Identity Provider (IdP) using the LDAP source for authentication.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Integrating Samba 4 Active Directory with Authentik via LDAPS</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/integrating-samba-4-active-directory-with-authentik-via-ldaps/</link>
       <pubDate>Tue, 29 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/on-premise-engineering-labs/integrating-samba-4-active-directory-with-authentik-via-ldaps/</guid>
@@ -179,23 +95,6 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Authentik&lt;/strong&gt; serves as the Identity Provider (IdP) using the LDAP source for authentication.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</link>
-      <pubDate>Mon, 28 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-11/provisioning-authentik-on-a-self-hosted-ubuntu-server-docker-based/</guid>
-      <description>&lt;p&gt;This guide documents the step-by-step process used to provision an &lt;a href=&#34;https://goauthentik.io&#34;&gt;Authentik&lt;/a&gt; identity provider server on a self-hosted Ubuntu Server using Docker and Docker Compose. This setup is suitable for advanced home lab environments and follows production-grade containerization practices.&lt;/p&gt;
-&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;A fresh or existing Ubuntu 22.04 or 24.04 LTS server.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;sudo&lt;/code&gt; privileges on the system.&lt;/li&gt;
-&lt;li&gt;Static IP and DNS configuration recommended.&lt;/li&gt;
-&lt;li&gt;System updates applied.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;step-1-install-docker-engine&#34;&gt;Step 1: Install Docker Engine&lt;/h2&gt;
-&lt;p&gt;Follow the official Docker post-install guide to install and configure Docker for non-root use:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Provisioning Authentik for SSO on a Self-Hosted Ubuntu Server (Docker-Based)</title>
@@ -213,60 +112,6 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;step-1-install-docker-engine&#34;&gt;Step 1: Install Docker Engine&lt;/h2&gt;
 &lt;p&gt;Follow the official Docker post-install guide to install and configure Docker for non-root use:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Provisioning Samba Active Directory Domain Controller and Windows Domain Integration</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</link>
-      <pubDate>Sat, 26 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-10/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/</guid>
-      <description>&lt;h2 id=&#34;1-server-preparation&#34;&gt;1. Server Preparation&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;OS:&lt;/strong&gt; Ubuntu Server 24.04.2 LTS&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Initial Setup:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Static IP address manually configured&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;IP: &lt;code&gt;172.30.30.30/24&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Gateway: &lt;code&gt;172.30.30.1&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;DNS (initially): &lt;code&gt;172.21.21.21&lt;/code&gt; (Pi-hole)&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Installed basic utilities (OpenSSH, networking tools)&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;2-samba-installation-and-configuration&#34;&gt;2. Samba Installation and Configuration&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Installation Commands:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt update
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt full-upgrade
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo apt install samba krb5-config krb5-user winbind smbclient
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Service Management:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Disabled default Samba services to prepare for AD DC mode:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl disable smbd nmbd winbind
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo systemctl stop smbd nmbd winbind
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Provision Domain Controller:&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Provisioning Samba Active Directory Domain Controller and Windows Domain Integration</title>
@@ -333,28 +178,11 @@
     </item>
     <item>
       <title>Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-9/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</link>
-      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-9/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;p&gt;This post documents the troubleshooting process I followed to resolve an internet connectivity issue affecting virtual machines (VMs) hosted on a Proxmox VE node running on a Wi-Fi-only Dell XPS 15. The VMs were deployed on a routed internal subnet (&lt;code&gt;172.30.30.0/24&lt;/code&gt;) with static routes configured through a pfSense firewall. While the VMs could communicate with internal hosts—including DNS and gateway IPs—they were unable to reach external internet addresses such as &lt;code&gt;8.8.8.8&lt;/code&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</link>
       <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/on-premise-engineering-labs/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/</guid>
       <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;This post documents the troubleshooting process I followed to resolve an internet connectivity issue affecting virtual machines (VMs) hosted on a Proxmox VE node running on a Wi-Fi-only Dell XPS 15. The VMs were deployed on a routed internal subnet (&lt;code&gt;172.30.30.0/24&lt;/code&gt;) with static routes configured through a pfSense firewall. While the VMs could communicate with internal hosts—including DNS and gateway IPs—they were unable to reach external internet addresses such as &lt;code&gt;8.8.8.8&lt;/code&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Deploying a Proxmox Node on a Wi-Fi-Only Dell XPS Laptop</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-8/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</link>
-      <pubDate>Wed, 23 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-8/deploying-a-proxmox-node-on-a-wi-fi-only-dell-xps-laptop/</guid>
-      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;
-&lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Deploying a Proxmox Node on a Wi-Fi-Only Dell XPS Laptop</title>
@@ -364,66 +192,6 @@
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;In this post, I document how I deployed Proxmox VE on a Dell XPS 15 laptop with no physical Ethernet interface. This machine was added to my home lab as a standalone hypervisor, running independently from my main Protectli-based Proxmox node.&lt;/p&gt;
 &lt;p&gt;Because the XPS lacks wired connectivity, I had to work through some unique networking constraints, including bridging over Wi-Fi and enabling connectivity for guest virtual machines. This write-up covers the initial NAT-based setup and the transition to a cleaner routed network model with static routes via pfSense.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Current Running Version of TillyNet</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-7/current-running-version-of-tillynet/</link>
-      <pubDate>Tue, 22 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-7/current-running-version-of-tillynet/</guid>
-      <description>&lt;h1 id=&#34;current-running-version-of-tillynet&#34;&gt;Current Running Version of TillyNet&lt;/h1&gt;
-&lt;p&gt;TillyNet is my custom-built home lab environment designed to practice enterprise-grade network segmentation, high availability, and security enforcement using open-source tools. This architecture simulates production-level infrastructure and showcases my capabilities in network engineering, virtualization, firewall administration, and Linux system management.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-topology&#34;&gt;Network Topology&lt;/h2&gt;
-&lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/tillynet_mermaid.png&#34;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-design-objectives&#34;&gt;Network Design Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Layer 2/3 segmentation&lt;/strong&gt; using VLANs&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Centralized routing and firewalling&lt;/strong&gt; with pfSense&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hypervisor-based infrastructure&lt;/strong&gt; using Proxmox VE&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Containerized services&lt;/strong&gt; for DNS and wireless controller management&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Policy-based access control&lt;/strong&gt; enforced through inter-VLAN firewall rules&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Minimal trust zones&lt;/strong&gt; with internal DNS filtering and strict pathing&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;vlan-overview&#34;&gt;VLAN Overview&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;VLAN ID&lt;/th&gt;
-          &lt;th&gt;Purpose&lt;/th&gt;
-          &lt;th&gt;Subnet&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;1&lt;/td&gt;
-          &lt;td&gt;Default/legacy&lt;/td&gt;
-          &lt;td&gt;172.16.7.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;14&lt;/td&gt;
-          &lt;td&gt;Guest Wi-Fi&lt;/td&gt;
-          &lt;td&gt;172.16.14.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;21&lt;/td&gt;
-          &lt;td&gt;Production DNS&lt;/td&gt;
-          &lt;td&gt;172.21.21.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;99&lt;/td&gt;
-          &lt;td&gt;Management Access&lt;/td&gt;
-          &lt;td&gt;172.16.99.0/24&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;666&lt;/td&gt;
-          &lt;td&gt;Native Trunk VLAN&lt;/td&gt;
-          &lt;td&gt;N/A&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;Each VLAN is routed via a pfSense firewall using a router-on-a-stick model over a single trunk interface connected to a managed Cisco Catalyst switch.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Current Running Version of TillyNet</title>
@@ -487,202 +255,12 @@
     </item>
     <item>
       <title>Experimenting With Network Topologies</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-6/experimenting-with-network-topologies/</link>
-      <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-6/experimenting-with-network-topologies/</guid>
-      <description>&lt;h1 id=&#34;creating-a-network-topology-using-graphviz-and-diagrams-package-in-python&#34;&gt;Creating a Network Topology Using Graphviz and diagrams Package in Python&lt;/h1&gt;
-&lt;p&gt;This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the &lt;code&gt;graphviz&lt;/code&gt; engine with the &lt;code&gt;diagrams&lt;/code&gt; Python package, I decided to experiment with it.&lt;/p&gt;
-&lt;p&gt;The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Experimenting With Network Topologies</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/experimenting-with-network-topologies/</link>
       <pubDate>Mon, 21 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/on-premise-engineering-labs/experimenting-with-network-topologies/</guid>
       <description>&lt;h1 id=&#34;creating-a-network-topology-using-graphviz-and-diagrams-package-in-python&#34;&gt;Creating a Network Topology Using Graphviz and diagrams Package in Python&lt;/h1&gt;
 &lt;p&gt;This post outlines my initial attempts at visualizing the architecture of my home lab environment using Python-based tools. Given the complexity of my setup, traditional visualization methods weren’t sufficient. After coming across a post about using the &lt;code&gt;graphviz&lt;/code&gt; engine with the &lt;code&gt;diagrams&lt;/code&gt; Python package, I decided to experiment with it.&lt;/p&gt;
 &lt;p&gt;The toolchain proved useful for rendering simple network flows, and while it doesn’t fully capture the complexity of my environment, it’s a valuable starting point for documentation and network planning. Below is a walkthrough of how to get started, along with a sample script and the resulting topology diagram.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-5/building-my-publishing-pipeline/</link>
-      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-5/building-my-publishing-pipeline/</guid>
-      <description>&lt;h1 id=&#34;obsidian--hugo--github--hostinger-automation-workflow&#34;&gt;Obsidian → Hugo → GitHub → Hostinger Automation Workflow&lt;/h1&gt;
-&lt;p&gt;This post documents the full setup of my &lt;strong&gt;static site publishing pipeline&lt;/strong&gt; that automates taking blog posts from &lt;strong&gt;Obsidian&lt;/strong&gt;, rendering them with &lt;strong&gt;Hugo&lt;/strong&gt;, pushing the output to &lt;strong&gt;GitHub&lt;/strong&gt;, and then having &lt;strong&gt;Hostinger&lt;/strong&gt; automatically update my website via webhook.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;tools-used&#34;&gt;Tools Used&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Obsidian&lt;/strong&gt; – Markdown note-taking and blog writing&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hugo&lt;/strong&gt; – Static site generator using the &lt;a href=&#34;https://github.com/adityatelange/hugo-PaperMod&#34;&gt;PaperMod theme&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/adityatelange/hugo-PaperMod/wiki/Installation&#34;&gt;Hugo PaperMod Wiki&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/michaeltilly/tillynetblog/blob/master/hugo.yaml&#34;&gt;My Hugo yaml File&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt; – Repository with two branches:
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;master&lt;/code&gt; → Hugo project &amp;amp; content&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hostinger&lt;/code&gt; → Static site output&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Hostinger&lt;/strong&gt; – Web hosting platform with webhook integration&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Python&lt;/strong&gt; – Automation script for content syncing and site deployment &lt;a href=&#34;https://github.com/michaeltilly/tillynetblog/blob/master/deploy_tillynetblog2.py&#34;&gt;My Automation Script&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;-folder-structure&#34;&gt;📁 Folder Structure&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-plaintext&#34; data-lang=&#34;plaintext&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;📂 Local_Obsidian_Vault/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  └── my-home-lab-journey/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      ├── post-1/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        └── index.md
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      ├── post-2/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        └── index.md
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      ├── post-3/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        └── index.md
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      └── ...
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;📂 tillynetblog/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── hugo.yaml
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── content/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  │   └── my-home-lab-journey/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── public/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  ├── themes/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  │   └── PaperMod/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  └── static/
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	  └── images
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      └── css/custom.css
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
-&lt;h2 id=&#34;what-the-automation-script-does&#34;&gt;What the Automation Script Does&lt;/h2&gt;
-&lt;h3 id=&#34;imports&#34;&gt;Imports&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;os&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;shutil&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;subprocess&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;re&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;os&lt;/strong&gt;: for filesystem operations like path handling&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;shutil&lt;/strong&gt;: for copying/removing files and directories&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;subprocess&lt;/strong&gt;: for running shell commands like &lt;code&gt;hugo&lt;/code&gt; and &lt;code&gt;git&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;re&lt;/strong&gt;: for finding image links in markdown via regular expressions&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;configuration&#34;&gt;Configuration&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;obsidian_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\micha\Documents\Local_Obsidian_Vault\my-home-lab-journey&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\micha\Documents\tillynetblog&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;hugo_content_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;my-home-lab-journey&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;attachments_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\micha\Documents\Local_Obsidian_Vault\assets\images&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;static_images_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;static&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;images&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;about_src&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\micha\Documents\Local_Obsidian_Vault\pages\about.md&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;about_dst_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;about&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;about_dst&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;about_dst_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;index.md&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;base_url&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;https://blog.tillynet.com&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Sets paths to:
-&lt;ul&gt;
-&lt;li&gt;Obsidian content (&lt;code&gt;obsidian_dir&lt;/code&gt;)&lt;/li&gt;
-&lt;li&gt;Hugo blog folder&lt;/li&gt;
-&lt;li&gt;Where to copy markdown posts&lt;/li&gt;
-&lt;li&gt;Where Obsidian images are and where to move them&lt;/li&gt;
-&lt;li&gt;Source/destination for the &lt;code&gt;about.md&lt;/code&gt; file&lt;/li&gt;
-&lt;li&gt;The blog&amp;rsquo;s base URL for Hugo&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-1-copy-markdown-posts&#34;&gt;STEP 1: Copy Markdown Posts&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exists&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_content_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;shutil&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rmtree&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_content_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;shutil&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;copytree&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;obsidian_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hugo_content_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Copied markdown posts from Obsidian.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Deletes existing markdown content in Hugo&lt;/li&gt;
-&lt;li&gt;Copies fresh markdown files from Obsidian&lt;/li&gt;
-&lt;li&gt;Confirms the copy&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-2-convert-image-embeds-and-copy-images&#34;&gt;STEP 2: Convert Image Embeds and Copy Images&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;subdir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;files&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;walk&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_content_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;files&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;endswith&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;.md&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;iterates through every markdown file in the blog content&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;n&#34;&gt;images&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;re&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;findall&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;sa&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;\[\[([^]]*\.png)\]\]&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Looks for image link like (&lt;code&gt;example.png&lt;/code&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;images&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;n&#34;&gt;markdown_image&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sa&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;![Image](/images/&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;replace&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;%20&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;)&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Replaces with standard Markdown image syntax&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;n&#34;&gt;src_image&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;attachments_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exists&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src_image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                    &lt;span class=&#34;n&#34;&gt;shutil&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;copy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src_image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;static_images_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;copies matching images from Obsidian to Hugo&amp;rsquo;s static image folder&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;md_path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;n&#34;&gt;file&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Overwrites the file with the updated content&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Processed images and updated markdown links.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Confirms processing is complete&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-3-copy-about-page&#34;&gt;STEP 3: Copy About Page&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exists&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;about_src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;makedirs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;about_dst_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;exist_ok&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;shutil&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;copyfile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;about_src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;about_dst&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Updated About page as /about/index.md.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;⚠ About page not found in Obsidian vault; skipping.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Copies &lt;code&gt;about.md&lt;/code&gt; from Obsidian to Hugo content&lt;/li&gt;
-&lt;li&gt;Skips and warns if the file is missing&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-4-clean-existing-public-folder&#34;&gt;STEP 4: Clean Existing &lt;code&gt;public/&lt;/code&gt; Folder&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;public_dir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;public&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;os&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exists&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;public_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;shutil&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rmtree&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;public_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Cleaned existing public/ folder.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Removes the old &lt;code&gt;public/&lt;/code&gt; folder&lt;/li&gt;
-&lt;li&gt;Forces Hugo to rebuild the entire static site from scratch, picking up all new pages and changes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-5-build-the-hugo-site&#34;&gt;STEP 5: Build the Hugo Site&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;hugo&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;--buildDrafts&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;--buildFuture&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-b&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;base_url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Hugo site built with baseURL.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Builds the site using the &lt;code&gt;hugo&lt;/code&gt; command with my specified &lt;code&gt;BaseURL&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-6-push-source-files-to-github-master&#34;&gt;STEP 6: Push Source Files to GitHub &lt;code&gt;master&lt;/code&gt;&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;checkout&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;master&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;add&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;commit&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-m&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;Update blog content&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;False&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;push&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;origin&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;master&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Pushed changes to GitHub master.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Commits and pushes all changes to the &lt;code&gt;master&lt;/code&gt; branch&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;step-7-deploy-public-folder-to-hostinger-branch&#34;&gt;STEP 7: Deploy Public Folder to &lt;code&gt;hostinger&lt;/code&gt; Branch&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;subtree&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;split&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;--prefix&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;public&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-b&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;hostinger-deploy&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;push&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;origin&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;hostinger-deploy:hostinger&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;--force&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;run&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;git&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;branch&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;-D&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;hostinger-deploy&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cwd&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hugo_root_dir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;check&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;True&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;✔ Deployed public/ folder to GitHub hostinger branch.&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
-&lt;li&gt;Splits &lt;code&gt;public/&lt;/code&gt; into a new branch&lt;/li&gt;
-&lt;li&gt;Pushes it forcefully to the &lt;code&gt;hostinger&lt;/code&gt; branch on GitHub (used for site deployment)&lt;/li&gt;
-&lt;li&gt;Deletes the temporary &lt;code&gt;hostinger-deploy&lt;/code&gt; branch
-&lt;ul&gt;
-&lt;li&gt;This is necessary for our webhook to recognize the changes&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;issues-i-encountered&#34;&gt;Issues I Encountered&lt;/h2&gt;
-&lt;h3 id=&#34;css-not-applying-on-deployed-site&#34;&gt;CSS Not Applying on Deployed Site&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;Root Cause:&lt;/strong&gt; Hostinger was caching fingerprinted CSS&lt;/p&gt;</description>
     </item>
     <item>
       <title>Building My Publishing Pipeline: Obsidian → Hugo → GitHub → Hostinger</title>
@@ -867,76 +445,6 @@
     </item>
     <item>
       <title>Pi-hole DNS Migration to Production VLAN</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-4/pi-hole-dns-migration-to-production-vlan/</link>
-      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-4/pi-hole-dns-migration-to-production-vlan/</guid>
-      <description>&lt;h1 id=&#34;pi-hole-dns-migration-to-production-vlan&#34;&gt;Pi-hole DNS Migration to Production VLAN&lt;/h1&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This phase of the HomeLab project documents the successful migration of the internal Pi-hole DNS server from the flat LAN network to a newly created and isolated &lt;strong&gt;Production VLAN&lt;/strong&gt;. This change enhances security, improves segmentation, and prepares the environment for scalable DNS resolution across all other VLANs.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Create and configure a dedicated Production VLAN on pfSense&lt;/li&gt;
-&lt;li&gt;Migrate the Pi-hole LXC container to the new VLAN&lt;/li&gt;
-&lt;li&gt;Ensure inter-VLAN DNS resolution using Pi-hole&lt;/li&gt;
-&lt;li&gt;Apply proper firewall rules to restrict unnecessary access&lt;/li&gt;
-&lt;li&gt;Update DHCP DNS settings across all VLANs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-summary&#34;&gt;Network Summary&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Before Migration&lt;/th&gt;
-          &lt;th&gt;After Migration&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Pi-hole Location&lt;/td&gt;
-          &lt;td&gt;LAN network (untagged)&lt;/td&gt;
-          &lt;td&gt;Production VLAN (tagged)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;VLAN ID&lt;/td&gt;
-          &lt;td&gt;-&lt;/td&gt;
-          &lt;td&gt;Production VLAN ID&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Subnet&lt;/td&gt;
-          &lt;td&gt;LAN Subnet&lt;/td&gt;
-          &lt;td&gt;Production Subnet&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Pi-hole IP&lt;/td&gt;
-          &lt;td&gt;LAN Assigned IP&lt;/td&gt;
-          &lt;td&gt;VLAN-assigned static IP&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Access&lt;/td&gt;
-          &lt;td&gt;Open to LAN&lt;/td&gt;
-          &lt;td&gt;Inter-VLAN DNS only (port 53)&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;steps-performed&#34;&gt;Steps Performed&lt;/h2&gt;
-&lt;h3 id=&#34;1-created-production-vlan-in-pfsense&#34;&gt;1. Created Production VLAN in pfSense&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Navigated to &lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Assigned a unique VLAN tag and set the parent interface (LAN)&lt;/li&gt;
-&lt;li&gt;Created new interface, enabled it, and assigned a static IPv4 gateway&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-updated-pi-hole-lxc-container-configuration&#34;&gt;2. Updated Pi-hole LXC Container Configuration&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Edited the container via Proxmox:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pct &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt; &amp;lt;CTID&amp;gt; -net0 &lt;span class=&#34;nv&#34;&gt;name&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;eth0,bridge&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vmbr0,tag&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;lt;VLAN_ID&amp;gt;,ip&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;lt;Pi-hole_IP&amp;gt;/24,gw&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&amp;lt;VLAN_Gateway&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-    </item>
-    <item>
-      <title>Pi-hole DNS Migration to Production VLAN</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/pi-hole-dns-migration-to-production-vlan/</link>
       <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/on-premise-engineering-labs/pi-hole-dns-migration-to-production-vlan/</guid>
@@ -1007,18 +515,6 @@
     </item>
     <item>
       <title>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-3/remote-vlan-recovery--proxmox-network-repair-over-vpn/</link>
-      <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-3/remote-vlan-recovery--proxmox-network-repair-over-vpn/</guid>
-      <description>&lt;h2 id=&#34;remote-sdn-recovery--vlan-isolation-via-vpn--shell-access&#34;&gt;Remote SDN Recovery &amp;amp; VLAN Isolation via VPN &amp;amp; Shell Access&lt;/h2&gt;
-&lt;h3 id=&#34;overview&#34;&gt;Overview&lt;/h3&gt;
-&lt;p&gt;In this project, I successfully re-established full access to my network management stack (Omada Controller, Proxmox GUI, and LXC containers) after losing access due to misconfigured VLAN trunking. The recovery was performed entirely &lt;strong&gt;off-site&lt;/strong&gt;, using only a mobile device connected via an &lt;strong&gt;OpenVPN tunnel&lt;/strong&gt;.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;
-&lt;p&gt;I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Remote SDN Recovery &amp; VLAN Isolation via VPN &amp; Shell Access</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</link>
       <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/on-premise-engineering-labs/remote-sdn-recovery-vlan-isolation-via-vpn-shell-access/</guid>
@@ -1028,132 +524,6 @@
 &lt;hr&gt;
 &lt;h3 id=&#34;background&#34;&gt;Background&lt;/h3&gt;
 &lt;p&gt;I transitioned my home lab management network to VLAN 99 to achieve full traffic isolation. In the process of re-tagging Proxmox and LXC container traffic and reconfiguring Cisco switch trunk ports, I lost access to the Omada Controller and Proxmox GUI. With no local access to the console, I needed a remote solution.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Creating Network Management Isolation</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-2/creating-network-management-isolation/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-2/creating-network-management-isolation/</guid>
-      <description>&lt;h1 id=&#34;02---migrating-to-a-dedicated-management-vlan-vlan-99&#34;&gt;02 - Migrating to a Dedicated Management VLAN (VLAN 99)&lt;/h1&gt;
-&lt;p&gt;This phase documents the migration of all core management infrastructure to an isolated VLAN (VLAN 99) for improved security, network segmentation, and long-term scalability. This included Proxmox GUI access, Omada Controller LXC, and strict firewall rules enforced via pfSense.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Remove critical services from default/native VLAN&lt;/li&gt;
-&lt;li&gt;Assign a dedicated, isolated VLAN (VLAN 99) for:
-&lt;ul&gt;
-&lt;li&gt;Proxmox management GUI&lt;/li&gt;
-&lt;li&gt;Omada Controller (LXC)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Trunk management VLAN through switch to Proxmox&lt;/li&gt;
-&lt;li&gt;Implement firewall rules to allow remote admin access only&lt;/li&gt;
-&lt;li&gt;Preserve service availability during transition&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;pre-migration-topology&#34;&gt;Pre-Migration Topology&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Network&lt;/th&gt;
-          &lt;th&gt;VLAN&lt;/th&gt;
-          &lt;th&gt;Interface&lt;/th&gt;
-          &lt;th&gt;Description&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Proxmox Host&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;Static IP via native VLAN&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Omada Controller&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;LXC container, web GUI on port 8043&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;DNS LXC&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;VPN Tunnel&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;pfSense&lt;/td&gt;
-          &lt;td&gt;Remote client-to-site access&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;post-migration-topology&#34;&gt;Post-Migration Topology&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Network&lt;/th&gt;
-          &lt;th&gt;VLAN&lt;/th&gt;
-          &lt;th&gt;Interface&lt;/th&gt;
-          &lt;th&gt;Description&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Proxmox Host&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Management&lt;/td&gt;
-          &lt;td&gt;VLAN 99&lt;/td&gt;
-          &lt;td&gt;vmbr1.99&lt;/td&gt;
-          &lt;td&gt;Tagged IP for GUI access via &lt;code&gt;vmbr1&lt;/code&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Omada Controller&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Management&lt;/td&gt;
-          &lt;td&gt;VLAN 99&lt;/td&gt;
-          &lt;td&gt;vmbr1 (tagged)&lt;/td&gt;
-          &lt;td&gt;LXC container with VLAN tag 99&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LAN&lt;/td&gt;
-          &lt;td&gt;VLAN 1&lt;/td&gt;
-          &lt;td&gt;vmbr0&lt;/td&gt;
-          &lt;td&gt;LXC container&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Trunk Port (Switch)&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Trunked Port&lt;/td&gt;
-          &lt;td&gt;1,99,14&lt;/td&gt;
-          &lt;td&gt;enp1s0&lt;/td&gt;
-          &lt;td&gt;Connected to VLAN-aware bridge &lt;code&gt;vmbr1&lt;/code&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;VPN Tunnel&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Routed to MGMT&lt;/td&gt;
-          &lt;td&gt;VLAN 99&lt;/td&gt;
-          &lt;td&gt;pfSense&lt;/td&gt;
-          &lt;td&gt;Allows external admin access to VLAN 99&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;migration-steps&#34;&gt;Migration Steps&lt;/h2&gt;
-&lt;h3 id=&#34;1-create-vlan-99-in-pfsense&#34;&gt;1. Create VLAN 99 in pfSense&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Interfaces &amp;gt; Assignments &amp;gt; VLANs&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Created VLAN 99 on the LAN parent interface&lt;/li&gt;
-&lt;li&gt;Assigned it as a new interface and renamed it to &lt;code&gt;MGMT&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Enabled the interface and set a static IP (management subnet)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;2-configure-proxmox-bridge-for-vlan-tagging&#34;&gt;2. Configure Proxmox Bridge for VLAN Tagging&lt;/h3&gt;
-&lt;p&gt;Created a new VLAN-aware bridge and subinterface in &lt;code&gt;/etc/network/interfaces&lt;/code&gt;:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Creating Network Management Isolation</title>
@@ -1280,131 +650,6 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;2-configure-proxmox-bridge-for-vlan-tagging&#34;&gt;2. Configure Proxmox Bridge for VLAN Tagging&lt;/h3&gt;
 &lt;p&gt;Created a new VLAN-aware bridge and subinterface in &lt;code&gt;/etc/network/interfaces&lt;/code&gt;:&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>The Big Bang (How it All Began)</title>
-      <link>https://blog.tillynet.com/my-home-lab-journey/post-1/the-big-bang-how-it-all-began/</link>
-      <pubDate>Thu, 10 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/my-home-lab-journey/post-1/the-big-bang-how-it-all-began/</guid>
-      <description>&lt;h1 id=&#34;homelab-initial-network-setup&#34;&gt;HomeLab: Initial Network Setup&lt;/h1&gt;
-&lt;p&gt;This project documents the first working phase of my home network infrastructure built on top of Proxmox, using pfSense as a virtual firewall/router and LXC containers to host internal services. The design lays the foundation for a scalable, secure, and isolated home lab environment.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Hypervisor:&lt;/strong&gt; Proxmox VE running on Protectli Vault VP2420 (Intel J6412, 4 NICs)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Router/Firewall:&lt;/strong&gt; pfSense VM&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Internal Services:&lt;/strong&gt;
-&lt;ul&gt;
-&lt;li&gt;Pi-hole (LXC) – local recursive DNS + ad-blocking&lt;/li&gt;
-&lt;li&gt;Omada Controller (LXC) – TP-Link AP management&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;LAN Devices:&lt;/strong&gt; Proxmox host, personal workstation, AP, switch&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Guest Devices:&lt;/strong&gt; IoT &amp;amp; roommate devices on isolated VLAN 14&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;infrastructure-at-a-glance&#34;&gt;Infrastructure at a Glance&lt;/h2&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-      &lt;tr&gt;
-          &lt;th&gt;Component&lt;/th&gt;
-          &lt;th&gt;Description&lt;/th&gt;
-      &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;pfSense&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;VM with two PCI-passthrough NICs (WAN + LAN)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;vmbr0&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Bridge for LAN (Proxmox + LXCs)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;vmbr1&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Reserved for future VLAN tagging (e.g., mgmt)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Pi-hole&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LXC container for DNS (on LAN)&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Omada Ctrl&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;LXC container managing TP-Link EAP670 AP&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Cisco Switch&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;Access switch trunking VLANs to Proxmox/AP&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;&lt;strong&gt;Guest VLAN 14&lt;/strong&gt;&lt;/td&gt;
-          &lt;td&gt;WiFi-only VLAN for roommate &amp;amp; IoT devices&lt;/td&gt;
-      &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;setup-timeline&#34;&gt;Setup Timeline&lt;/h2&gt;
-&lt;h3 id=&#34;phase-1--core-infrastructure&#34;&gt;Phase 1 – Core Infrastructure&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Flashed Proxmox onto Protectli Vault&lt;/li&gt;
-&lt;li&gt;Created pfSense VM with 2 passthrough NICs:
-&lt;ul&gt;
-&lt;li&gt;WAN: connected to ISP modem&lt;/li&gt;
-&lt;li&gt;LAN: connected to Cisco switch (trunk-ready)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Configured &lt;code&gt;vmbr0&lt;/code&gt; as LAN bridge in Proxmox&lt;/li&gt;
-&lt;li&gt;Gave Proxmox host static IP on the LAN network&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;phase-2--internal-services&#34;&gt;Phase 2 – Internal Services&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Provisioned LXC container for Pi-hole
-&lt;ul&gt;
-&lt;li&gt;Static IP assigned&lt;/li&gt;
-&lt;li&gt;Configured upstream DNS servers (e.g., Cloudflare)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Provisioned LXC container for Omada Controller
-&lt;ul&gt;
-&lt;li&gt;Used to manage TP-Link EAP670 AP&lt;/li&gt;
-&lt;li&gt;Served on LAN via Omada web GUI (port 8043)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;phase-3--wireless--guest-vlan&#34;&gt;Phase 3 – Wireless &amp;amp; Guest VLAN&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Set up VLAN 14 in pfSense (Guest Network)&lt;/li&gt;
-&lt;li&gt;Trunked VLANs through switch port to Omada AP&lt;/li&gt;
-&lt;li&gt;Created isolated wireless SSID mapped to VLAN 14&lt;/li&gt;
-&lt;li&gt;Configured firewall rules in pfSense:
-&lt;ul&gt;
-&lt;li&gt;Guests can access WAN only&lt;/li&gt;
-&lt;li&gt;Blocked access to LAN and Pi-hole&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Verified DHCP lease and internet access for guests&lt;/li&gt;
-&lt;li&gt;Observed isolated traffic from personal network&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;security-practices&#34;&gt;Security Practices&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Created distinct VLANs for guest vs personal network&lt;/li&gt;
-&lt;li&gt;Isolated Pi-hole to LAN access only&lt;/li&gt;
-&lt;li&gt;Disabled inter-VLAN routing from Guest → LAN&lt;/li&gt;
-&lt;li&gt;Assigned firewall rules by interface in pfSense&lt;/li&gt;
-&lt;li&gt;Reserved management services for trusted VLAN only&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;to-do--next-steps&#34;&gt;To-Do / Next Steps&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Create VLAN 99 for network management&lt;/li&gt;
-&lt;li&gt;Move Proxmox GUI and Omada Controller to VLAN 99&lt;/li&gt;
-&lt;li&gt;Add remote access via OpenVPN (completed later)&lt;/li&gt;
-&lt;li&gt;Diagram full topology and backup strategy&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;network-diagram&#34;&gt;Network Diagram&lt;/h2&gt;
-&lt;p&gt;&lt;img alt=&#34;Image&#34; loading=&#34;lazy&#34; src=&#34;https://blog.tillynet.com/images/TillyNet_OG.drawio.png&#34;&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>The Big Bang (How it All Began)</title>

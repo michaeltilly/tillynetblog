@@ -9,12 +9,13 @@
     <lastBuildDate>Tue, 27 May 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/ec2/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>AWS Cloud Security Deployment - Terraform</title>
+      <title>Building Secure AWS Infrastructure with Terraform - Complete Lab Guide</title>
       <link>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</link>
       <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</guid>
-      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This document summarizes the technical work completed today to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.&lt;/p&gt;
+      <description>&lt;hr&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This document summarizes the technical work completed to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure deployment steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
 &lt;ul&gt;
@@ -26,23 +27,6 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Secure access using Security Groups.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>AWS Cloud Security Deployment - Terraform</title>
-      <link>https://blog.tillynet.com/cloud-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</link>
-      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/cloud-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</guid>
-      <description>&lt;h1 id=&#34;aws-cloud-security-deployment---terraform&#34;&gt;AWS Cloud Security Deployment - Terraform&lt;/h1&gt;
-&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
-&lt;p&gt;This document summarizes the technical work completed today to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Build a segmented AWS VPC network with public and private subnets.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Launch EC2 instances in both public and private subnets.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
