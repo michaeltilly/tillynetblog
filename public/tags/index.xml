@@ -16,10 +16,24 @@
       <description></description>
     </item>
     <item>
+      <title>Bash</title>
+      <link>https://blog.tillynet.com/tags/bash/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/bash/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Bastion</title>
       <link>https://blog.tillynet.com/tags/bastion/</link>
       <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/bastion/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Cloud Deployment</title>
+      <link>https://blog.tillynet.com/tags/cloud-deployment/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/cloud-deployment/</guid>
       <description></description>
     </item>
     <item>
@@ -30,10 +44,38 @@
       <description></description>
     </item>
     <item>
+      <title>Infrastructure-as-Code</title>
+      <link>https://blog.tillynet.com/tags/infrastructure-as-code/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/infrastructure-as-code/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Jumpbox</title>
       <link>https://blog.tillynet.com/tags/jumpbox/</link>
       <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
       <guid>https://blog.tillynet.com/tags/jumpbox/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Network Automation</title>
+      <link>https://blog.tillynet.com/tags/network-automation/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/network-automation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Powershell</title>
+      <link>https://blog.tillynet.com/tags/powershell/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/powershell/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Terraform</title>
+      <link>https://blog.tillynet.com/tags/terraform/</link>
+      <pubDate>Tue, 27 May 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/tags/terraform/</guid>
       <description></description>
     </item>
     <item>
