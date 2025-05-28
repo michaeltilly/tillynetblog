@@ -39,6 +39,10 @@ params:
     - "my-home-lab-journey"
     - "cloud-engineering-labs"
 
+  mainFeedSections:
+    - "my-home-lab-journey" 
+    - "cloud-engineering-labs"
+    
 menu:
   main:
     - name: "Home"
