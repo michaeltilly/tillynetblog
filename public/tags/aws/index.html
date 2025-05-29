@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Aws | Tilly Net</title>
+<title>AWS | Tilly Net</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -58,11 +58,11 @@
     </style>
 </noscript><meta property="og:url" content="https://blog.tillynet.com/tags/aws/">
   <meta property="og:site_name" content="Tilly Net">
-  <meta property="og:title" content="Aws">
+  <meta property="og:title" content="AWS">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Aws">
+<meta name="twitter:title" content="AWS">
 <meta name="twitter:description" content="">
 
 </head>
@@ -138,9 +138,24 @@
 <main class="main"> 
 <header class="page-header">
   <h1>
-    Aws
+    AWS
   </h1>
 </header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Executive Summary This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.
+Architecture Overview Infrastructure Components The lab implements a multi-tier architecture consisting of:
+Network Layer: Custom VPC with public and private subnets, NAT Gateway for outbound internet access Compute Layer: Bastion host for secure access, private EC2 instance with IAM role-based S3 access Storage Layer: Encrypted S3 bucket with versioning, lifecycle policies, and access logging Security Layer: IAM roles with least-privilege policies, VPC endpoints for private connectivity Monitoring Layer: CloudTrail for API auditing, S3 access logs for request-level monitoring Network Architecture Internet Gateway|Public Subnet (10.0.1.0/24)|Bastion Host|Private Subnet (10.0.2.0/24)|Private EC2 Instance -----&gt; S3 VPC Endpoint -----&gt; S3 Bucket|NAT Gateway (for outbound internet access) ┌─────────────────────────────────────────────────────────────┐│ My Existing VPC ││ ┌─────────────────┐ ┌─────────────────────┐ ││ │ Public Subnet │ │ Private Subnet │ ││ │ │ │ │ ││ │ ┌───────────┐ │ │ ┌───────────────┐ │ ││ │ │ Bastion │ │ │ │ Private EC2 │ │ ││ │ │ Host │ │──────────────│ │ &#43; IAM Role │ │ ││ │ │ │ │ │ │ │ │ ││ │ └───────────┘ │ │ └───────────────┘ │ ││ └─────────────────┘ └─────────────────────┘ │└─────────────────────────────────────────────────────────────┘││ IAM Role Permissions▼┌─────────────────────────────────────────────────────────────┐│ Secure S3 Bucket ││ • Server-Side Encryption (SSE-S3 or SSE-KMS) ││ • Public Access Blocked ││ • Bucket Policy Enforcement ││ • CloudTrail Logging │└─────────────────────────────────────────────────────────────┘ Infrastructure Implementation 1. VPC and Network Configuration The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-05-28 00:00:00 +0000 UTC'>May 28, 2025</span>&nbsp;·&nbsp;12 min</footer>
+  <a class="entry-link" aria-label="post link to Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/"></a>
+</article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
@@ -148,14 +163,14 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p> Overview This document summarizes the technical work completed to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure deployment steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.
+    <p>Overview This document summarizes the technical work completed to build, configure, and automate a secure AWS VPC lab using Terraform. It covers manual and automated infrastructure deployment steps, with detailed explanations for each Terraform configuration component, designed to help replicate the setup at any time in the future.
 Objectives Build a segmented AWS VPC network with public and private subnets.
 Launch EC2 instances in both public and private subnets.
 Secure access using Security Groups.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-05-27 00:00:00 +0000 UTC'>May 27, 2025</span>&nbsp;·&nbsp;23 min</footer>
-  <a class="entry-link" aria-label="post link to Building Secure AWS Infrastructure with Terraform - Complete Lab Guide" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/"></a>
+  <a class="entry-link" aria-label="post link to Building Secure AWS Infrastructure with Terraform - Complete Lab Guide" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/building-secure-aws-infrastructure-with-terraform---complete-lab-guide/"></a>
 </article>
     </main>
     

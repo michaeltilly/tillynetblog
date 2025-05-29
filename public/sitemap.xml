@@ -3,54 +3,60 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.tillynet.com/tags/aws/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/bash/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/bastion/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/aws-cloud-security-lab-summary-terraform-project/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <loc>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/</loc>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/categories/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/cloud-deployment/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/categories/cloud-engineering-labs/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/cloud-engineering-labs/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/ec2/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/infrastructure-as-code/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/jumpbox/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/network-automation/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/powershell/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/s3/</loc>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/terraform/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/</loc>
-    <lastmod>2025-05-27T00:00:00+00:00</lastmod>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/vpc/</loc>
+    <lastmod>2025-05-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/building-secure-aws-infrastructure-with-terraform---complete-lab-guide/</loc>
     <lastmod>2025-05-27T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/active-directory/</loc>
@@ -153,6 +159,9 @@
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/about/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/categories/about/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/debian/</loc>

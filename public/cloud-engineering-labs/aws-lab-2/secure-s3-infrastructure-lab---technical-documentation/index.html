@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide | Tilly Net</title>
+<meta name="keywords" content="AWS, S3, EC2, VPC, bastion, jumpbox, powershell, bash, terraform, infrastructure-as-code, network automation, cloud deployment">
+<meta name="description" content="Executive Summary
+This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.
+Architecture Overview
+Infrastructure Components
+The lab implements a multi-tier architecture consisting of:
+
+Network Layer: Custom VPC with public and private subnets, NAT Gateway for outbound internet access
+Compute Layer: Bastion host for secure access, private EC2 instance with IAM role-based S3 access
+Storage Layer: Encrypted S3 bucket with versioning, lifecycle policies, and access logging
+Security Layer: IAM roles with least-privilege policies, VPC endpoints for private connectivity
+Monitoring Layer: CloudTrail for API auditing, S3 access logs for request-level monitoring
+
+Network Architecture
+Internet Gateway
+       |
+   Public Subnet (10.0.1.0/24)
+       |
+   Bastion Host
+       |
+   Private Subnet (10.0.2.0/24)
+       |
+   Private EC2 Instance -----&gt; S3 VPC Endpoint -----&gt; S3 Bucket
+       |
+   NAT Gateway (for outbound internet access)
+┌─────────────────────────────────────────────────────────────┐
+│                    My Existing VPC                          │
+│  ┌─────────────────┐              ┌─────────────────────┐   │
+│  │  Public Subnet  │              │  Private Subnet     │   │
+│  │                 │              │                     │   │
+│  │  ┌───────────┐  │              │  ┌───────────────┐  │   │
+│  │  │ Bastion   │  │              │  │ Private EC2   │  │   │
+│  │  │ Host      │  │──────────────│  │ &#43; IAM Role    │  │   │
+│  │  │           │  │              │  │               │  │   │
+│  │  └───────────┘  │              │  └───────────────┘  │   │
+│  └─────────────────┘              └─────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                               │
+                               │ IAM Role Permissions
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Secure S3 Bucket                         │
+│  • Server-Side Encryption (SSE-S3 or SSE-KMS)               │
+│  • Public Access Blocked                                    │
+│  • Bucket Policy Enforcement                                │
+│  • CloudTrail Logging                                       │
+└─────────────────────────────────────────────────────────────┘
+Infrastructure Implementation
+1. VPC and Network Configuration
+The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide">
+  <meta property="og:description" content="Executive Summary This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.
+Architecture Overview Infrastructure Components The lab implements a multi-tier architecture consisting of:
+Network Layer: Custom VPC with public and private subnets, NAT Gateway for outbound internet access Compute Layer: Bastion host for secure access, private EC2 instance with IAM role-based S3 access Storage Layer: Encrypted S3 bucket with versioning, lifecycle policies, and access logging Security Layer: IAM roles with least-privilege policies, VPC endpoints for private connectivity Monitoring Layer: CloudTrail for API auditing, S3 access logs for request-level monitoring Network Architecture Internet Gateway|Public Subnet (10.0.1.0/24)|Bastion Host|Private Subnet (10.0.2.0/24)|Private EC2 Instance -----&gt; S3 VPC Endpoint -----&gt; S3 Bucket|NAT Gateway (for outbound internet access) ┌─────────────────────────────────────────────────────────────┐│ My Existing VPC ││ ┌─────────────────┐ ┌─────────────────────┐ ││ │ Public Subnet │ │ Private Subnet │ ││ │ │ │ │ ││ │ ┌───────────┐ │ │ ┌───────────────┐ │ ││ │ │ Bastion │ │ │ │ Private EC2 │ │ ││ │ │ Host │ │──────────────│ │ &#43; IAM Role │ │ ││ │ │ │ │ │ │ │ │ ││ │ └───────────┘ │ │ └───────────────┘ │ ││ └─────────────────┘ └─────────────────────┘ │└─────────────────────────────────────────────────────────────┘││ IAM Role Permissions▼┌─────────────────────────────────────────────────────────────┐│ Secure S3 Bucket ││ • Server-Side Encryption (SSE-S3 or SSE-KMS) ││ • Public Access Blocked ││ • Bucket Policy Enforcement ││ • CloudTrail Logging │└─────────────────────────────────────────────────────────────┘ Infrastructure Implementation 1. VPC and Network Configuration The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="cloud-engineering-labs">
+    <meta property="article:published_time" content="2025-05-28T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-05-28T00:00:00+00:00">
+    <meta property="article:tag" content="AWS">
+    <meta property="article:tag" content="S3">
+    <meta property="article:tag" content="EC2">
+    <meta property="article:tag" content="VPC">
+    <meta property="article:tag" content="Bastion">
+    <meta property="article:tag" content="Jumpbox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide">
+<meta name="twitter:description" content="Executive Summary
+This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.
+Architecture Overview
+Infrastructure Components
+The lab implements a multi-tier architecture consisting of:
+
+Network Layer: Custom VPC with public and private subnets, NAT Gateway for outbound internet access
+Compute Layer: Bastion host for secure access, private EC2 instance with IAM role-based S3 access
+Storage Layer: Encrypted S3 bucket with versioning, lifecycle policies, and access logging
+Security Layer: IAM roles with least-privilege policies, VPC endpoints for private connectivity
+Monitoring Layer: CloudTrail for API auditing, S3 access logs for request-level monitoring
+
+Network Architecture
+Internet Gateway
+       |
+   Public Subnet (10.0.1.0/24)
+       |
+   Bastion Host
+       |
+   Private Subnet (10.0.2.0/24)
+       |
+   Private EC2 Instance -----&gt; S3 VPC Endpoint -----&gt; S3 Bucket
+       |
+   NAT Gateway (for outbound internet access)
+┌─────────────────────────────────────────────────────────────┐
+│                    My Existing VPC                          │
+│  ┌─────────────────┐              ┌─────────────────────┐   │
+│  │  Public Subnet  │              │  Private Subnet     │   │
+│  │                 │              │                     │   │
+│  │  ┌───────────┐  │              │  ┌───────────────┐  │   │
+│  │  │ Bastion   │  │              │  │ Private EC2   │  │   │
+│  │  │ Host      │  │──────────────│  │ &#43; IAM Role    │  │   │
+│  │  │           │  │              │  │               │  │   │
+│  │  └───────────┘  │              │  └───────────────┘  │   │
+│  └─────────────────┘              └─────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                               │
+                               │ IAM Role Permissions
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Secure S3 Bucket                         │
+│  • Server-Side Encryption (SSE-S3 or SSE-KMS)               │
+│  • Public Access Blocked                                    │
+│  • Bucket Policy Enforcement                                │
+│  • CloudTrail Logging                                       │
+└─────────────────────────────────────────────────────────────┘
+Infrastructure Implementation
+1. VPC and Network Configuration
+The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Cloud-Engineering-Labs",
+      "item": "https://blog.tillynet.com/cloud-engineering-labs/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide",
+      "item": "https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide",
+  "name": "Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide",
+  "description": "Executive Summary This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.\nArchitecture Overview Infrastructure Components The lab implements a multi-tier architecture consisting of:\nNetwork Layer: Custom VPC with public and private subnets, NAT Gateway for outbound internet access Compute Layer: Bastion host for secure access, private EC2 instance with IAM role-based S3 access Storage Layer: Encrypted S3 bucket with versioning, lifecycle policies, and access logging Security Layer: IAM roles with least-privilege policies, VPC endpoints for private connectivity Monitoring Layer: CloudTrail for API auditing, S3 access logs for request-level monitoring Network Architecture Internet Gateway\r|\rPublic Subnet (10.0.1.0/24)\r|\rBastion Host\r|\rPrivate Subnet (10.0.2.0/24)\r|\rPrivate EC2 Instance -----\u0026gt; S3 VPC Endpoint -----\u0026gt; S3 Bucket\r|\rNAT Gateway (for outbound internet access) ┌─────────────────────────────────────────────────────────────┐\r│ My Existing VPC │\r│ ┌─────────────────┐ ┌─────────────────────┐ │\r│ │ Public Subnet │ │ Private Subnet │ │\r│ │ │ │ │ │\r│ │ ┌───────────┐ │ │ ┌───────────────┐ │ │\r│ │ │ Bastion │ │ │ │ Private EC2 │ │ │\r│ │ │ Host │ │──────────────│ │ + IAM Role │ │ │\r│ │ │ │ │ │ │ │ │ │\r│ │ └───────────┘ │ │ └───────────────┘ │ │\r│ └─────────────────┘ └─────────────────────┘ │\r└─────────────────────────────────────────────────────────────┘\r│\r│ IAM Role Permissions\r▼\r┌─────────────────────────────────────────────────────────────┐\r│ Secure S3 Bucket │\r│ • Server-Side Encryption (SSE-S3 or SSE-KMS) │\r│ • Public Access Blocked │\r│ • Bucket Policy Enforcement │\r│ • CloudTrail Logging │\r└─────────────────────────────────────────────────────────────┘ Infrastructure Implementation 1. VPC and Network Configuration The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.\n",
+  "keywords": [
+    "AWS", "S3", "EC2", "VPC", "bastion", "jumpbox", "powershell", "bash", "terraform", "infrastructure-as-code", "network automation", "cloud deployment"
+  ],
+  "articleBody": "Executive Summary This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.\nArchitecture Overview Infrastructure Components The lab implements a multi-tier architecture consisting of:\nNetwork Layer: Custom VPC with public and private subnets, NAT Gateway for outbound internet access Compute Layer: Bastion host for secure access, private EC2 instance with IAM role-based S3 access Storage Layer: Encrypted S3 bucket with versioning, lifecycle policies, and access logging Security Layer: IAM roles with least-privilege policies, VPC endpoints for private connectivity Monitoring Layer: CloudTrail for API auditing, S3 access logs for request-level monitoring Network Architecture Internet Gateway\r|\rPublic Subnet (10.0.1.0/24)\r|\rBastion Host\r|\rPrivate Subnet (10.0.2.0/24)\r|\rPrivate EC2 Instance -----\u003e S3 VPC Endpoint -----\u003e S3 Bucket\r|\rNAT Gateway (for outbound internet access) ┌─────────────────────────────────────────────────────────────┐\r│ My Existing VPC │\r│ ┌─────────────────┐ ┌─────────────────────┐ │\r│ │ Public Subnet │ │ Private Subnet │ │\r│ │ │ │ │ │\r│ │ ┌───────────┐ │ │ ┌───────────────┐ │ │\r│ │ │ Bastion │ │ │ │ Private EC2 │ │ │\r│ │ │ Host │ │──────────────│ │ + IAM Role │ │ │\r│ │ │ │ │ │ │ │ │ │\r│ │ └───────────┘ │ │ └───────────────┘ │ │\r│ └─────────────────┘ └─────────────────────┘ │\r└─────────────────────────────────────────────────────────────┘\r│\r│ IAM Role Permissions\r▼\r┌─────────────────────────────────────────────────────────────┐\r│ Secure S3 Bucket │\r│ • Server-Side Encryption (SSE-S3 or SSE-KMS) │\r│ • Public Access Blocked │\r│ • Bucket Policy Enforcement │\r│ • CloudTrail Logging │\r└─────────────────────────────────────────────────────────────┘ Infrastructure Implementation 1. VPC and Network Configuration The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.\nVPC Configuration (vpc.tf) resource \"aws_vpc\" \"main\" { cidr_block = var.vpc_cidr enable_dns_hostnames = true enable_dns_support = true tags = merge(local.common_tags, { Name = \"${local.name_prefix}-vpc\" }) } Purpose: Creates an isolated network environment with DNS resolution enabled for service discovery and hostname resolution within the VPC.\nSubnet Architecture Public Subnet: Hosts the bastion host with direct internet access through an Internet Gateway.\nresource \"aws_subnet\" \"public\" { vpc_id = aws_vpc.main.id cidr_block = var.public_subnet_cidr availability_zone = data.aws_availability_zones.available.names[0] map_public_ip_on_launch = true tags = merge(local.common_tags, { Name = \"${local.name_prefix}-public-subnet\" Type = \"Public\" }) } Private Subnet: Hosts application workloads with no direct internet access, using NAT Gateway for outbound connectivity.\nresource \"aws_subnet\" \"private\" { vpc_id = aws_vpc.main.id cidr_block = var.private_subnet_cidr availability_zone = data.aws_availability_zones.available.names[0] tags = merge(local.common_tags, { Name = \"${local.name_prefix}-private-subnet\" Type = \"Private\" }) } Design Rationale: This subnet architecture implements defense-in-depth by isolating internet-facing resources from internal application resources, reducing the attack surface and providing granular network-level access controls.\nNAT Gateway Implementation resource \"aws_nat_gateway\" \"main\" { allocation_id = aws_eip.nat.id subnet_id = aws_subnet.public.id tags = merge(local.common_tags, { Name = \"${local.name_prefix}-nat-gateway\" }) depends_on = [aws_internet_gateway.main] } Purpose: Enables outbound internet connectivity for private subnet resources while preventing inbound internet access. Essential for package updates, AWS API calls, and other outbound services.\n2. S3 Bucket Configuration The S3 bucket implementation follows AWS security best practices with multiple layers of protection.\nPrimary S3 Bucket (s3.tf) resource \"aws_s3_bucket\" \"secure_bucket\" { bucket = local.bucket_name tags = merge(local.common_tags, { Name = \"${local.name_prefix}-secure-bucket\" Purpose = \"Secure data storage\" Compliance = \"Enterprise\" DataClass = \"Confidential\" }) } Naming Strategy: Uses a combination of project prefix and random suffix to ensure global uniqueness while maintaining recognizability.\nSecurity Hardening Public Access Block: Prevents accidental public exposure of bucket contents.\nresource \"aws_s3_bucket_public_access_block\" \"secure_bucket_pab\" { bucket = aws_s3_bucket.secure_bucket.id block_public_acls = true block_public_policy = true ignore_public_acls = true restrict_public_buckets = true } Server-Side Encryption: Implements AES-256 encryption for data at rest.\nresource \"aws_s3_bucket_server_side_encryption_configuration\" \"secure_bucket_encryption\" { bucket = aws_s3_bucket.secure_bucket.id rule { apply_server_side_encryption_by_default { sse_algorithm = \"AES256\" } } } Versioning: Enables object versioning for data protection and recovery capabilities.\nresource \"aws_s3_bucket_versioning\" \"secure_bucket_versioning\" { bucket = aws_s3_bucket.secure_bucket.id versioning_configuration { status = \"Enabled\" } } Lifecycle Management resource \"aws_s3_bucket_lifecycle_configuration\" \"secure_bucket_lifecycle\" { bucket = aws_s3_bucket.secure_bucket.id rule { id = \"intelligent_tiering\" status = \"Enabled\" filter { prefix = \"\" } transition { days = 30 storage_class = \"STANDARD_IA\" } transition { days = 90 storage_class = \"GLACIER\" } noncurrent_version_expiration { noncurrent_days = 90 } abort_incomplete_multipart_upload { days_after_initiation = 7 } } } Cost Optimization Strategy: Automatically transitions objects to lower-cost storage classes based on access patterns, reducing storage costs by up to 70% while maintaining data availability.\n3. IAM Security Model The lab implements a least-privilege access model using IAM roles and policies.\nEC2 Instance Role (iam.tf) resource \"aws_iam_role\" \"ec2_s3_role\" { name = \"${local.name_prefix}-ec2-s3-role\" assume_role_policy = jsonencode({ Version = \"2012-10-17\" Statement = [ { Action = \"sts:AssumeRole\" Effect = \"Allow\" Principal = { Service = \"ec2.amazonaws.com\" } } ] }) tags = local.common_tags } Trust Policy: Allows only EC2 instances to assume this role, preventing unauthorized access from other AWS services or external entities.\nS3 Access Policy resource \"aws_iam_role_policy\" \"ec2_s3_policy\" { name = \"${local.name_prefix}-ec2-s3-policy\" role = aws_iam_role.ec2_s3_role.id policy = jsonencode({ Version = \"2012-10-17\" Statement = [ { Effect = \"Allow\" Action = [ \"s3:ListBucket\", \"s3:GetBucketLocation\", \"s3:GetBucketVersioning\", \"s3:GetObject\", \"s3:PutObject\", \"s3:DeleteObject\", \"s3:GetObjectVersion\", \"s3:DeleteObjectVersion\" ] Resource = [ aws_s3_bucket.secure_bucket.arn, \"${aws_s3_bucket.secure_bucket.arn}/*\" ] } ] }) } Principle of Least Privilege: Grants only the minimum permissions necessary for application functionality, scoped specifically to the target S3 bucket.\n4. VPC Endpoints for Private Connectivity VPC Endpoints eliminate the need for internet routing of S3 traffic, improving security and reducing costs.\nS3 VPC Endpoint (s3.tf) resource \"aws_vpc_endpoint\" \"s3_endpoint\" { vpc_id = aws_vpc.main.id service_name = \"com.amazonaws.${data.aws_region.current.name}.s3\" vpc_endpoint_type = \"Gateway\" route_table_ids = [aws_route_table.private.id] policy = jsonencode({ Version = \"2012-10-17\" Statement = [ { Effect = \"Allow\" Principal = \"*\" Action = [ \"s3:ListBucket\", \"s3:GetBucketLocation\", \"s3:GetBucketVersioning\", \"s3:GetObject\", \"s3:PutObject\", \"s3:DeleteObject\", \"s3:GetObjectVersion\", \"s3:DeleteObjectVersion\" ] Resource = [ aws_s3_bucket.secure_bucket.arn, \"${aws_s3_bucket.secure_bucket.arn}/*\", \"arn:aws:s3:::amazonlinux-2-repos-${data.aws_region.current.name}\", \"arn:aws:s3:::amazonlinux-2-repos-${data.aws_region.current.name}/*\" ] } ] }) tags = merge(local.common_tags, { Name = \"${local.name_prefix}-s3-vpc-endpoint\" }) } Security Benefits:\nTraffic remains within AWS network backbone Eliminates exposure to internet-based attacks Provides additional layer of access control through endpoint policies Cost Benefits:\nReduces NAT Gateway data processing charges by ~78% No hourly charges for Gateway endpoints Lower latency for S3 operations 5. EC2 Infrastructure Bastion Host Configuration (main.tf) resource \"aws_instance\" \"bastion\" { ami = data.aws_ami.amazon_linux.id instance_type = var.instance_type key_name = var.key_pair_name subnet_id = aws_subnet.public.id vpc_security_group_ids = [aws_security_group.bastion_sg.id] associate_public_ip_address = true user_data = base64encode(templatefile(\"${path.module}/user-data/bastion-userdata.sh\", { hostname = \"${local.name_prefix}-bastion\" })) tags = merge(local.common_tags, { Name = \"${local.name_prefix}-bastion\" Role = \"Bastion\" }) } Purpose: Provides secure SSH access to private subnet resources while maintaining network isolation. Acts as a controlled entry point for administrative access.\nPrivate Instance Configuration resource \"aws_instance\" \"private_ec2\" { ami = data.aws_ami.amazon_linux.id instance_type = var.instance_type key_name = var.key_pair_name subnet_id = aws_subnet.private.id vpc_security_group_ids = [aws_security_group.private_sg.id] iam_instance_profile = aws_iam_instance_profile.ec2_profile.name user_data = base64encode(templatefile(\"${path.module}/user-data/private-userdata.sh\", { hostname = \"${local.name_prefix}-private\" bucket_name = local.bucket_name region = data.aws_region.current.name })) tags = merge(local.common_tags, { Name = \"${local.name_prefix}-private\" Role = \"Application\" }) } Security Configuration: Instance is placed in private subnet with no direct internet access, relies on IAM role for S3 access instead of hardcoded credentials.\n6. Security Groups Security groups implement stateful firewall rules controlling network access.\nBastion Security Group resource \"aws_security_group\" \"bastion_sg\" { name_prefix = \"${local.name_prefix}-bastion-sg\" vpc_id = aws_vpc.main.id description = \"Security group for bastion host\" ingress { description = \"SSH from internet\" from_port = 22 to_port = 22 protocol = \"tcp\" cidr_blocks = var.allowed_ssh_cidrs } egress { description = \"All outbound traffic\" from_port = 0 to_port = 0 protocol = \"-1\" cidr_blocks = [\"0.0.0.0/0\"] } tags = merge(local.common_tags, { Name = \"${local.name_prefix}-bastion-sg\" }) } Access Control: Restricts SSH access to specified IP ranges, preventing unauthorized access attempts.\nPrivate Instance Security Group resource \"aws_security_group\" \"private_sg\" { name_prefix = \"${local.name_prefix}-private-sg\" vpc_id = aws_vpc.main.id description = \"Security group for private EC2 instances\" ingress { description = \"SSH from bastion\" from_port = 22 to_port = 22 protocol = \"tcp\" security_groups = [aws_security_group.bastion_sg.id] } egress { description = \"HTTPS outbound\" from_port = 443 to_port = 443 protocol = \"tcp\" cidr_blocks = [\"0.0.0.0/0\"] } egress { description = \"HTTP outbound\" from_port = 80 to_port = 80 protocol = \"tcp\" cidr_blocks = [\"0.0.0.0/0\"] } tags = merge(local.common_tags, { Name = \"${local.name_prefix}-private-sg\" }) } Principle of Least Privilege: Allows only necessary connections (SSH from bastion, HTTPS/HTTP outbound for package updates and AWS API calls).\nAudit and Monitoring Implementation 1. CloudTrail Configuration CloudTrail provides comprehensive API-level auditing for all AWS service interactions.\nCloudTrail Setup (cloudtrail.tf) resource \"aws_cloudtrail\" \"main_trail\" { name = \"${local.name_prefix}-cloudtrail\" s3_bucket_name = aws_s3_bucket.cloudtrail_logs.bucket include_global_service_events = true is_multi_region_trail = false enable_logging = true event_selector { read_write_type = \"All\" include_management_events = true data_resource { type = \"AWS::S3::Object\" values = [\"${aws_s3_bucket.secure_bucket.arn}/*\"] } } tags = merge(local.common_tags, { Name = \"${local.name_prefix}-cloudtrail\" }) } Monitoring Scope:\nManagement Events: API calls for AWS service configuration changes Data Events: Object-level operations on S3 bucket contents Global Services: IAM, CloudFront, and other global service events CloudTrail Log Storage resource \"aws_s3_bucket\" \"cloudtrail_logs\" { bucket = \"${local.name_prefix}-cloudtrail-logs-${random_id.cloudtrail_suffix.hex}\" tags = merge(local.common_tags, { Name = \"${local.name_prefix}-cloudtrail-logs\" Purpose = \"CloudTrail audit logs\" }) } Security Measures:\nSeparate bucket for audit logs to prevent tampering Server-side encryption enabled Public access blocked Lifecycle policies for cost management 2. S3 Access Logging S3 access logs provide detailed request-level information for security analysis and performance monitoring.\nAccess Log Configuration (s3-logging.tf) resource \"aws_s3_bucket_logging\" \"secure_bucket_logging\" { bucket = aws_s3_bucket.secure_bucket.id target_bucket = aws_s3_bucket.access_logs.id target_prefix = \"access-logs/\" } Log Information Captured:\nRequest timestamp and processing time Client IP address and User-Agent HTTP method and response code Bytes transferred and object size Authentication and authorization details Access Log Storage Bucket resource \"aws_s3_bucket\" \"access_logs\" { bucket = \"${local.name_prefix}-access-logs-${random_id.access_logs_suffix.hex}\" tags = merge(local.common_tags, { Name = \"${local.name_prefix}-access-logs\" Purpose = \"S3 access logs\" }) } Cost Optimization: Lifecycle policies automatically transition logs to cheaper storage classes and delete old logs to manage storage costs.\nProblem-Solution Analysis 1. Network Security Challenges Problem: Traditional cloud deployments often expose resources directly to the internet, increasing attack surface and security risks.\nSolution Implemented:\nPrivate subnet isolation for application workloads Bastion host for controlled administrative access VPC endpoints for private AWS service connectivity Security groups implementing least-privilege network access Impact: Reduced attack surface by eliminating direct internet access to application resources while maintaining necessary connectivity.\n2. Access Control and Authentication Problem: Hard-coded credentials and overly permissive IAM policies create security vulnerabilities and compliance issues.\nSolution Implemented:\nIAM roles with least-privilege policies Instance profiles for credential-free access Resource-specific permissions scoped to individual buckets Regular credential rotation through role assumption Impact: Eliminated credential management overhead while ensuring secure, auditable access to cloud resources.\n3. Data Protection and Compliance Problem: Unencrypted data storage and lack of access auditing create compliance and security gaps.\nSolution Implemented:\nServer-side encryption for all S3 objects Object versioning for data recovery capabilities Comprehensive audit logging through CloudTrail and S3 access logs Public access blocking to prevent accidental exposure Impact: Achieved enterprise-grade data protection with comprehensive audit trails for compliance requirements.\n4. Cost Optimization Problem: Cloud storage costs can escalate quickly without proper lifecycle management and connectivity optimization.\nSolution Implemented:\nLifecycle policies for automatic storage class transitions VPC endpoints to reduce NAT Gateway charges Intelligent log retention policies Multipart upload cleanup to prevent storage waste Impact: Reduced storage costs by approximately 70% through automated lifecycle management and eliminated unnecessary data transfer charges.\n5. VPC Endpoint Policy Restrictions Problem Encountered: During testing, VPC endpoint policies blocked legitimate access to Amazon Linux package repositories, causing package installation failures.\nRoot Cause: VPC endpoint policies act as additional access control layers. When policies are too restrictive, they can block necessary system operations even when IAM permissions allow access.\nResolution Applied:\npolicy = jsonencode({ Version = \"2012-10-17\" Statement = [ { Effect = \"Allow\" Principal = \"*\" Action = [ \"s3:ListBucket\", \"s3:GetObject\", \"s3:PutObject\" ] Resource = [ aws_s3_bucket.secure_bucket.arn, \"${aws_s3_bucket.secure_bucket.arn}/*\", \"arn:aws:s3:::amazonlinux-2-repos-*\", \"arn:aws:s3:::amazonlinux-2-repos-*/*\" ] } ] }) Learning: VPC endpoint policies require careful consideration of all S3 resources that instances need to access, including system repositories and AWS service dependencies.\nOperational Procedures 1. Access Patterns Administrative Access:\n# Connect to bastion host ssh -i keypair.pem ec2-user@ # Connect to private instance through bastion ssh -A -i keypair.pem -o ProxyJump=ec2-user@ ec2-user@ S3 Operations:\n# List bucket contents aws s3 ls s3://bucket-name/ # Upload files aws s3 cp file.txt s3://bucket-name/path/ # Download files aws s3 cp s3://bucket-name/path/file.txt ./ 2. Monitoring and Analysis CloudTrail Log Analysis:\n# Download recent CloudTrail logs aws s3 cp s3://cloudtrail-bucket/recent-log.json.gz ./ # Extract and analyze events gunzip recent-log.json.gz jq '.Records[] | select(.eventSource == \"s3.amazonaws.com\")' recent-log.json S3 Access Log Analysis:\n# Download access logs aws s3 cp s3://access-logs-bucket/access-logs/recent.log ./ # Analyze request patterns awk '{print $8}' recent.log | sort | uniq -c | sort -nr Security Considerations 1. Data Classification The implementation supports multiple data security levels:\nPublic: No restrictions (not implemented in this secure configuration) Internal: Accessible within VPC through proper authentication Confidential: Encrypted at rest and in transit, comprehensive audit logging Restricted: Additional access controls and monitoring (future enhancement) 2. Compliance Framework Alignment The architecture aligns with several compliance frameworks:\nSOC 2: Comprehensive logging and access controls ISO 27001: Risk-based security controls and continuous monitoring NIST Cybersecurity Framework: Defense-in-depth implementation GDPR: Data protection through encryption and access controls 3. Threat Mitigation Threats Addressed:\nData Breaches: Encryption, access controls, and network isolation Insider Threats: Least-privilege access and comprehensive audit logging Configuration Drift: Infrastructure as Code ensures consistent configurations Unauthorized Access: Multi-layer authentication and authorization Cost Analysis 1. Infrastructure Costs (Monthly Estimates) EC2 Instances: ~$30-50 (t3.micro instances) NAT Gateway: ~$45 (fixed cost + data processing) S3 Storage: Variable based on usage, optimized through lifecycle policies CloudTrail: $2 per 100,000 events for data events VPC Endpoints: Free for Gateway endpoints (S3, DynamoDB) 2. Cost Optimization Strategies Storage Class Transitions: Automatic movement to cheaper storage classes VPC Endpoints: Reduced NAT Gateway data processing charges Log Lifecycle Policies: Automated deletion of old audit logs Resource Tagging: Detailed cost allocation and optimization opportunities Conclusion This lab demonstrates the implementation of enterprise-grade secure cloud storage infrastructure using AWS services and Infrastructure as Code principles. The solution addresses critical security, compliance, and cost optimization requirements while maintaining operational efficiency. The multi-layered security approach, comprehensive audit capabilities, and automated cost optimization features provide a solid foundation for production workloads requiring high security standards.\nThe implementation serves as a reference architecture for organizations seeking to deploy secure, compliant, and cost-effective cloud storage solutions while maintaining operational agility through automation and Infrastructure as Code practices.\nFuture Enhancements Potential improvements to consider:\nMulti-AZ deployment for high availability AWS Config for configuration compliance monitoring AWS Security Hub for centralized security findings management AWS GuardDuty for threat detection and monitoring Cross-region replication for disaster recovery AWS KMS for customer-managed encryption keys AWS Systems Manager for patch management and configuration Amazon Macie for data discovery and classification ",
+  "wordCount" : "2436",
+  "inLanguage": "en",
+  "datePublished": "2025-05-28T00:00:00Z",
+  "dateModified": "2025-05-28T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/on-premise-engineering-labs/" title="On-Premise Engineering Labs">
+                    <span>On-Premise Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/cloud-engineering-labs" title="Cloud Engineering Labs">
+                    <span>Cloud Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide
+    </h1>
+    <div class="post-meta"><span title='2025-05-28 00:00:00 +0000 UTC'>May 28, 2025</span>&nbsp;·&nbsp;12 min
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="executive-summary">Executive Summary<a hidden class="anchor" aria-hidden="true" href="#executive-summary">#</a></h2>
+<p>This document outlines the implementation of a secure Amazon S3 infrastructure using Infrastructure as Code (IaC) principles with Terraform. The lab demonstrates enterprise-grade security practices including network isolation, least-privilege access controls, comprehensive audit logging, and cost-optimized storage configurations. The implementation addresses common security challenges in cloud storage while maintaining operational efficiency and compliance requirements.</p>
+<h2 id="architecture-overview">Architecture Overview<a hidden class="anchor" aria-hidden="true" href="#architecture-overview">#</a></h2>
+<h3 id="infrastructure-components">Infrastructure Components<a hidden class="anchor" aria-hidden="true" href="#infrastructure-components">#</a></h3>
+<p>The lab implements a multi-tier architecture consisting of:</p>
+<ul>
+<li><strong>Network Layer</strong>: Custom VPC with public and private subnets, NAT Gateway for outbound internet access</li>
+<li><strong>Compute Layer</strong>: Bastion host for secure access, private EC2 instance with IAM role-based S3 access</li>
+<li><strong>Storage Layer</strong>: Encrypted S3 bucket with versioning, lifecycle policies, and access logging</li>
+<li><strong>Security Layer</strong>: IAM roles with least-privilege policies, VPC endpoints for private connectivity</li>
+<li><strong>Monitoring Layer</strong>: CloudTrail for API auditing, S3 access logs for request-level monitoring</li>
+</ul>
+<h3 id="network-architecture">Network Architecture<a hidden class="anchor" aria-hidden="true" href="#network-architecture">#</a></h3>
+<pre tabindex="0"><code>Internet Gateway
+       |
+   Public Subnet (10.0.1.0/24)
+       |
+   Bastion Host
+       |
+   Private Subnet (10.0.2.0/24)
+       |
+   Private EC2 Instance -----&gt; S3 VPC Endpoint -----&gt; S3 Bucket
+       |
+   NAT Gateway (for outbound internet access)
+</code></pre><pre tabindex="0"><code>┌─────────────────────────────────────────────────────────────┐
+│                    My Existing VPC                          │
+│  ┌─────────────────┐              ┌─────────────────────┐   │
+│  │  Public Subnet  │              │  Private Subnet     │   │
+│  │                 │              │                     │   │
+│  │  ┌───────────┐  │              │  ┌───────────────┐  │   │
+│  │  │ Bastion   │  │              │  │ Private EC2   │  │   │
+│  │  │ Host      │  │──────────────│  │ + IAM Role    │  │   │
+│  │  │           │  │              │  │               │  │   │
+│  │  └───────────┘  │              │  └───────────────┘  │   │
+│  └─────────────────┘              └─────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                               │
+                               │ IAM Role Permissions
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Secure S3 Bucket                         │
+│  • Server-Side Encryption (SSE-S3 or SSE-KMS)               │
+│  • Public Access Blocked                                    │
+│  • Bucket Policy Enforcement                                │
+│  • CloudTrail Logging                                       │
+└─────────────────────────────────────────────────────────────┘
+</code></pre><h2 id="infrastructure-implementation">Infrastructure Implementation<a hidden class="anchor" aria-hidden="true" href="#infrastructure-implementation">#</a></h2>
+<h3 id="1-vpc-and-network-configuration">1. VPC and Network Configuration<a hidden class="anchor" aria-hidden="true" href="#1-vpc-and-network-configuration">#</a></h3>
+<p>The foundation of the infrastructure is a custom VPC providing network isolation and controlled access patterns.</p>
+<h4 id="vpc-configuration-vpctf">VPC Configuration (vpc.tf)<a hidden class="anchor" aria-hidden="true" href="#vpc-configuration-vpctf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_vpc&#34; &#34;main&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  cidr_block</span>           <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">vpc_cidr</span>
+</span></span><span class="line"><span class="cl"><span class="n">  enable_dns_hostnames</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">  enable_dns_support</span>   <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-vpc&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Purpose</strong>: Creates an isolated network environment with DNS resolution enabled for service discovery and hostname resolution within the VPC.</p>
+<h4 id="subnet-architecture">Subnet Architecture<a hidden class="anchor" aria-hidden="true" href="#subnet-architecture">#</a></h4>
+<p><strong>Public Subnet</strong>: Hosts the bastion host with direct internet access through an Internet Gateway.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_subnet&#34; &#34;public&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>                  <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">main</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  cidr_block</span>              <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">public_subnet_cidr</span>
+</span></span><span class="line"><span class="cl"><span class="n">  availability_zone</span>       <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_availability_zones</span><span class="p">.</span><span class="k">available</span><span class="p">.</span><span class="k">names</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  map_public_ip_on_launch</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-public-subnet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Type</span> <span class="o">=</span> <span class="s2">&#34;Public&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Private Subnet</strong>: Hosts application workloads with no direct internet access, using NAT Gateway for outbound connectivity.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_subnet&#34; &#34;private&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>            <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">main</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  cidr_block</span>        <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">private_subnet_cidr</span>
+</span></span><span class="line"><span class="cl"><span class="n">  availability_zone</span> <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_availability_zones</span><span class="p">.</span><span class="k">available</span><span class="p">.</span><span class="k">names</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private-subnet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Type</span> <span class="o">=</span> <span class="s2">&#34;Private&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Design Rationale</strong>: This subnet architecture implements defense-in-depth by isolating internet-facing resources from internal application resources, reducing the attack surface and providing granular network-level access controls.</p>
+<h4 id="nat-gateway-implementation">NAT Gateway Implementation<a hidden class="anchor" aria-hidden="true" href="#nat-gateway-implementation">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_nat_gateway&#34; &#34;main&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  allocation_id</span> <span class="o">=</span> <span class="k">aws_eip</span><span class="p">.</span><span class="k">nat</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  subnet_id</span>     <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">public</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-nat-gateway&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="k">aws_internet_gateway</span><span class="p">.</span><span class="k">main</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Purpose</strong>: Enables outbound internet connectivity for private subnet resources while preventing inbound internet access. Essential for package updates, AWS API calls, and other outbound services.</p>
+<h3 id="2-s3-bucket-configuration">2. S3 Bucket Configuration<a hidden class="anchor" aria-hidden="true" href="#2-s3-bucket-configuration">#</a></h3>
+<p>The S3 bucket implementation follows AWS security best practices with multiple layers of protection.</p>
+<h4 id="primary-s3-bucket-s3tf">Primary S3 Bucket (s3.tf)<a hidden class="anchor" aria-hidden="true" href="#primary-s3-bucket-s3tf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket&#34; &#34;secure_bucket&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="k">local</span><span class="p">.</span><span class="k">bucket_name</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span>           <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-secure-bucket&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Purpose</span>        <span class="o">=</span> <span class="s2">&#34;Secure data storage&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Compliance</span>     <span class="o">=</span> <span class="s2">&#34;Enterprise&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    DataClass</span>      <span class="o">=</span> <span class="s2">&#34;Confidential&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Naming Strategy</strong>: Uses a combination of project prefix and random suffix to ensure global uniqueness while maintaining recognizability.</p>
+<h4 id="security-hardening">Security Hardening<a hidden class="anchor" aria-hidden="true" href="#security-hardening">#</a></h4>
+<p><strong>Public Access Block</strong>: Prevents accidental public exposure of bucket contents.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket_public_access_block&#34; &#34;secure_bucket_pab&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">block_public_acls</span>       <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">  block_public_policy</span>     <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">  ignore_public_acls</span>      <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">  restrict_public_buckets</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Server-Side Encryption</strong>: Implements AES-256 encryption for data at rest.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket_server_side_encryption_configuration&#34; &#34;secure_bucket_encryption&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">rule</span> {
+</span></span><span class="line"><span class="cl">    <span class="k">apply_server_side_encryption_by_default</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      sse_algorithm</span> <span class="o">=</span> <span class="s2">&#34;AES256&#34;</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Versioning</strong>: Enables object versioning for data protection and recovery capabilities.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket_versioning&#34; &#34;secure_bucket_versioning&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">versioning_configuration</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    status</span> <span class="o">=</span> <span class="s2">&#34;Enabled&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h4 id="lifecycle-management">Lifecycle Management<a hidden class="anchor" aria-hidden="true" href="#lifecycle-management">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket_lifecycle_configuration&#34; &#34;secure_bucket_lifecycle&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">rule</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    id</span>     <span class="o">=</span> <span class="s2">&#34;intelligent_tiering&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    status</span> <span class="o">=</span> <span class="s2">&#34;Enabled&#34;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">filter</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      prefix</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">transition</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      days</span>          <span class="o">=</span> <span class="m">30</span>
+</span></span><span class="line"><span class="cl"><span class="n">      storage_class</span> <span class="o">=</span> <span class="s2">&#34;STANDARD_IA&#34;</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">transition</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      days</span>          <span class="o">=</span> <span class="m">90</span>
+</span></span><span class="line"><span class="cl"><span class="n">      storage_class</span> <span class="o">=</span> <span class="s2">&#34;GLACIER&#34;</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">noncurrent_version_expiration</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      noncurrent_days</span> <span class="o">=</span> <span class="m">90</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">abort_incomplete_multipart_upload</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      days_after_initiation</span> <span class="o">=</span> <span class="m">7</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Cost Optimization Strategy</strong>: Automatically transitions objects to lower-cost storage classes based on access patterns, reducing storage costs by up to 70% while maintaining data availability.</p>
+<h3 id="3-iam-security-model">3. IAM Security Model<a hidden class="anchor" aria-hidden="true" href="#3-iam-security-model">#</a></h3>
+<p>The lab implements a least-privilege access model using IAM roles and policies.</p>
+<h4 id="ec2-instance-role-iamtf">EC2 Instance Role (iam.tf)<a hidden class="anchor" aria-hidden="true" href="#ec2-instance-role-iamtf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_iam_role&#34; &#34;ec2_s3_role&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-ec2-s3-role&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">assume_role_policy</span> <span class="o">=</span> <span class="k">jsonencode</span><span class="p">(</span>{
+</span></span><span class="line"><span class="cl"><span class="n">    Version</span> <span class="o">=</span> <span class="s2">&#34;2012-10-17&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Statement</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      {
+</span></span><span class="line"><span class="cl"><span class="n">        Action</span> <span class="o">=</span> <span class="s2">&#34;sts:AssumeRole&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Effect</span> <span class="o">=</span> <span class="s2">&#34;Allow&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Principal</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">          Service</span> <span class="o">=</span> <span class="s2">&#34;ec2.amazonaws.com&#34;</span>
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">local</span><span class="p">.</span><span class="k">common_tags</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Trust Policy</strong>: Allows only EC2 instances to assume this role, preventing unauthorized access from other AWS services or external entities.</p>
+<h4 id="s3-access-policy">S3 Access Policy<a hidden class="anchor" aria-hidden="true" href="#s3-access-policy">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_iam_role_policy&#34; &#34;ec2_s3_policy&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-ec2-s3-policy&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  role</span> <span class="o">=</span> <span class="k">aws_iam_role</span><span class="p">.</span><span class="k">ec2_s3_role</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">policy</span> <span class="o">=</span> <span class="k">jsonencode</span><span class="p">(</span>{
+</span></span><span class="line"><span class="cl"><span class="n">    Version</span> <span class="o">=</span> <span class="s2">&#34;2012-10-17&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Statement</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      {
+</span></span><span class="line"><span class="cl"><span class="n">        Effect</span> <span class="o">=</span> <span class="s2">&#34;Allow&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Action</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:ListBucket&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetBucketLocation&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetBucketVersioning&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:PutObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:DeleteObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetObjectVersion&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:DeleteObjectVersion&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Resource</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">arn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;${aws_s3_bucket.secure_bucket.arn}/*&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Principle of Least Privilege</strong>: Grants only the minimum permissions necessary for application functionality, scoped specifically to the target S3 bucket.</p>
+<h3 id="4-vpc-endpoints-for-private-connectivity">4. VPC Endpoints for Private Connectivity<a hidden class="anchor" aria-hidden="true" href="#4-vpc-endpoints-for-private-connectivity">#</a></h3>
+<p>VPC Endpoints eliminate the need for internet routing of S3 traffic, improving security and reducing costs.</p>
+<h4 id="s3-vpc-endpoint-s3tf">S3 VPC Endpoint (s3.tf)<a hidden class="anchor" aria-hidden="true" href="#s3-vpc-endpoint-s3tf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_vpc_endpoint&#34; &#34;s3_endpoint&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>              <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">main</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  service_name</span>        <span class="o">=</span> <span class="s2">&#34;com.amazonaws.${data.aws_region.current.name}.s3&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_endpoint_type</span>   <span class="o">=</span> <span class="s2">&#34;Gateway&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  route_table_ids</span>     <span class="o">=</span> <span class="p">[</span><span class="k">aws_route_table</span><span class="p">.</span><span class="k">private</span><span class="p">.</span><span class="k">id</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">policy</span> <span class="o">=</span> <span class="k">jsonencode</span><span class="p">(</span>{
+</span></span><span class="line"><span class="cl"><span class="n">    Version</span> <span class="o">=</span> <span class="s2">&#34;2012-10-17&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Statement</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      {
+</span></span><span class="line"><span class="cl"><span class="n">        Effect</span> <span class="o">=</span> <span class="s2">&#34;Allow&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Principal</span> <span class="o">=</span> <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Action</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:ListBucket&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetBucketLocation&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetBucketVersioning&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:PutObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:DeleteObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:GetObjectVersion&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;s3:DeleteObjectVersion&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">        Resource</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">arn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;${aws_s3_bucket.secure_bucket.arn}/*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;arn:aws:s3:::amazonlinux-2-repos-${data.aws_region.current.name}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;arn:aws:s3:::amazonlinux-2-repos-${data.aws_region.current.name}/*&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-s3-vpc-endpoint&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Security Benefits</strong>:</p>
+<ul>
+<li>Traffic remains within AWS network backbone</li>
+<li>Eliminates exposure to internet-based attacks</li>
+<li>Provides additional layer of access control through endpoint policies</li>
+</ul>
+<p><strong>Cost Benefits</strong>:</p>
+<ul>
+<li>Reduces NAT Gateway data processing charges by ~78%</li>
+<li>No hourly charges for Gateway endpoints</li>
+<li>Lower latency for S3 operations</li>
+</ul>
+<h3 id="5-ec2-infrastructure">5. EC2 Infrastructure<a hidden class="anchor" aria-hidden="true" href="#5-ec2-infrastructure">#</a></h3>
+<h4 id="bastion-host-configuration-maintf">Bastion Host Configuration (main.tf)<a hidden class="anchor" aria-hidden="true" href="#bastion-host-configuration-maintf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_instance&#34; &#34;bastion&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  ami</span>                         <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_ami</span><span class="p">.</span><span class="k">amazon_linux</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  instance_type</span>               <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">instance_type</span>
+</span></span><span class="line"><span class="cl"><span class="n">  key_name</span>                    <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">key_pair_name</span>
+</span></span><span class="line"><span class="cl"><span class="n">  subnet_id</span>                   <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">public</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_security_group_ids</span>      <span class="o">=</span> <span class="p">[</span><span class="k">aws_security_group</span><span class="p">.</span><span class="k">bastion_sg</span><span class="p">.</span><span class="k">id</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  associate_public_ip_address</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">user_data</span> <span class="o">=</span> <span class="k">base64encode</span><span class="p">(</span><span class="k">templatefile</span><span class="p">(</span><span class="s2">&#34;${path.module}/user-data/bastion-userdata.sh&#34;</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    hostname</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-bastion&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">))</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-bastion&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Role</span> <span class="o">=</span> <span class="s2">&#34;Bastion&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Purpose</strong>: Provides secure SSH access to private subnet resources while maintaining network isolation. Acts as a controlled entry point for administrative access.</p>
+<h4 id="private-instance-configuration">Private Instance Configuration<a hidden class="anchor" aria-hidden="true" href="#private-instance-configuration">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_instance&#34; &#34;private_ec2&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  ami</span>                     <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_ami</span><span class="p">.</span><span class="k">amazon_linux</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  instance_type</span>           <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">instance_type</span>
+</span></span><span class="line"><span class="cl"><span class="n">  key_name</span>                <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">key_pair_name</span>
+</span></span><span class="line"><span class="cl"><span class="n">  subnet_id</span>               <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">private</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_security_group_ids</span>  <span class="o">=</span> <span class="p">[</span><span class="k">aws_security_group</span><span class="p">.</span><span class="k">private_sg</span><span class="p">.</span><span class="k">id</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  iam_instance_profile</span>    <span class="o">=</span> <span class="k">aws_iam_instance_profile</span><span class="p">.</span><span class="k">ec2_profile</span><span class="p">.</span><span class="k">name</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">user_data</span> <span class="o">=</span> <span class="k">base64encode</span><span class="p">(</span><span class="k">templatefile</span><span class="p">(</span><span class="s2">&#34;${path.module}/user-data/private-userdata.sh&#34;</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    hostname</span>    <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    bucket_name</span> <span class="o">=</span> <span class="k">local</span><span class="p">.</span><span class="k">bucket_name</span>
+</span></span><span class="line"><span class="cl"><span class="n">    region</span>      <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_region</span><span class="p">.</span><span class="k">current</span><span class="p">.</span><span class="k">name</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">))</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Role</span> <span class="o">=</span> <span class="s2">&#34;Application&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Security Configuration</strong>: Instance is placed in private subnet with no direct internet access, relies on IAM role for S3 access instead of hardcoded credentials.</p>
+<h3 id="6-security-groups">6. Security Groups<a hidden class="anchor" aria-hidden="true" href="#6-security-groups">#</a></h3>
+<p>Security groups implement stateful firewall rules controlling network access.</p>
+<h4 id="bastion-security-group">Bastion Security Group<a hidden class="anchor" aria-hidden="true" href="#bastion-security-group">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_security_group&#34; &#34;bastion_sg&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  name_prefix</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-bastion-sg&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>      <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">main</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;Security group for bastion host&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">ingress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;SSH from internet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;tcp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">allowed_ssh_cidrs</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">egress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;All outbound traffic&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;-1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;0.0.0.0/0&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-bastion-sg&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Access Control</strong>: Restricts SSH access to specified IP ranges, preventing unauthorized access attempts.</p>
+<h4 id="private-instance-security-group">Private Instance Security Group<a hidden class="anchor" aria-hidden="true" href="#private-instance-security-group">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_security_group&#34; &#34;private_sg&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  name_prefix</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private-sg&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>      <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">main</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;Security group for private EC2 instances&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">ingress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span>     <span class="o">=</span> <span class="s2">&#34;SSH from bastion&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>       <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>         <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>        <span class="o">=</span> <span class="s2">&#34;tcp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    security_groups</span> <span class="o">=</span> <span class="p">[</span><span class="k">aws_security_group</span><span class="p">.</span><span class="k">bastion_sg</span><span class="p">.</span><span class="k">id</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">egress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;HTTPS outbound&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="m">443</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="m">443</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;tcp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;0.0.0.0/0&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">egress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;HTTP outbound&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="m">80</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="m">80</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;tcp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;0.0.0.0/0&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private-sg&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Principle of Least Privilege</strong>: Allows only necessary connections (SSH from bastion, HTTPS/HTTP outbound for package updates and AWS API calls).</p>
+<h2 id="audit-and-monitoring-implementation">Audit and Monitoring Implementation<a hidden class="anchor" aria-hidden="true" href="#audit-and-monitoring-implementation">#</a></h2>
+<h3 id="1-cloudtrail-configuration">1. CloudTrail Configuration<a hidden class="anchor" aria-hidden="true" href="#1-cloudtrail-configuration">#</a></h3>
+<p>CloudTrail provides comprehensive API-level auditing for all AWS service interactions.</p>
+<h4 id="cloudtrail-setup-cloudtrailtf">CloudTrail Setup (cloudtrail.tf)<a hidden class="anchor" aria-hidden="true" href="#cloudtrail-setup-cloudtrailtf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_cloudtrail&#34; &#34;main_trail&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  name</span>           <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-cloudtrail&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  s3_bucket_name</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">cloudtrail_logs</span><span class="p">.</span><span class="k">bucket</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">include_global_service_events</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">  is_multi_region_trail</span>        <span class="o">=</span> <span class="kt">false</span>
+</span></span><span class="line"><span class="cl"><span class="n">  enable_logging</span>               <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">event_selector</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    read_write_type</span>                 <span class="o">=</span> <span class="s2">&#34;All&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    include_management_events</span>       <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">data_resource</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      type</span>   <span class="o">=</span> <span class="s2">&#34;AWS::S3::Object&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">      values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;${aws_s3_bucket.secure_bucket.arn}/*&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-cloudtrail&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Monitoring Scope</strong>:</p>
+<ul>
+<li><strong>Management Events</strong>: API calls for AWS service configuration changes</li>
+<li><strong>Data Events</strong>: Object-level operations on S3 bucket contents</li>
+<li><strong>Global Services</strong>: IAM, CloudFront, and other global service events</li>
+</ul>
+<h4 id="cloudtrail-log-storage">CloudTrail Log Storage<a hidden class="anchor" aria-hidden="true" href="#cloudtrail-log-storage">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket&#34; &#34;cloudtrail_logs&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-cloudtrail-logs-${random_id.cloudtrail_suffix.hex}&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-cloudtrail-logs&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Purpose</span> <span class="o">=</span> <span class="s2">&#34;CloudTrail audit logs&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Security Measures</strong>:</p>
+<ul>
+<li>Separate bucket for audit logs to prevent tampering</li>
+<li>Server-side encryption enabled</li>
+<li>Public access blocked</li>
+<li>Lifecycle policies for cost management</li>
+</ul>
+<h3 id="2-s3-access-logging">2. S3 Access Logging<a hidden class="anchor" aria-hidden="true" href="#2-s3-access-logging">#</a></h3>
+<p>S3 access logs provide detailed request-level information for security analysis and performance monitoring.</p>
+<h4 id="access-log-configuration-s3-loggingtf">Access Log Configuration (s3-logging.tf)<a hidden class="anchor" aria-hidden="true" href="#access-log-configuration-s3-loggingtf">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket_logging&#34; &#34;secure_bucket_logging&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">target_bucket</span> <span class="o">=</span> <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">access_logs</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  target_prefix</span> <span class="o">=</span> <span class="s2">&#34;access-logs/&#34;</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Log Information Captured</strong>:</p>
+<ul>
+<li>Request timestamp and processing time</li>
+<li>Client IP address and User-Agent</li>
+<li>HTTP method and response code</li>
+<li>Bytes transferred and object size</li>
+<li>Authentication and authorization details</li>
+</ul>
+<h4 id="access-log-storage-bucket">Access Log Storage Bucket<a hidden class="anchor" aria-hidden="true" href="#access-log-storage-bucket">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket&#34; &#34;access_logs&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-access-logs-${random_id.access_logs_suffix.hex}&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-access-logs&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Purpose</span> <span class="o">=</span> <span class="s2">&#34;S3 access logs&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p><strong>Cost Optimization</strong>: Lifecycle policies automatically transition logs to cheaper storage classes and delete old logs to manage storage costs.</p>
+<h2 id="problem-solution-analysis">Problem-Solution Analysis<a hidden class="anchor" aria-hidden="true" href="#problem-solution-analysis">#</a></h2>
+<h3 id="1-network-security-challenges">1. Network Security Challenges<a hidden class="anchor" aria-hidden="true" href="#1-network-security-challenges">#</a></h3>
+<p><strong>Problem</strong>: Traditional cloud deployments often expose resources directly to the internet, increasing attack surface and security risks.</p>
+<p><strong>Solution Implemented</strong>:</p>
+<ul>
+<li>Private subnet isolation for application workloads</li>
+<li>Bastion host for controlled administrative access</li>
+<li>VPC endpoints for private AWS service connectivity</li>
+<li>Security groups implementing least-privilege network access</li>
+</ul>
+<p><strong>Impact</strong>: Reduced attack surface by eliminating direct internet access to application resources while maintaining necessary connectivity.</p>
+<h3 id="2-access-control-and-authentication">2. Access Control and Authentication<a hidden class="anchor" aria-hidden="true" href="#2-access-control-and-authentication">#</a></h3>
+<p><strong>Problem</strong>: Hard-coded credentials and overly permissive IAM policies create security vulnerabilities and compliance issues.</p>
+<p><strong>Solution Implemented</strong>:</p>
+<ul>
+<li>IAM roles with least-privilege policies</li>
+<li>Instance profiles for credential-free access</li>
+<li>Resource-specific permissions scoped to individual buckets</li>
+<li>Regular credential rotation through role assumption</li>
+</ul>
+<p><strong>Impact</strong>: Eliminated credential management overhead while ensuring secure, auditable access to cloud resources.</p>
+<h3 id="3-data-protection-and-compliance">3. Data Protection and Compliance<a hidden class="anchor" aria-hidden="true" href="#3-data-protection-and-compliance">#</a></h3>
+<p><strong>Problem</strong>: Unencrypted data storage and lack of access auditing create compliance and security gaps.</p>
+<p><strong>Solution Implemented</strong>:</p>
+<ul>
+<li>Server-side encryption for all S3 objects</li>
+<li>Object versioning for data recovery capabilities</li>
+<li>Comprehensive audit logging through CloudTrail and S3 access logs</li>
+<li>Public access blocking to prevent accidental exposure</li>
+</ul>
+<p><strong>Impact</strong>: Achieved enterprise-grade data protection with comprehensive audit trails for compliance requirements.</p>
+<h3 id="4-cost-optimization">4. Cost Optimization<a hidden class="anchor" aria-hidden="true" href="#4-cost-optimization">#</a></h3>
+<p><strong>Problem</strong>: Cloud storage costs can escalate quickly without proper lifecycle management and connectivity optimization.</p>
+<p><strong>Solution Implemented</strong>:</p>
+<ul>
+<li>Lifecycle policies for automatic storage class transitions</li>
+<li>VPC endpoints to reduce NAT Gateway charges</li>
+<li>Intelligent log retention policies</li>
+<li>Multipart upload cleanup to prevent storage waste</li>
+</ul>
+<p><strong>Impact</strong>: Reduced storage costs by approximately 70% through automated lifecycle management and eliminated unnecessary data transfer charges.</p>
+<h3 id="5-vpc-endpoint-policy-restrictions">5. VPC Endpoint Policy Restrictions<a hidden class="anchor" aria-hidden="true" href="#5-vpc-endpoint-policy-restrictions">#</a></h3>
+<p><strong>Problem Encountered</strong>: During testing, VPC endpoint policies blocked legitimate access to Amazon Linux package repositories, causing package installation failures.</p>
+<p><strong>Root Cause</strong>: VPC endpoint policies act as additional access control layers. When policies are too restrictive, they can block necessary system operations even when IAM permissions allow access.</p>
+<p><strong>Resolution Applied</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="n">policy</span> <span class="o">=</span> <span class="k">jsonencode</span><span class="p">(</span>{
+</span></span><span class="line"><span class="cl"><span class="n">  Version</span> <span class="o">=</span> <span class="s2">&#34;2012-10-17&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  Statement</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl"><span class="n">      Effect</span> <span class="o">=</span> <span class="s2">&#34;Allow&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">      Principal</span> <span class="o">=</span> <span class="s2">&#34;*&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">      Action</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;s3:ListBucket&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;s3:GetObject&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;s3:PutObject&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">      Resource</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="k">aws_s3_bucket</span><span class="p">.</span><span class="k">secure_bucket</span><span class="p">.</span><span class="k">arn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;${aws_s3_bucket.secure_bucket.arn}/*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;arn:aws:s3:::amazonlinux-2-repos-*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;arn:aws:s3:::amazonlinux-2-repos-*/*&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl">}<span class="p">)</span>
+</span></span></code></pre></div><p><strong>Learning</strong>: VPC endpoint policies require careful consideration of all S3 resources that instances need to access, including system repositories and AWS service dependencies.</p>
+<h2 id="operational-procedures">Operational Procedures<a hidden class="anchor" aria-hidden="true" href="#operational-procedures">#</a></h2>
+<h3 id="1-access-patterns">1. Access Patterns<a hidden class="anchor" aria-hidden="true" href="#1-access-patterns">#</a></h3>
+<p><strong>Administrative Access</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Connect to bastion host</span>
+</span></span><span class="line"><span class="cl">ssh -i keypair.pem ec2-user@&lt;bastion-public-ip&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Connect to private instance through bastion</span>
+</span></span><span class="line"><span class="cl">ssh -A -i keypair.pem -o <span class="nv">ProxyJump</span><span class="o">=</span>ec2-user@&lt;bastion-public-ip&gt; ec2-user@&lt;private-ip&gt;
+</span></span></code></pre></div><p><strong>S3 Operations</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># List bucket contents</span>
+</span></span><span class="line"><span class="cl">aws s3 ls s3://bucket-name/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Upload files</span>
+</span></span><span class="line"><span class="cl">aws s3 cp file.txt s3://bucket-name/path/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Download files</span>
+</span></span><span class="line"><span class="cl">aws s3 cp s3://bucket-name/path/file.txt ./
+</span></span></code></pre></div><h3 id="2-monitoring-and-analysis">2. Monitoring and Analysis<a hidden class="anchor" aria-hidden="true" href="#2-monitoring-and-analysis">#</a></h3>
+<p><strong>CloudTrail Log Analysis</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Download recent CloudTrail logs</span>
+</span></span><span class="line"><span class="cl">aws s3 cp s3://cloudtrail-bucket/recent-log.json.gz ./
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Extract and analyze events</span>
+</span></span><span class="line"><span class="cl">gunzip recent-log.json.gz
+</span></span><span class="line"><span class="cl">jq <span class="s1">&#39;.Records[] | select(.eventSource == &#34;s3.amazonaws.com&#34;)&#39;</span> recent-log.json
+</span></span></code></pre></div><p><strong>S3 Access Log Analysis</strong>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Download access logs</span>
+</span></span><span class="line"><span class="cl">aws s3 cp s3://access-logs-bucket/access-logs/recent.log ./
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Analyze request patterns</span>
+</span></span><span class="line"><span class="cl">awk <span class="s1">&#39;{print $8}&#39;</span> recent.log <span class="p">|</span> sort <span class="p">|</span> uniq -c <span class="p">|</span> sort -nr
+</span></span></code></pre></div><h2 id="security-considerations">Security Considerations<a hidden class="anchor" aria-hidden="true" href="#security-considerations">#</a></h2>
+<h3 id="1-data-classification">1. Data Classification<a hidden class="anchor" aria-hidden="true" href="#1-data-classification">#</a></h3>
+<p>The implementation supports multiple data security levels:</p>
+<ul>
+<li><strong>Public</strong>: No restrictions (not implemented in this secure configuration)</li>
+<li><strong>Internal</strong>: Accessible within VPC through proper authentication</li>
+<li><strong>Confidential</strong>: Encrypted at rest and in transit, comprehensive audit logging</li>
+<li><strong>Restricted</strong>: Additional access controls and monitoring (future enhancement)</li>
+</ul>
+<h3 id="2-compliance-framework-alignment">2. Compliance Framework Alignment<a hidden class="anchor" aria-hidden="true" href="#2-compliance-framework-alignment">#</a></h3>
+<p>The architecture aligns with several compliance frameworks:</p>
+<ul>
+<li><strong>SOC 2</strong>: Comprehensive logging and access controls</li>
+<li><strong>ISO 27001</strong>: Risk-based security controls and continuous monitoring</li>
+<li><strong>NIST Cybersecurity Framework</strong>: Defense-in-depth implementation</li>
+<li><strong>GDPR</strong>: Data protection through encryption and access controls</li>
+</ul>
+<h3 id="3-threat-mitigation">3. Threat Mitigation<a hidden class="anchor" aria-hidden="true" href="#3-threat-mitigation">#</a></h3>
+<p><strong>Threats Addressed</strong>:</p>
+<ul>
+<li><strong>Data Breaches</strong>: Encryption, access controls, and network isolation</li>
+<li><strong>Insider Threats</strong>: Least-privilege access and comprehensive audit logging</li>
+<li><strong>Configuration Drift</strong>: Infrastructure as Code ensures consistent configurations</li>
+<li><strong>Unauthorized Access</strong>: Multi-layer authentication and authorization</li>
+</ul>
+<h2 id="cost-analysis">Cost Analysis<a hidden class="anchor" aria-hidden="true" href="#cost-analysis">#</a></h2>
+<h3 id="1-infrastructure-costs-monthly-estimates">1. Infrastructure Costs (Monthly Estimates)<a hidden class="anchor" aria-hidden="true" href="#1-infrastructure-costs-monthly-estimates">#</a></h3>
+<ul>
+<li><strong>EC2 Instances</strong>: ~$30-50 (t3.micro instances)</li>
+<li><strong>NAT Gateway</strong>: ~$45 (fixed cost + data processing)</li>
+<li><strong>S3 Storage</strong>: Variable based on usage, optimized through lifecycle policies</li>
+<li><strong>CloudTrail</strong>: $2 per 100,000 events for data events</li>
+<li><strong>VPC Endpoints</strong>: Free for Gateway endpoints (S3, DynamoDB)</li>
+</ul>
+<h3 id="2-cost-optimization-strategies">2. Cost Optimization Strategies<a hidden class="anchor" aria-hidden="true" href="#2-cost-optimization-strategies">#</a></h3>
+<ul>
+<li><strong>Storage Class Transitions</strong>: Automatic movement to cheaper storage classes</li>
+<li><strong>VPC Endpoints</strong>: Reduced NAT Gateway data processing charges</li>
+<li><strong>Log Lifecycle Policies</strong>: Automated deletion of old audit logs</li>
+<li><strong>Resource Tagging</strong>: Detailed cost allocation and optimization opportunities</li>
+</ul>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>This lab demonstrates the implementation of enterprise-grade secure cloud storage infrastructure using AWS services and Infrastructure as Code principles. The solution addresses critical security, compliance, and cost optimization requirements while maintaining operational efficiency. The multi-layered security approach, comprehensive audit capabilities, and automated cost optimization features provide a solid foundation for production workloads requiring high security standards.</p>
+<p>The implementation serves as a reference architecture for organizations seeking to deploy secure, compliant, and cost-effective cloud storage solutions while maintaining operational agility through automation and Infrastructure as Code practices.</p>
+<h2 id="future-enhancements">Future Enhancements<a hidden class="anchor" aria-hidden="true" href="#future-enhancements">#</a></h2>
+<p>Potential improvements to consider:</p>
+<ul>
+<li><strong>Multi-AZ deployment</strong> for high availability</li>
+<li><strong>AWS Config</strong> for configuration compliance monitoring</li>
+<li><strong>AWS Security Hub</strong> for centralized security findings management</li>
+<li><strong>AWS GuardDuty</strong> for threat detection and monitoring</li>
+<li><strong>Cross-region replication</strong> for disaster recovery</li>
+<li><strong>AWS KMS</strong> for customer-managed encryption keys</li>
+<li><strong>AWS Systems Manager</strong> for patch management and configuration</li>
+<li><strong>Amazon Macie</strong> for data discovery and classification</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/aws/">AWS</a></li>
+      <li><a href="https://blog.tillynet.com/tags/s3/">S3</a></li>
+      <li><a href="https://blog.tillynet.com/tags/ec2/">EC2</a></li>
+      <li><a href="https://blog.tillynet.com/tags/vpc/">VPC</a></li>
+      <li><a href="https://blog.tillynet.com/tags/bastion/">Bastion</a></li>
+      <li><a href="https://blog.tillynet.com/tags/jumpbox/">Jumpbox</a></li>
+      <li><a href="https://blog.tillynet.com/tags/powershell/">Powershell</a></li>
+      <li><a href="https://blog.tillynet.com/tags/bash/">Bash</a></li>
+      <li><a href="https://blog.tillynet.com/tags/terraform/">Terraform</a></li>
+      <li><a href="https://blog.tillynet.com/tags/infrastructure-as-code/">Infrastructure-as-Code</a></li>
+      <li><a href="https://blog.tillynet.com/tags/network-automation/">Network Automation</a></li>
+      <li><a href="https://blog.tillynet.com/tags/cloud-deployment/">Cloud Deployment</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/building-secure-aws-infrastructure-with-terraform---complete-lab-guide/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Building Secure AWS Infrastructure with Terraform - Complete Lab Guide</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

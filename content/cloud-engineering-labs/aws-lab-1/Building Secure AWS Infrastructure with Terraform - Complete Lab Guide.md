@@ -1,11 +1,10 @@
 ---
 title: "Building Secure AWS Infrastructure with Terraform - Complete Lab Guide"
 date: 2025-05-27
-tags: ["aws", "ec2", "vpc", "bastion", "jumpbox", "powershell", "bash", "terraform", "infrastructure-as-code", "network automation", "cloud deployment"]
+tags: ["AWS", "EC2", "VPC", "bastion", "jumpbox", "powershell", "bash", "terraform", "infrastructure-as-code", "network automation", "cloud deployment"]
 cloud_provider: "AWS"
 categories: ["Cloud Engineering Labs"]
 draft: false
----
 ---
 ## Overview
 
@@ -66,7 +65,7 @@ Each file has a specific purpose, described in detail below.
 
 ## provider.tf
 
-```
+```hcl
 provider "aws" {
   region = "us-east-1"
 }
@@ -89,7 +88,7 @@ The variables.tf file defines **all the input variables** your Terraform configu
 - Resusable
 - Easier to manage across environments (dev, staging, prod) By declaring variables here we avoid hardcoding values in `main.tf` or other resource files.
 
-```
+```hcl
 # variables.tf - defines and validates variables
 variable "vpc_cidr" {
   description = "CIDR block for the new VPC"
@@ -217,7 +216,7 @@ variable "enable_dns_support" {
 
 ## terraform.tfvars
 
-```
+```hcl
 # terraform.tfvars - define sensitive values
 key_name            = "AWS_key_name"
 home_ip             = "publicIP/32"
@@ -245,7 +244,7 @@ This file defines Terraform data sources, which allows the ability to query AWS 
 
 These values can be used throughout Terraform configurations for dynamic, up-to-date references.
 
-```
+```hcl
 # data.tf - Centralize data sources
 # Fetches the AWS region that Terraform is currently operating in
 # Useful to reference the region dynamically in resources or outputs without hardcoding var.region everwhere
@@ -293,7 +292,7 @@ data "aws_ami" "amazon_linux" {
 
 The `locals` block in Terrraform defines **computed values** or **constants** that can be reused throughout the configuration. The **computed values** and **constants** help reduce repetition, centralize logic, and make configurations easier to maintain. These are like reusable variables, but they can include computed or derived values (not just user-provided inputs).
 
-```
+```hcl
 # locals.tf - Define reusable values and computed tags
 # `locals {` starts the block
 locals {
@@ -335,7 +334,7 @@ This is the **core infrastructure definition** file in Terraform. It contains al
 
 ### VPC Creation
 
-```
+```hcl
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = var.enable_dns_hostnames
@@ -351,7 +350,7 @@ resource "aws_vpc" "main" {
 
 ### Internet Gateway
 
-```
+```hcl
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
   tags   = merge(local.common_tags, {
@@ -364,7 +363,7 @@ resource "aws_internet_gateway" "main" {
 
 ### Subnets
 
-```
+```hcl
 # Create public subnet
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
@@ -396,7 +395,7 @@ resource "aws_subnet" "private" {
 
 ### Elastic IP and NAT Gateway
 
-```
+```hcl
 # Allocate Elastic IP for NAT Gateway
 resource "aws_eip" "nat" {
   domain = "vpc"
@@ -425,7 +424,7 @@ resource "aws_nat_gateway" "nat" {
 
 ### Route Tables
 
-```
+```hcl
 # Create public route table
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
@@ -478,7 +477,7 @@ resource "aws_route_table_association" "private_assoc" {
 
 ### Security Groups
 
-```
+```hcl
 # Create Security Group for public EC2
 resource "aws_security_group" "public_sg" {
   name_prefix = "${local.name_prefix}-public-"
@@ -551,7 +550,7 @@ resource "aws_security_group" "private_sg" {
 
 ### EC2 Instances
 
-```
+```hcl
 # Launch EC2 in public subnet
 resource "aws_instance" "public_ec2" {
   ami                    = data.aws_ami.amazon_linux.id
@@ -601,7 +600,7 @@ resource "aws_instance" "private_ec2" {
 
 ### CloudWatch Log Group for VPC Flow Logs
 
-```
+```hcl
 # Create CloudWatch Log Group for VPC Flow Logs
 resource "aws_cloudwatch_log_group" "vpc_logs" {
   name              = "/aws/vpc/flowlogs/${local.name_prefix}"
@@ -617,7 +616,7 @@ resource "aws_cloudwatch_log_group" "vpc_logs" {
 
 ### IAM Role and Policy for VPC Flow Logs
 
-```
+```hcl
 # Create IAM role for flow logs
 resource "aws_iam_role" "flow_logs_role" {
   name_prefix = "${local.name_prefix}-flow-logs-"
@@ -667,7 +666,7 @@ resource "aws_iam_role_policy" "flow_logs_policy" {
 
 ### Enable VPC Flow Logs
 
-```
+```hcl
 # Enable VPC Flow Logs
 resource "aws_flow_log" "vpc_flow_logs" {
   log_destination_type = "cloud-watch-logs"
@@ -696,7 +695,7 @@ resource "aws_flow_log" "vpc_flow_logs" {
 
 The `outputs.tf` file defines what Terraform will print after `terraform apply` finishes. This helps to get key resource, IDs, IPs, and metadata. It makes it easier to connect or interact with deployed resources. It can also feed outputs into other Terraform modules or systems.
 
-```
+```hcl
 # outputs.tf
 
 # Outputs VPC Information
@@ -887,7 +886,7 @@ echo "$(date): Private instance ${hostname} started successfully" >> /var/log/te
 
 Both user data scripts are referenced in the main.tf file using Terraform's templatefile function:
 
-```
+```hcl
 user_data = base64encode(templatefile("${path.module}/user-data/public-userdata.sh", {
   hostname = "${local.name_prefix}-public"
 }))
@@ -903,37 +902,37 @@ These scripts establish a baseline configuration for both instances, ensuring th
 
 1. Initialize the Terraform project:
     
-    ```
+    ```hcl
     terraform init
     ```
     
 2. Format the configuration:
     
-    ```
+    ```hcl
     terraform fmt
     ```
     
 3. Validate the configuration:
     
-    ```
+    ```hcl
     terraform validate
     ```
     
 4. Review the execution plan:
     
-    ```
+    ```hcl
     terraform plan
     ```
     
 5. Apply the configuration to deploy resources:
     
-    ```
+    ```hcl
     terraform apply
     ```
     
 6. When finished, clean up resources:
     
-    ```
+    ```hcl
     terraform destroy
     ```
     
