@@ -6,8 +6,17 @@
     <description>Recent content in Cloud-Engineering-Labs on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 28 May 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/cloud-engineering-labs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform</title>
+      <link>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/</link>
+      <pubDate>Tue, 03 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/</guid>
+      <description>&lt;p&gt;In this post, I&amp;rsquo;ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.&lt;/p&gt;
+&lt;h2 id=&#34;project-overview&#34;&gt;Project Overview&lt;/h2&gt;
+&lt;p&gt;The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide</title>
       <link>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/</link>

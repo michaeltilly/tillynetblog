@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform | Tilly Net</title>
+<meta name="keywords" content="AWS, On-Premise, Hybrid Cloud, VPC, VPN, IPsec, terraform, PfSense, infrastructure-as-code, network automation, cloud deployment">
+<meta name="description" content="In this post, I&rsquo;ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.
+Project Overview
+The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform">
+  <meta property="og:description" content="In this post, I’ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.
+Project Overview The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="cloud-engineering-labs">
+    <meta property="article:published_time" content="2025-06-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-06-03T00:00:00+00:00">
+    <meta property="article:tag" content="AWS">
+    <meta property="article:tag" content="On-Premise">
+    <meta property="article:tag" content="Hybrid Cloud">
+    <meta property="article:tag" content="VPC">
+    <meta property="article:tag" content="VPN">
+    <meta property="article:tag" content="IPsec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform">
+<meta name="twitter:description" content="In this post, I&rsquo;ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.
+Project Overview
+The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Cloud-Engineering-Labs",
+      "item": "https://blog.tillynet.com/cloud-engineering-labs/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform",
+      "item": "https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform",
+  "name": "Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform",
+  "description": "In this post, I\u0026rsquo;ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.\nProject Overview The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.\n",
+  "keywords": [
+    "AWS", "On-Premise", "Hybrid Cloud", "VPC", "VPN", "IPsec", "terraform", "PfSense", "infrastructure-as-code", "network automation", "cloud deployment"
+  ],
+  "articleBody": "In this post, I’ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.\nProject Overview The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.\nArchitecture Summary On-Premise Network (TillyNet) AWS Cloud Environment\r┌─────────────────────────────┐ ┌─────────────────────────────┐\r│ pfSense Firewall │ │ AWS VPC (10.1.0.0/16) │\r│ Multiple VLANs: │◄────────┤ │\r│ - VLAN 1: 172.16.7.0/24 │ IPsec │ - Public: 10.1.1.0/24 │\r│ - VLAN 14: 172.16.14.0/24 │ Tunnel │ - Private: 10.1.2.0/24 │\r│ - VLAN 21: 172.21.21.0/24 │ │ │\r│ - VLAN 99: 172.16.99.0/24 │ │ EC2 Instances │\r│ - XPS Subnet: 172.30.30.0/24│ │ NAT Gateway │\r└─────────────────────────────┘ └─────────────────────────────┘ Prerequisites On-Premise Requirements: pfSense firewall with public IP address Properly configured VLANs and routing Administrative access to firewall configuration AWS Requirements: AWS account with appropriate IAM permissions AWS CLI configured with access keys Terraform installed locally Network Requirements: Non-overlapping IP address spaces Static public IP address (recommended) Understanding of IPsec protocols Phase 1: AWS Infrastructure Deployment The first phase involves creating the AWS networking infrastructure using Terraform. This approach ensures reproducible, version-controlled infrastructure that can be easily modified and redeployed.\nTerraform Project Structure I organized the Terraform code into logical files for maintainability:\ntillynet-aws-hybrid-deployment/\r├── main.tf # Primary resource definitions\r├── variables.tf # Input variable declarations\r├── outputs.tf # Output value definitions\r├── locals.tf # Local value computations\r├── data.tf # Data source definitions\r├── terraform.tfvars # Variable value assignments\r└── README.md # Project documentation Variable Definitions The variables.tf file defines all configurable parameters for the deployment:\n# variables.tf - Input parameter definitions variable \"aws_region\" { description = \"AWS region for VPC deployment\" type = string default = \"us-west-1\" validation { condition = can(regex(\"^[a-z]{2}-[a-z]+-[0-9]$\", var.aws_region)) error_message = \"AWS region must be in valid format (e.g., us-west-1).\" } } variable \"home_public_ip\" { description = \"Public IP address of on-premise network\" type = string validation { condition = can(cidrhost(\"${var.home_public_ip}/32\", 0)) error_message = \"Must be a valid IPv4 address.\" } } variable \"project_name\" { description = \"Project identifier for resource naming and tagging\" type = string default = \"tillynet-hybrid\" validation { condition = can(regex(\"^[a-zA-Z][a-zA-Z0-9-]*$\", var.project_name)) error_message = \"Project name must start with letter and contain only alphanumeric characters and hyphens.\" } } variable \"vpc_cidr\" { description = \"CIDR block for AWS VPC\" type = string default = \"10.1.0.0/16\" validation { condition = can(cidrhost(var.vpc_cidr, 0)) error_message = \"VPC CIDR must be a valid IPv4 CIDR block.\" } } variable \"public_subnet_cidr\" { description = \"CIDR block for public subnet\" type = string default = \"10.1.1.0/24\" } variable \"private_subnet_cidr\" { description = \"CIDR block for private subnet\" type = string default = \"10.1.2.0/24\" } The validation blocks ensure that input values meet expected formats and constraints, preventing common configuration errors during deployment.\nLocal Values and Data Sources The locals.tf file computes reusable values and establishes naming conventions:\n# locals.tf - Computed values and constants locals { # Standardized resource tagging for cost allocation and management common_tags = { Project = var.project_name Environment = \"hybrid\" ManagedBy = \"Terraform\" CreatedAt = timestamp() Purpose = \"Hybrid-Cloud-Connectivity\" } # Consistent naming convention across all resources name_prefix = \"${var.project_name}-hybrid\" # On-premise network definitions for VPN routing # These represent the existing VLAN structure in my home lab home_networks = [ \"172.16.7.0/24\", # Default/Legacy VLAN \"172.16.14.0/24\", # Guest Wi-Fi Network \"172.21.21.0/24\", # Production Services (DNS, etc.) \"172.16.99.0/24\", # Management Network \"172.30.30.0/24\" # Proxmox XPS Subnet ] } The data.tf file queries AWS for dynamic information:\n# data.tf - External data source queries # Current AWS region information data \"aws_region\" \"current\" {} # AWS account identity for resource ARN construction data \"aws_caller_identity\" \"current\" {} # Available Availability Zones in the selected region data \"aws_availability_zones\" \"available\" { state = \"available\" } # Latest Amazon Linux 2 AMI for EC2 instances data \"aws_ami\" \"amazon_linux\" { most_recent = true owners = [\"amazon\"] filter { name = \"name\" values = [\"amzn2-ami-hvm-*-x86_64-gp2\"] } filter { name = \"virtualization-type\" values = [\"hvm\"] } } Core Network Infrastructure The main.tf file contains the primary infrastructure definitions. Here’s the VPC and networking setup:\n# main.tf - Primary infrastructure resources # Provider configuration terraform { required_providers { aws = { source = \"hashicorp/aws\" version = \"~\u003e 5.0\" } } } provider \"aws\" { region = var.aws_region } # Virtual Private Cloud - The foundation of our AWS network resource \"aws_vpc\" \"hybrid_vpc\" { cidr_block = var.vpc_cidr enable_dns_hostnames = true # Required for proper hostname resolution enable_dns_support = true # Enables DNS resolution within VPC tags = merge(local.common_tags, { Name = \"${local.name_prefix}-vpc\" }) } # Internet Gateway - Provides internet access to public subnets resource \"aws_internet_gateway\" \"hybrid_igw\" { vpc_id = aws_vpc.hybrid_vpc.id tags = merge(local.common_tags, { Name = \"${local.name_prefix}-igw\" }) } # Public Subnet - Hosts NAT Gateway and potential bastion hosts resource \"aws_subnet\" \"public_subnet\" { vpc_id = aws_vpc.hybrid_vpc.id cidr_block = var.public_subnet_cidr availability_zone = data.aws_availability_zones.available.names[0] map_public_ip_on_launch = true # Auto-assign public IPs to instances tags = merge(local.common_tags, { Name = \"${local.name_prefix}-public-subnet\" Type = \"Public\" }) } # Private Subnet - Hosts hybrid workloads accessible via VPN resource \"aws_subnet\" \"private_subnet\" { vpc_id = aws_vpc.hybrid_vpc.id cidr_block = var.private_subnet_cidr availability_zone = data.aws_availability_zones.available.names[0] tags = merge(local.common_tags, { Name = \"${local.name_prefix}-private-subnet\" Type = \"Private\" }) } # Elastic IP for NAT Gateway - Provides static outbound IP resource \"aws_eip\" \"nat_eip\" { domain = \"vpc\" tags = merge(local.common_tags, { Name = \"${local.name_prefix}-nat-eip\" }) depends_on = [aws_internet_gateway.hybrid_igw] } # NAT Gateway - Enables outbound internet access for private subnet resource \"aws_nat_gateway\" \"hybrid_nat\" { allocation_id = aws_eip.nat_eip.id subnet_id = aws_subnet.public_subnet.id tags = merge(local.common_tags, { Name = \"${local.name_prefix}-nat-gateway\" }) depends_on = [aws_internet_gateway.hybrid_igw] } Routing Configuration Proper routing ensures traffic flows correctly between subnets and to the internet:\n# Public Route Table - Directs traffic to Internet Gateway resource \"aws_route_table\" \"public_rt\" { vpc_id = aws_vpc.hybrid_vpc.id # Default route to internet for public subnet route { cidr_block = \"0.0.0.0/0\" gateway_id = aws_internet_gateway.hybrid_igw.id } tags = merge(local.common_tags, { Name = \"${local.name_prefix}-public-rt\" Type = \"Public\" }) } # Private Route Table - Directs traffic to NAT Gateway for internet access resource \"aws_route_table\" \"private_rt\" { vpc_id = aws_vpc.hybrid_vpc.id # Default route through NAT Gateway for outbound traffic route { cidr_block = \"0.0.0.0/0\" nat_gateway_id = aws_nat_gateway.hybrid_nat.id } tags = merge(local.common_tags, { Name = \"${local.name_prefix}-private-rt\" Type = \"Private\" }) } # Route Table Associations - Link subnets to appropriate route tables resource \"aws_route_table_association\" \"public_rta\" { subnet_id = aws_subnet.public_subnet.id route_table_id = aws_route_table.public_rt.id } resource \"aws_route_table_association\" \"private_rta\" { subnet_id = aws_subnet.private_subnet.id route_table_id = aws_route_table.private_rt.id } VPN Infrastructure Components The Site-to-Site VPN requires three AWS components: Customer Gateway, Virtual Private Gateway, and the VPN Connection itself.\n# Customer Gateway - Represents the on-premise pfSense firewall resource \"aws_customer_gateway\" \"tillynet_cgw\" { bgp_asn = 65000 # Private ASN required by AWS (not used for static routing) ip_address = var.home_public_ip type = \"ipsec.1\" # Only supported VPN type tags = merge(local.common_tags, { Name = \"${local.name_prefix}-customer-gateway\" }) } # Virtual Private Gateway - AWS-side VPN endpoint resource \"aws_vpn_gateway\" \"hybrid_vgw\" { vpc_id = aws_vpc.hybrid_vpc.id tags = merge(local.common_tags, { Name = \"${local.name_prefix}-vpn-gateway\" }) } # Site-to-Site VPN Connection with enhanced security parameters resource \"aws_vpn_connection\" \"tillynet_vpn\" { customer_gateway_id = aws_customer_gateway.tillynet_cgw.id vpn_gateway_id = aws_vpn_gateway.hybrid_vgw.id type = \"ipsec.1\" static_routes_only = true # Use static routing instead of BGP # Enhanced tunnel options for improved security tunnel1_ike_versions = [\"ikev2\"] tunnel1_phase1_encryption_algorithms = [\"AES256\"] tunnel1_phase1_integrity_algorithms = [\"SHA2-256\"] tunnel1_phase1_dh_group_numbers = [14] tunnel1_phase2_encryption_algorithms = [\"AES256\"] tunnel1_phase2_integrity_algorithms = [\"SHA2-256\"] tunnel1_phase2_dh_group_numbers = [14] tunnel2_ike_versions = [\"ikev2\"] tunnel2_phase1_encryption_algorithms = [\"AES256\"] tunnel2_phase1_integrity_algorithms = [\"SHA2-256\"] tunnel2_phase1_dh_group_numbers = [14] tunnel2_phase2_encryption_algorithms = [\"AES256\"] tunnel2_phase2_integrity_algorithms = [\"SHA2-256\"] tunnel2_phase2_dh_group_numbers = [14] tags = merge(local.common_tags, { Name = \"${local.name_prefix}-vpn-connection\" }) } # Static routes for on-premise networks resource \"aws_vpn_connection_route\" \"home_routes\" { count = length(local.home_networks) vpn_connection_id = aws_vpn_connection.tillynet_vpn.id destination_cidr_block = local.home_networks[count.index] } # Enable automatic route propagation to private route table resource \"aws_vpn_gateway_route_propagation\" \"private_propagation\" { vpn_gateway_id = aws_vpn_gateway.hybrid_vgw.id route_table_id = aws_route_table.private_rt.id } Test Instance for Connectivity Validation To validate the hybrid connection, I deployed a test EC2 instance with appropriate security configurations:\n# Security Group for test instance - Allows connectivity from on-premise networks resource \"aws_security_group\" \"test_instance_sg\" { name_prefix = \"${local.name_prefix}-test-sg-\" description = \"Security group for hybrid connectivity testing\" vpc_id = aws_vpc.hybrid_vpc.id # Allow ICMP (ping) from all on-premise networks ingress { description = \"ICMP from on-premise networks\" from_port = -1 to_port = -1 protocol = \"icmp\" cidr_blocks = local.home_networks } # Allow SSH access from on-premise networks ingress { description = \"SSH from on-premise networks\" from_port = 22 to_port = 22 protocol = \"tcp\" cidr_blocks = local.home_networks } # Allow all outbound traffic egress { description = \"All outbound traffic\" from_port = 0 to_port = 0 protocol = \"-1\" cidr_blocks = [\"0.0.0.0/0\"] } tags = merge(local.common_tags, { Name = \"${local.name_prefix}-test-sg\" }) lifecycle { create_before_destroy = true } } # Test EC2 instance in private subnet resource \"aws_instance\" \"test_instance\" { ami = data.aws_ami.amazon_linux.id instance_type = \"t2.micro\" # Free tier eligible subnet_id = aws_subnet.private_subnet.id vpc_security_group_ids = [aws_security_group.test_instance_sg.id] # User data script for instance initialization user_data = base64encode(\u003c\u003c-EOF #!/bin/bash yum update -y yum install -y htop tree wget curl # Create identification file cat \u003e /etc/motd \u003c\u003c 'WELCOME' ************************************************* * AWS Hybrid Connectivity Test Instance * ************************************************* WELCOME echo \"$(date): Hybrid test instance initialized\" \u003e\u003e /var/log/hybrid-setup.log EOF ) tags = merge(local.common_tags, { Name = \"${local.name_prefix}-test-instance\" Purpose = \"Hybrid connectivity validation\" }) } Output Definitions The outputs.tf file defines important values needed for pfSense configuration:\n# outputs.tf - Important values for manual configuration steps output \"vpn_connection_details\" { description = \"VPN connection configuration parameters for pfSense\" value = { vpn_connection_id = aws_vpn_connection.tillynet_vpn.id tunnel_1_address = aws_vpn_connection.tillynet_vpn.tunnel1_address tunnel_2_address = aws_vpn_connection.tillynet_vpn.tunnel2_address tunnel_1_psk = aws_vpn_connection.tillynet_vpn.tunnel1_preshared_key tunnel_2_psk = aws_vpn_connection.tillynet_vpn.tunnel2_preshared_key customer_gateway_ip = var.home_public_ip } sensitive = true # Hides sensitive values in console output } output \"aws_vpc_info\" { description = \"AWS VPC infrastructure details\" value = { vpc_id = aws_vpc.hybrid_vpc.id vpc_cidr = aws_vpc.hybrid_vpc.cidr_block public_subnet_id = aws_subnet.public_subnet.id private_subnet_id = aws_subnet.private_subnet.id vpn_gateway_id = aws_vpn_gateway.hybrid_vgw.id test_instance_ip = aws_instance.test_instance.private_ip } } output \"connectivity_test_commands\" { description = \"Commands for testing hybrid connectivity\" value = { ping_aws_from_home = \"ping ${aws_instance.test_instance.private_ip}\" ping_home_from_aws = \"ping [your-home-network-ip]\" ssh_to_aws = \"ssh ec2-user@${aws_instance.test_instance.private_ip}\" } } Variable Values Configuration The terraform.tfvars file contains environment-specific values:\n# terraform.tfvars - Environment-specific configuration values # Note: This file should not be committed to version control aws_region = \"us-west-1\" home_public_ip = \"[YOUR_PUBLIC_IP_HERE]\" # Replace with actual public IP project_name = \"tillynet-hybrid\" vpc_cidr = \"10.1.0.0/16\" public_subnet_cidr = \"10.1.1.0/24\" private_subnet_cidr = \"10.1.2.0/24\" Phase 2: AWS Infrastructure Deployment With the Terraform configuration complete, I deployed the AWS infrastructure:\nDeployment Process # Initialize Terraform and download required providers terraform init # Validate configuration syntax and logic terraform validate # Review planned changes before deployment terraform plan # Deploy the infrastructure terraform apply Deployment Verification After successful deployment, I verified the infrastructure:\n# Retrieve VPN connection details for pfSense configuration terraform output vpn_connection_details # Get AWS infrastructure information terraform output aws_vpc_info # Verify VPN connection status aws ec2 describe-vpn-connections --vpn-connection-ids [VPN_CONNECTION_ID] The deployment created:\nVPC with public and private subnets Internet Gateway and NAT Gateway for connectivity Virtual Private Gateway attached to the VPC Customer Gateway representing my pfSense firewall Site-to-Site VPN connection with two redundant tunnels Static routes for all on-premise networks Test EC2 instance with appropriate security groups Phase 3: pfSense IPsec Configuration With AWS infrastructure deployed, I configured the pfSense firewall to establish the IPsec tunnels.\nPhase 1 (IKE) Configuration For each tunnel, I created Phase 1 entries in pfSense:\nNavigation: VPN \u003e IPsec \u003e Add P1\nTunnel 1 Configuration: Disabled: Unchecked Key Exchange version: IKEv2 Internet Protocol: IPv4 Interface: WAN Remote Gateway: [AWS_TUNNEL_1_ADDRESS] Description: AWS VPN Tunnel 1 Authentication Settings: Authentication Method: Mutual PSK Negotiation Mode: Main My identifier: My IP address Peer identifier: Peer IP address Pre-Shared Key: [AWS_TUNNEL_1_PSK] Encryption Parameters: Encryption Algorithm: AES 256 bits Hash Algorithm: SHA2-256 DH Group: 14 (2048 bit) Lifetime: 28800 seconds Advanced Options: NAT Traversal: Auto Dead Peer Detection: Enabled Delay: 10 seconds Max failures: 3 Phase 2 (IPsec) Configuration For each Phase 1, I created corresponding Phase 2 entries:\nNavigation: VPN \u003e IPsec \u003e Show Phase 2 Entries \u003e Add P2\nNetwork Configuration: Mode: Tunnel IPv4 Local Network: Network - 0.0.0.0/0 (any) Remote Network: Network - 10.1.0.0/16 (AWS VPC) Security Parameters: Protocol: ESP Encryption Algorithms: AES 256 bits Hash Algorithms: SHA2-256 PFS key group: 14 (2048 bit) Lifetime: 3600 seconds Advanced Configuration: Automatically ping host: 10.1.0.1 I replicated this configuration for Tunnel 2 with the appropriate endpoint address and pre-shared key.\nFirewall Rules Configuration IPsec Interface Rules Navigation: Firewall \u003e Rules \u003e IPsec\nI created a rule to allow all traffic through the VPN tunnels (this rule will later be more restrictive but for now this allowed testing traffic through the tunnel):\nAction: Pass Interface: IPsec Address Family: IPv4 Protocol: Any Source: Any Destination: Any Description: Allow all traffic through VPN tunnels VLAN Interface Rules For each VLAN interface, I added rules allowing traffic to AWS:\nNavigation: Firewall \u003e Rules \u003e [VLAN_Interface]\nExample for Management VLAN:\nAction: Pass Interface: MGMT Protocol: Any Source: MGMT net (172.16.99.0/24) Destination: 10.1.0.0/16 Description: Allow Management VLAN to AWS VPC Phase 4: Connection Establishment and Testing Tunnel Establishment After applying all configurations, I established the tunnels:\nStatus \u003e IPsec \u003e Overview Clicked “Connect P1 and P2s” for both tunnels Verified both tunnels showed “Established” status AWS-Side Verification I confirmed tunnel status from AWS:\n# Check tunnel status aws ec2 describe-vpn-connections --vpn-connection-ids [VPN_ID] \\ --query 'VpnConnections[0].VgwTelemetry' Expected output showed Tunnel 1 as “UP” and Tunnel 2 as “DOWN” (normal for active/passive configuration).\nConnectivity Testing Test 1: AWS Infrastructure Ping # From pfSense Diagnostics \u003e Ping ping [AWS_EC2_INSTANCE_IP] # Should succeed Test 2: Bidirectional Connectivity # From on-premise management network ping [AWS_EC2_INSTANCE_IP] # From AWS EC2 instance ping [ON_PREMISE_DEVICE_IP] Test 3: Application-Level Testing # SSH from on-premise to AWS (if keys configured) ssh ec2-user@[AWS_EC2_INSTANCE_IP] # HTTP/HTTPS services (if configured) curl http://[AWS_EC2_INSTANCE_IP] Troubleshooting and Resolution Challenge 1: Route Table Issues Problem: pfSense wasn’t automatically creating routes to AWS networks despite established tunnels.\nSolution: Added “Automatically ping host” parameter in Phase 2 configuration pointing to AWS VPC gateway (10.1.0.1). This forces pfSense to maintain active routes through the tunnel.\nChallenge 2: AWS Security Group Configuration Problem: Initial ping tests failed due to restrictive default security groups.\nSolution: Created explicit security group rules allowing ICMP and SSH traffic from on-premise network ranges to AWS resources.\nChallenge 3: Tunnel Authentication Issues Problem: Initial configuration used weaker encryption (SHA-1, DH Group 2).\nSolution: Updated both AWS VPN connection and pfSense configuration to use stronger parameters:\nIKEv2 instead of IKEv1 AES-256 instead of AES-128 SHA2-256 instead of SHA-1 DH Group 14 instead of Group 2 Security Considerations Network Segmentation AWS VPC uses non-overlapping IP space (10.1.0.0/16) On-premise networks remain segmented by existing VLAN structure VPN provides encrypted tunnel between environments Access Control Security groups limit AWS resource access to specific on-premise networks pfSense firewall rules control which VLANs can access AWS resources Principle of least privilege applied throughout Encryption Standards IKEv2 with AES-256 encryption SHA2-256 integrity checking Perfect Forward Secrecy (PFS) enabled Strong Diffie-Hellman groups (Group 14) Monitoring and Logging AWS VPC Flow Logs capture network traffic pfSense logs IPsec tunnel status and traffic CloudTrail logs AWS API activities Performance and Cost Considerations Network Performance VPN provides approximately 1.25 Gbps throughput Latency depends on geographic distance to AWS region Dual tunnels provide redundancy and failover capability Cost Structure AWS VPN Connection: $36/month base cost NAT Gateway: $45/month plus data processing Data transfer charges apply for cross-VPN traffic EC2 instances: Variable based on usage Optimization Opportunities Use VPC Endpoints to reduce NAT Gateway usage Implement lifecycle policies for temporary resources Monitor data transfer patterns for cost optimization Future Enhancements Automation Improvements Implement Terraform modules for reusability Add automated testing for tunnel connectivity Create CI/CD pipeline for infrastructure changes Security Enhancements Implement AWS Config for compliance monitoring Add AWS GuardDuty for threat detection Configure AWS Security Hub for centralized security management Operational Improvements Set up CloudWatch monitoring for VPN metrics Implement automated failover testing Add backup VPN connection for additional redundancy Conclusion This project successfully established a production-grade Site-to-Site VPN between my on-premise pfSense infrastructure and AWS, creating a true hybrid cloud environment. The implementation demonstrates several key technical concepts:\nInfrastructure as Code: Using Terraform ensured reproducible, version-controlled infrastructure deployment with proper validation and documentation.\nNetwork Security: The solution implements enterprise-grade encryption and access controls while maintaining network segmentation and the principle of least privilege.\nHybrid Architecture: The established connection enables seamless communication between on-premise and cloud resources, opening possibilities for distributed applications, cloud bursting, and hybrid backup strategies.\nOperational Excellence: Comprehensive monitoring, logging, and documentation support ongoing management and troubleshooting.\nThe resulting infrastructure provides a solid foundation for hybrid cloud applications and demonstrates practical implementation of enterprise networking concepts in a home lab environment. This setup now enables exploration of advanced hybrid scenarios including cross-environment authentication, distributed databases, and multi-cloud architectures.\nKey Takeaways Planning is Critical: Proper IP address planning prevents conflicts and simplifies routing configuration.\nSecurity by Design: Implementing strong encryption and access controls from the beginning is easier than retrofitting security later.\nTesting Methodology: Systematic testing from basic connectivity to application-level validation ensures reliable operation.\nDocumentation Value: Thorough documentation accelerates troubleshooting and enables knowledge sharing.\nThis hybrid cloud setup now serves as a platform for continued learning and experimentation with enterprise cloud technologies and networking concepts.\n",
+  "wordCount" : "2890",
+  "inLanguage": "en",
+  "datePublished": "2025-06-03T00:00:00Z",
+  "dateModified": "2025-06-03T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/on-premise-engineering-labs/" title="On-Premise Engineering Labs">
+                    <span>On-Premise Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/cloud-engineering-labs" title="Cloud Engineering Labs">
+                    <span>Cloud Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform
+    </h1>
+    <div class="post-meta"><span title='2025-06-03 00:00:00 +0000 UTC'>June 3, 2025</span>&nbsp;·&nbsp;14 min
+
+</div>
+  </header> 
+  <div class="post-content"><p>In this post, I&rsquo;ll walk through the complete process of establishing a Site-to-Site VPN connection between my on-premise pfSense firewall and AWS, creating a true hybrid cloud environment. This project demonstrates enterprise-grade network integration, secure tunnel establishment, and Infrastructure as Code principles.</p>
+<h2 id="project-overview">Project Overview<a hidden class="anchor" aria-hidden="true" href="#project-overview">#</a></h2>
+<p>The goal was to extend my existing home lab network (TillyNet) to AWS, enabling seamless communication between on-premise resources and cloud workloads. This creates opportunities for hybrid applications, cloud bursting, and distributed infrastructure management.</p>
+<h3 id="architecture-summary">Architecture Summary<a hidden class="anchor" aria-hidden="true" href="#architecture-summary">#</a></h3>
+<pre tabindex="0"><code>On-Premise Network (TillyNet)           AWS Cloud Environment
+┌─────────────────────────────┐         ┌─────────────────────────────┐
+│ pfSense Firewall            │         │ AWS VPC (10.1.0.0/16)       │
+│ Multiple VLANs:             │◄────────┤                             │
+│ - VLAN 1: 172.16.7.0/24     │ IPsec   │ - Public: 10.1.1.0/24       │
+│ - VLAN 14: 172.16.14.0/24   │ Tunnel  │ - Private: 10.1.2.0/24      │
+│ - VLAN 21: 172.21.21.0/24   │         │                             │
+│ - VLAN 99: 172.16.99.0/24   │         │ EC2 Instances               │
+│ - XPS Subnet: 172.30.30.0/24│         │ NAT Gateway                 │
+└─────────────────────────────┘         └─────────────────────────────┘
+</code></pre><h2 id="prerequisites">Prerequisites<a hidden class="anchor" aria-hidden="true" href="#prerequisites">#</a></h2>
+<ul>
+<li><strong>On-Premise Requirements</strong>:
+<ul>
+<li>pfSense firewall with public IP address</li>
+<li>Properly configured VLANs and routing</li>
+<li>Administrative access to firewall configuration</li>
+</ul>
+</li>
+<li><strong>AWS Requirements</strong>:
+<ul>
+<li>AWS account with appropriate IAM permissions</li>
+<li>AWS CLI configured with access keys</li>
+<li>Terraform installed locally</li>
+</ul>
+</li>
+<li><strong>Network Requirements</strong>:
+<ul>
+<li>Non-overlapping IP address spaces</li>
+<li>Static public IP address (recommended)</li>
+<li>Understanding of IPsec protocols</li>
+</ul>
+</li>
+</ul>
+<h2 id="phase-1-aws-infrastructure-deployment">Phase 1: AWS Infrastructure Deployment<a hidden class="anchor" aria-hidden="true" href="#phase-1-aws-infrastructure-deployment">#</a></h2>
+<p>The first phase involves creating the AWS networking infrastructure using Terraform. This approach ensures reproducible, version-controlled infrastructure that can be easily modified and redeployed.</p>
+<h3 id="terraform-project-structure">Terraform Project Structure<a hidden class="anchor" aria-hidden="true" href="#terraform-project-structure">#</a></h3>
+<p>I organized the Terraform code into logical files for maintainability:</p>
+<pre tabindex="0"><code>tillynet-aws-hybrid-deployment/
+├── main.tf                 # Primary resource definitions
+├── variables.tf            # Input variable declarations
+├── outputs.tf              # Output value definitions
+├── locals.tf               # Local value computations
+├── data.tf                 # Data source definitions
+├── terraform.tfvars        # Variable value assignments
+└── README.md               # Project documentation
+</code></pre><h3 id="variable-definitions">Variable Definitions<a hidden class="anchor" aria-hidden="true" href="#variable-definitions">#</a></h3>
+<p>The <code>variables.tf</code> file defines all configurable parameters for the deployment:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># variables.tf - Input parameter definitions
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">variable</span> <span class="s2">&#34;aws_region&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;AWS region for VPC deployment&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>        <span class="o">=</span> <span class="k">string</span>
+</span></span><span class="line"><span class="cl"><span class="n">  default</span>     <span class="o">=</span> <span class="s2">&#34;us-west-1&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">validation</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    condition</span>     <span class="o">=</span> <span class="k">can</span><span class="p">(</span><span class="k">regex</span><span class="p">(</span><span class="s2">&#34;^[a-z]{2}-[a-z]+-[0-9]$&#34;</span><span class="p">,</span> <span class="k">var</span><span class="p">.</span><span class="k">aws_region</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">    error_message</span> <span class="o">=</span> <span class="s2">&#34;AWS region must be in valid format (e.g., us-west-1).&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">variable</span> <span class="s2">&#34;home_public_ip&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;Public IP address of on-premise network&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>        <span class="o">=</span> <span class="k">string</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">validation</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    condition</span>     <span class="o">=</span> <span class="k">can</span><span class="p">(</span><span class="k">cidrhost</span><span class="p">(</span><span class="s2">&#34;${var.home_public_ip}/32&#34;</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">    error_message</span> <span class="o">=</span> <span class="s2">&#34;Must be a valid IPv4 address.&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">variable</span> <span class="s2">&#34;project_name&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;Project identifier for resource naming and tagging&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>        <span class="o">=</span> <span class="k">string</span>
+</span></span><span class="line"><span class="cl"><span class="n">  default</span>     <span class="o">=</span> <span class="s2">&#34;tillynet-hybrid&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">validation</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    condition</span>     <span class="o">=</span> <span class="k">can</span><span class="p">(</span><span class="k">regex</span><span class="p">(</span><span class="s2">&#34;^[a-zA-Z][a-zA-Z0-9-]*$&#34;</span><span class="p">,</span> <span class="k">var</span><span class="p">.</span><span class="k">project_name</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">    error_message</span> <span class="o">=</span> <span class="s2">&#34;Project name must start with letter and contain only alphanumeric characters and hyphens.&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">variable</span> <span class="s2">&#34;vpc_cidr&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;CIDR block for AWS VPC&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>        <span class="o">=</span> <span class="k">string</span>
+</span></span><span class="line"><span class="cl"><span class="n">  default</span>     <span class="o">=</span> <span class="s2">&#34;10.1.0.0/16&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">validation</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    condition</span>     <span class="o">=</span> <span class="k">can</span><span class="p">(</span><span class="k">cidrhost</span><span class="p">(</span><span class="k">var</span><span class="p">.</span><span class="k">vpc_cidr</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">    error_message</span> <span class="o">=</span> <span class="s2">&#34;VPC CIDR must be a valid IPv4 CIDR block.&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">variable</span> <span class="s2">&#34;public_subnet_cidr&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;CIDR block for public subnet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>        <span class="o">=</span> <span class="k">string</span>
+</span></span><span class="line"><span class="cl"><span class="n">  default</span>     <span class="o">=</span> <span class="s2">&#34;10.1.1.0/24&#34;</span>
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">variable</span> <span class="s2">&#34;private_subnet_cidr&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;CIDR block for private subnet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>        <span class="o">=</span> <span class="k">string</span>
+</span></span><span class="line"><span class="cl"><span class="n">  default</span>     <span class="o">=</span> <span class="s2">&#34;10.1.2.0/24&#34;</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p>The validation blocks ensure that input values meet expected formats and constraints, preventing common configuration errors during deployment.</p>
+<h3 id="local-values-and-data-sources">Local Values and Data Sources<a hidden class="anchor" aria-hidden="true" href="#local-values-and-data-sources">#</a></h3>
+<p>The <code>locals.tf</code> file computes reusable values and establishes naming conventions:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># locals.tf - Computed values and constants
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">locals</span> {<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Standardized resource tagging for cost allocation and management
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  common_tags</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Project</span>     <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">project_name</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Environment</span> <span class="o">=</span> <span class="s2">&#34;hybrid&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    ManagedBy</span>   <span class="o">=</span> <span class="s2">&#34;Terraform&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    CreatedAt</span>   <span class="o">=</span> <span class="k">timestamp</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Purpose</span>     <span class="o">=</span> <span class="s2">&#34;Hybrid-Cloud-Connectivity&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Consistent naming convention across all resources
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  name_prefix</span> <span class="o">=</span> <span class="s2">&#34;${var.project_name}-hybrid&#34;</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # On-premise network definitions for VPN routing
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # These represent the existing VLAN structure in my home lab
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  home_networks</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;172.16.7.0/24&#34;</span><span class="p">,</span><span class="c1">   # Default/Legacy VLAN
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;172.16.14.0/24&#34;</span><span class="p">,</span><span class="c1">  # Guest Wi-Fi Network
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;172.21.21.0/24&#34;</span><span class="p">,</span><span class="c1">  # Production Services (DNS, etc.)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;172.16.99.0/24&#34;</span><span class="p">,</span><span class="c1">  # Management Network
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s2">&#34;172.30.30.0/24&#34;</span><span class="c1">   # Proxmox XPS Subnet
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">]</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><p>The <code>data.tf</code> file queries AWS for dynamic information:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># data.tf - External data source queries
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Current AWS region information
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">data</span> <span class="s2">&#34;aws_region&#34; &#34;current&#34;</span> {}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># AWS account identity for resource ARN construction
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">data</span> <span class="s2">&#34;aws_caller_identity&#34; &#34;current&#34;</span> {}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Available Availability Zones in the selected region
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">data</span> <span class="s2">&#34;aws_availability_zones&#34; &#34;available&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  state</span> <span class="o">=</span> <span class="s2">&#34;available&#34;</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Latest Amazon Linux 2 AMI for EC2 instances
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">data</span> <span class="s2">&#34;aws_ami&#34; &#34;amazon_linux&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  most_recent</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl"><span class="n">  owners</span>      <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;amazon&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">filter</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    name</span>   <span class="o">=</span> <span class="s2">&#34;name&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;amzn2-ami-hvm-*-x86_64-gp2&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">filter</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    name</span>   <span class="o">=</span> <span class="s2">&#34;virtualization-type&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    values</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;hvm&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h3 id="core-network-infrastructure">Core Network Infrastructure<a hidden class="anchor" aria-hidden="true" href="#core-network-infrastructure">#</a></h3>
+<p>The <code>main.tf</code> file contains the primary infrastructure definitions. Here&rsquo;s the VPC and networking setup:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># main.tf - Primary infrastructure resources
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Provider configuration
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">terraform</span> {
+</span></span><span class="line"><span class="cl">  <span class="k">required_providers</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    aws</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      source</span>  <span class="o">=</span> <span class="s2">&#34;hashicorp/aws&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">      version</span> <span class="o">=</span> <span class="s2">&#34;~&gt; 5.0&#34;</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">provider</span> <span class="s2">&#34;aws&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  region</span> <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">aws_region</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Virtual Private Cloud - The foundation of our AWS network
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_vpc&#34; &#34;hybrid_vpc&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  cidr_block</span>           <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">vpc_cidr</span>
+</span></span><span class="line"><span class="cl"><span class="n">  enable_dns_hostnames</span> <span class="o">=</span> <span class="kt">true</span><span class="c1">  # Required for proper hostname resolution
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  enable_dns_support</span>   <span class="o">=</span> <span class="kt">true</span><span class="c1">  # Enables DNS resolution within VPC
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-vpc&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Internet Gateway - Provides internet access to public subnets
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_internet_gateway&#34; &#34;hybrid_igw&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span> <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-igw&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Public Subnet - Hosts NAT Gateway and potential bastion hosts
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_subnet&#34; &#34;public_subnet&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>                  <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  cidr_block</span>              <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">public_subnet_cidr</span>
+</span></span><span class="line"><span class="cl"><span class="n">  availability_zone</span>       <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_availability_zones</span><span class="p">.</span><span class="k">available</span><span class="p">.</span><span class="k">names</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  map_public_ip_on_launch</span> <span class="o">=</span> <span class="kt">true</span><span class="c1">  # Auto-assign public IPs to instances
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-public-subnet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Type</span> <span class="o">=</span> <span class="s2">&#34;Public&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Private Subnet - Hosts hybrid workloads accessible via VPN
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_subnet&#34; &#34;private_subnet&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>            <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  cidr_block</span>        <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">private_subnet_cidr</span>
+</span></span><span class="line"><span class="cl"><span class="n">  availability_zone</span> <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_availability_zones</span><span class="p">.</span><span class="k">available</span><span class="p">.</span><span class="k">names</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private-subnet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Type</span> <span class="o">=</span> <span class="s2">&#34;Private&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Elastic IP for NAT Gateway - Provides static outbound IP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_eip&#34; &#34;nat_eip&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  domain</span> <span class="o">=</span> <span class="s2">&#34;vpc&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-nat-eip&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="k">aws_internet_gateway</span><span class="p">.</span><span class="k">hybrid_igw</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># NAT Gateway - Enables outbound internet access for private subnet
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_nat_gateway&#34; &#34;hybrid_nat&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  allocation_id</span> <span class="o">=</span> <span class="k">aws_eip</span><span class="p">.</span><span class="k">nat_eip</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  subnet_id</span>     <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">public_subnet</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-nat-gateway&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">depends_on</span> <span class="o">=</span> <span class="p">[</span><span class="k">aws_internet_gateway</span><span class="p">.</span><span class="k">hybrid_igw</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h3 id="routing-configuration">Routing Configuration<a hidden class="anchor" aria-hidden="true" href="#routing-configuration">#</a></h3>
+<p>Proper routing ensures traffic flows correctly between subnets and to the internet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># Public Route Table - Directs traffic to Internet Gateway
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_route_table&#34; &#34;public_rt&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span> <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Default route to internet for public subnet
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">route</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_block</span> <span class="o">=</span> <span class="s2">&#34;0.0.0.0/0&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    gateway_id</span> <span class="o">=</span> <span class="k">aws_internet_gateway</span><span class="p">.</span><span class="k">hybrid_igw</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-public-rt&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Type</span> <span class="o">=</span> <span class="s2">&#34;Public&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Private Route Table - Directs traffic to NAT Gateway for internet access
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_route_table&#34; &#34;private_rt&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span> <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Default route through NAT Gateway for outbound traffic
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">route</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_block</span>     <span class="o">=</span> <span class="s2">&#34;0.0.0.0/0&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    nat_gateway_id</span> <span class="o">=</span> <span class="k">aws_nat_gateway</span><span class="p">.</span><span class="k">hybrid_nat</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-private-rt&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Type</span> <span class="o">=</span> <span class="s2">&#34;Private&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Route Table Associations - Link subnets to appropriate route tables
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_route_table_association&#34; &#34;public_rta&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  subnet_id</span>      <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">public_subnet</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  route_table_id</span> <span class="o">=</span> <span class="k">aws_route_table</span><span class="p">.</span><span class="k">public_rt</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">resource</span> <span class="s2">&#34;aws_route_table_association&#34; &#34;private_rta&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  subnet_id</span>      <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">private_subnet</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  route_table_id</span> <span class="o">=</span> <span class="k">aws_route_table</span><span class="p">.</span><span class="k">private_rt</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h3 id="vpn-infrastructure-components">VPN Infrastructure Components<a hidden class="anchor" aria-hidden="true" href="#vpn-infrastructure-components">#</a></h3>
+<p>The Site-to-Site VPN requires three AWS components: Customer Gateway, Virtual Private Gateway, and the VPN Connection itself.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># Customer Gateway - Represents the on-premise pfSense firewall
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_customer_gateway&#34; &#34;tillynet_cgw&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bgp_asn</span>    <span class="o">=</span> <span class="m">65000</span><span class="c1">  # Private ASN required by AWS (not used for static routing)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  ip_address</span> <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">home_public_ip</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>       <span class="o">=</span> <span class="s2">&#34;ipsec.1&#34;</span><span class="c1">  # Only supported VPN type
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-customer-gateway&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Virtual Private Gateway - AWS-side VPN endpoint
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_vpn_gateway&#34; &#34;hybrid_vgw&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span> <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-vpn-gateway&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Site-to-Site VPN Connection with enhanced security parameters
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_vpn_connection&#34; &#34;tillynet_vpn&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  customer_gateway_id</span> <span class="o">=</span> <span class="k">aws_customer_gateway</span><span class="p">.</span><span class="k">tillynet_cgw</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpn_gateway_id</span>      <span class="o">=</span> <span class="k">aws_vpn_gateway</span><span class="p">.</span><span class="k">hybrid_vgw</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  type</span>                <span class="o">=</span> <span class="s2">&#34;ipsec.1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  static_routes_only</span>  <span class="o">=</span> <span class="kt">true</span><span class="c1">  # Use static routing instead of BGP
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Enhanced tunnel options for improved security
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  tunnel1_ike_versions</span>                 <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;ikev2&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel1_phase1_encryption_algorithms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;AES256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel1_phase1_integrity_algorithms</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;SHA2-256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel1_phase1_dh_group_numbers</span>      <span class="o">=</span> <span class="p">[</span><span class="m">14</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel1_phase2_encryption_algorithms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;AES256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel1_phase2_integrity_algorithms</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;SHA2-256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel1_phase2_dh_group_numbers</span>      <span class="o">=</span> <span class="p">[</span><span class="m">14</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tunnel2_ike_versions</span>                 <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;ikev2&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel2_phase1_encryption_algorithms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;AES256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel2_phase1_integrity_algorithms</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;SHA2-256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel2_phase1_dh_group_numbers</span>      <span class="o">=</span> <span class="p">[</span><span class="m">14</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel2_phase2_encryption_algorithms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;AES256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel2_phase2_integrity_algorithms</span>  <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;SHA2-256&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">  tunnel2_phase2_dh_group_numbers</span>      <span class="o">=</span> <span class="p">[</span><span class="m">14</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-vpn-connection&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Static routes for on-premise networks
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_vpn_connection_route&#34; &#34;home_routes&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  count</span>                  <span class="o">=</span> <span class="k">length</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">home_networks</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpn_connection_id</span>      <span class="o">=</span> <span class="k">aws_vpn_connection</span><span class="p">.</span><span class="k">tillynet_vpn</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  destination_cidr_block</span> <span class="o">=</span> <span class="k">local</span><span class="p">.</span><span class="k">home_networks</span><span class="p">[</span><span class="k">count</span><span class="p">.</span><span class="k">index</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Enable automatic route propagation to private route table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_vpn_gateway_route_propagation&#34; &#34;private_propagation&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  vpn_gateway_id</span> <span class="o">=</span> <span class="k">aws_vpn_gateway</span><span class="p">.</span><span class="k">hybrid_vgw</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  route_table_id</span> <span class="o">=</span> <span class="k">aws_route_table</span><span class="p">.</span><span class="k">private_rt</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h3 id="test-instance-for-connectivity-validation">Test Instance for Connectivity Validation<a hidden class="anchor" aria-hidden="true" href="#test-instance-for-connectivity-validation">#</a></h3>
+<p>To validate the hybrid connection, I deployed a test EC2 instance with appropriate security configurations:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># Security Group for test instance - Allows connectivity from on-premise networks
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_security_group&#34; &#34;test_instance_sg&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  name_prefix</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-test-sg-&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;Security group for hybrid connectivity testing&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_id</span>      <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Allow ICMP (ping) from all on-premise networks
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">ingress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;ICMP from on-premise networks&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="err">-</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="err">-</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;icmp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="k">local</span><span class="p">.</span><span class="k">home_networks</span>
+</span></span><span class="line"><span class="cl">  }<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Allow SSH access from on-premise networks
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">ingress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;SSH from on-premise networks&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="m">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;tcp&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="k">local</span><span class="p">.</span><span class="k">home_networks</span>
+</span></span><span class="line"><span class="cl">  }<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # Allow all outbound traffic
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">egress</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    description</span> <span class="o">=</span> <span class="s2">&#34;All outbound traffic&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    from_port</span>   <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">    to_port</span>     <span class="o">=</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">    protocol</span>    <span class="o">=</span> <span class="s2">&#34;-1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    cidr_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;0.0.0.0/0&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-test-sg&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">lifecycle</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    create_before_destroy</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Test EC2 instance in private subnet
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_instance&#34; &#34;test_instance&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  ami</span>                     <span class="o">=</span> <span class="k">data</span><span class="p">.</span><span class="k">aws_ami</span><span class="p">.</span><span class="k">amazon_linux</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  instance_type</span>           <span class="o">=</span> <span class="s2">&#34;t2.micro&#34;</span><span class="c1">  # Free tier eligible
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  subnet_id</span>               <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">private_subnet</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">  vpc_security_group_ids</span>  <span class="o">=</span> <span class="p">[</span><span class="k">aws_security_group</span><span class="p">.</span><span class="k">test_instance_sg</span><span class="p">.</span><span class="k">id</span><span class="p">]</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">  
+</span></span></span><span class="line"><span class="cl"><span class="c1">  # User data script for instance initialization
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">  user_data</span> <span class="o">=</span> <span class="k">base64encode</span><span class="p">(</span><span class="err">&lt;&lt;-</span><span class="k">EOF</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">    #!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">yum</span> <span class="k">update</span> <span class="err">-</span><span class="k">y</span>
+</span></span><span class="line"><span class="cl">    <span class="k">yum</span> <span class="k">install</span> <span class="err">-</span><span class="k">y</span> <span class="k">htop</span> <span class="k">tree</span> <span class="k">wget</span> <span class="k">curl</span><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">    
+</span></span></span><span class="line"><span class="cl"><span class="c1">    # Create identification file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">cat</span> <span class="err">&gt;</span> <span class="err">/</span><span class="k">etc</span><span class="err">/</span><span class="k">motd</span> <span class="err">&lt;&lt;</span> <span class="err">&#39;</span><span class="k">WELCOME</span><span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="err">*************************************************</span>
+</span></span><span class="line"><span class="cl"><span class="err">*</span>      <span class="k">AWS</span> <span class="k">Hybrid</span> <span class="k">Connectivity</span> <span class="k">Test</span> <span class="k">Instance</span>   <span class="err">*</span>
+</span></span><span class="line"><span class="cl"><span class="err">*************************************************</span>
+</span></span><span class="line"><span class="cl"><span class="k">WELCOME</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;$(date): Hybrid test instance initialized&#34;</span> <span class="err">&gt;&gt;</span> <span class="err">/</span><span class="k">var</span><span class="err">/</span><span class="k">log</span><span class="err">/</span><span class="k">hybrid</span><span class="err">-</span><span class="k">setup</span><span class="p">.</span><span class="k">log</span>
+</span></span><span class="line"><span class="cl">  <span class="k">EOF</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">tags</span> <span class="o">=</span> <span class="k">merge</span><span class="p">(</span><span class="k">local</span><span class="p">.</span><span class="k">common_tags</span><span class="p">,</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    Name</span> <span class="o">=</span> <span class="s2">&#34;${local.name_prefix}-test-instance&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    Purpose</span> <span class="o">=</span> <span class="s2">&#34;Hybrid connectivity validation&#34;</span>
+</span></span><span class="line"><span class="cl">  }<span class="p">)</span>
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h3 id="output-definitions">Output Definitions<a hidden class="anchor" aria-hidden="true" href="#output-definitions">#</a></h3>
+<p>The <code>outputs.tf</code> file defines important values needed for pfSense configuration:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># outputs.tf - Important values for manual configuration steps
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">output</span> <span class="s2">&#34;vpn_connection_details&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;VPN connection configuration parameters for pfSense&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  value</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    vpn_connection_id</span>   <span class="o">=</span> <span class="k">aws_vpn_connection</span><span class="p">.</span><span class="k">tillynet_vpn</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">    tunnel_1_address</span>    <span class="o">=</span> <span class="k">aws_vpn_connection</span><span class="p">.</span><span class="k">tillynet_vpn</span><span class="p">.</span><span class="k">tunnel1_address</span>
+</span></span><span class="line"><span class="cl"><span class="n">    tunnel_2_address</span>    <span class="o">=</span> <span class="k">aws_vpn_connection</span><span class="p">.</span><span class="k">tillynet_vpn</span><span class="p">.</span><span class="k">tunnel2_address</span>
+</span></span><span class="line"><span class="cl"><span class="n">    tunnel_1_psk</span>        <span class="o">=</span> <span class="k">aws_vpn_connection</span><span class="p">.</span><span class="k">tillynet_vpn</span><span class="p">.</span><span class="k">tunnel1_preshared_key</span>
+</span></span><span class="line"><span class="cl"><span class="n">    tunnel_2_psk</span>        <span class="o">=</span> <span class="k">aws_vpn_connection</span><span class="p">.</span><span class="k">tillynet_vpn</span><span class="p">.</span><span class="k">tunnel2_preshared_key</span>
+</span></span><span class="line"><span class="cl"><span class="n">    customer_gateway_ip</span> <span class="o">=</span> <span class="k">var</span><span class="p">.</span><span class="k">home_public_ip</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl"><span class="n">  sensitive</span> <span class="o">=</span> <span class="kt">true</span><span class="c1">  # Hides sensitive values in console output
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">output</span> <span class="s2">&#34;aws_vpc_info&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;AWS VPC infrastructure details&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  value</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    vpc_id</span>              <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">    vpc_cidr</span>            <span class="o">=</span> <span class="k">aws_vpc</span><span class="p">.</span><span class="k">hybrid_vpc</span><span class="p">.</span><span class="k">cidr_block</span>
+</span></span><span class="line"><span class="cl"><span class="n">    public_subnet_id</span>    <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">public_subnet</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">    private_subnet_id</span>   <span class="o">=</span> <span class="k">aws_subnet</span><span class="p">.</span><span class="k">private_subnet</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">    vpn_gateway_id</span>      <span class="o">=</span> <span class="k">aws_vpn_gateway</span><span class="p">.</span><span class="k">hybrid_vgw</span><span class="p">.</span><span class="k">id</span>
+</span></span><span class="line"><span class="cl"><span class="n">    test_instance_ip</span>    <span class="o">=</span> <span class="k">aws_instance</span><span class="p">.</span><span class="k">test_instance</span><span class="p">.</span><span class="k">private_ip</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">output</span> <span class="s2">&#34;connectivity_test_commands&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  description</span> <span class="o">=</span> <span class="s2">&#34;Commands for testing hybrid connectivity&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">  value</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    ping_aws_from_home</span> <span class="o">=</span> <span class="s2">&#34;ping ${aws_instance.test_instance.private_ip}&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    ping_home_from_aws</span> <span class="o">=</span> <span class="s2">&#34;ping [your-home-network-ip]&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    ssh_to_aws</span>         <span class="o">=</span> <span class="s2">&#34;ssh ec2-user@${aws_instance.test_instance.private_ip}&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></div><h3 id="variable-values-configuration">Variable Values Configuration<a hidden class="anchor" aria-hidden="true" href="#variable-values-configuration">#</a></h3>
+<p>The <code>terraform.tfvars</code> file contains environment-specific values:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># terraform.tfvars - Environment-specific configuration values
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Note: This file should not be committed to version control
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">aws_region</span>          <span class="o">=</span> <span class="s2">&#34;us-west-1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">home_public_ip</span>      <span class="o">=</span> <span class="s2">&#34;[YOUR_PUBLIC_IP_HERE]&#34;</span><span class="c1">  # Replace with actual public IP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">project_name</span>        <span class="o">=</span> <span class="s2">&#34;tillynet-hybrid&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">vpc_cidr</span>            <span class="o">=</span> <span class="s2">&#34;10.1.0.0/16&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">public_subnet_cidr</span>  <span class="o">=</span> <span class="s2">&#34;10.1.1.0/24&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">private_subnet_cidr</span> <span class="o">=</span> <span class="s2">&#34;10.1.2.0/24&#34;</span>
+</span></span></code></pre></div><h2 id="phase-2-aws-infrastructure-deployment">Phase 2: AWS Infrastructure Deployment<a hidden class="anchor" aria-hidden="true" href="#phase-2-aws-infrastructure-deployment">#</a></h2>
+<p>With the Terraform configuration complete, I deployed the AWS infrastructure:</p>
+<h3 id="deployment-process">Deployment Process<a hidden class="anchor" aria-hidden="true" href="#deployment-process">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Initialize Terraform and download required providers</span>
+</span></span><span class="line"><span class="cl">terraform init
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Validate configuration syntax and logic</span>
+</span></span><span class="line"><span class="cl">terraform validate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Review planned changes before deployment</span>
+</span></span><span class="line"><span class="cl">terraform plan
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Deploy the infrastructure</span>
+</span></span><span class="line"><span class="cl">terraform apply
+</span></span></code></pre></div><h3 id="deployment-verification">Deployment Verification<a hidden class="anchor" aria-hidden="true" href="#deployment-verification">#</a></h3>
+<p>After successful deployment, I verified the infrastructure:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Retrieve VPN connection details for pfSense configuration</span>
+</span></span><span class="line"><span class="cl">terraform output vpn_connection_details
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get AWS infrastructure information</span>
+</span></span><span class="line"><span class="cl">terraform output aws_vpc_info
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Verify VPN connection status</span>
+</span></span><span class="line"><span class="cl">aws ec2 describe-vpn-connections --vpn-connection-ids <span class="o">[</span>VPN_CONNECTION_ID<span class="o">]</span>
+</span></span></code></pre></div><p>The deployment created:</p>
+<ul>
+<li>VPC with public and private subnets</li>
+<li>Internet Gateway and NAT Gateway for connectivity</li>
+<li>Virtual Private Gateway attached to the VPC</li>
+<li>Customer Gateway representing my pfSense firewall</li>
+<li>Site-to-Site VPN connection with two redundant tunnels</li>
+<li>Static routes for all on-premise networks</li>
+<li>Test EC2 instance with appropriate security groups</li>
+</ul>
+<h2 id="phase-3-pfsense-ipsec-configuration">Phase 3: pfSense IPsec Configuration<a hidden class="anchor" aria-hidden="true" href="#phase-3-pfsense-ipsec-configuration">#</a></h2>
+<p>With AWS infrastructure deployed, I configured the pfSense firewall to establish the IPsec tunnels.</p>
+<h3 id="phase-1-ike-configuration">Phase 1 (IKE) Configuration<a hidden class="anchor" aria-hidden="true" href="#phase-1-ike-configuration">#</a></h3>
+<p>For each tunnel, I created Phase 1 entries in pfSense:</p>
+<p><strong>Navigation</strong>: VPN &gt; IPsec &gt; Add P1</p>
+<h4 id="tunnel-1-configuration">Tunnel 1 Configuration:<a hidden class="anchor" aria-hidden="true" href="#tunnel-1-configuration">#</a></h4>
+<ul>
+<li><strong>Disabled</strong>: Unchecked</li>
+<li><strong>Key Exchange version</strong>: IKEv2</li>
+<li><strong>Internet Protocol</strong>: IPv4</li>
+<li><strong>Interface</strong>: WAN</li>
+<li><strong>Remote Gateway</strong>: [AWS_TUNNEL_1_ADDRESS]</li>
+<li><strong>Description</strong>: AWS VPN Tunnel 1</li>
+</ul>
+<h4 id="authentication-settings">Authentication Settings:<a hidden class="anchor" aria-hidden="true" href="#authentication-settings">#</a></h4>
+<ul>
+<li><strong>Authentication Method</strong>: Mutual PSK</li>
+<li><strong>Negotiation Mode</strong>: Main</li>
+<li><strong>My identifier</strong>: My IP address</li>
+<li><strong>Peer identifier</strong>: Peer IP address</li>
+<li><strong>Pre-Shared Key</strong>: [AWS_TUNNEL_1_PSK]</li>
+</ul>
+<h4 id="encryption-parameters">Encryption Parameters:<a hidden class="anchor" aria-hidden="true" href="#encryption-parameters">#</a></h4>
+<ul>
+<li><strong>Encryption Algorithm</strong>: AES 256 bits</li>
+<li><strong>Hash Algorithm</strong>: SHA2-256</li>
+<li><strong>DH Group</strong>: 14 (2048 bit)</li>
+<li><strong>Lifetime</strong>: 28800 seconds</li>
+</ul>
+<h4 id="advanced-options">Advanced Options:<a hidden class="anchor" aria-hidden="true" href="#advanced-options">#</a></h4>
+<ul>
+<li><strong>NAT Traversal</strong>: Auto</li>
+<li><strong>Dead Peer Detection</strong>: Enabled</li>
+<li><strong>Delay</strong>: 10 seconds</li>
+<li><strong>Max failures</strong>: 3</li>
+</ul>
+<h3 id="phase-2-ipsec-configuration">Phase 2 (IPsec) Configuration<a hidden class="anchor" aria-hidden="true" href="#phase-2-ipsec-configuration">#</a></h3>
+<p>For each Phase 1, I created corresponding Phase 2 entries:</p>
+<p><strong>Navigation</strong>: VPN &gt; IPsec &gt; Show Phase 2 Entries &gt; Add P2</p>
+<h4 id="network-configuration">Network Configuration:<a hidden class="anchor" aria-hidden="true" href="#network-configuration">#</a></h4>
+<ul>
+<li><strong>Mode</strong>: Tunnel IPv4</li>
+<li><strong>Local Network</strong>: Network - 0.0.0.0/0 (any)</li>
+<li><strong>Remote Network</strong>: Network - 10.1.0.0/16 (AWS VPC)</li>
+</ul>
+<h4 id="security-parameters">Security Parameters:<a hidden class="anchor" aria-hidden="true" href="#security-parameters">#</a></h4>
+<ul>
+<li><strong>Protocol</strong>: ESP</li>
+<li><strong>Encryption Algorithms</strong>: AES 256 bits</li>
+<li><strong>Hash Algorithms</strong>: SHA2-256</li>
+<li><strong>PFS key group</strong>: 14 (2048 bit)</li>
+<li><strong>Lifetime</strong>: 3600 seconds</li>
+</ul>
+<h4 id="advanced-configuration">Advanced Configuration:<a hidden class="anchor" aria-hidden="true" href="#advanced-configuration">#</a></h4>
+<ul>
+<li><strong>Automatically ping host</strong>: 10.1.0.1</li>
+</ul>
+<p>I replicated this configuration for Tunnel 2 with the appropriate endpoint address and pre-shared key.</p>
+<h3 id="firewall-rules-configuration">Firewall Rules Configuration<a hidden class="anchor" aria-hidden="true" href="#firewall-rules-configuration">#</a></h3>
+<h4 id="ipsec-interface-rules">IPsec Interface Rules<a hidden class="anchor" aria-hidden="true" href="#ipsec-interface-rules">#</a></h4>
+<p><strong>Navigation</strong>: Firewall &gt; Rules &gt; IPsec</p>
+<p>I created a rule to allow all traffic through the VPN tunnels (this rule will later be more restrictive but for now this allowed testing traffic through the tunnel):</p>
+<ul>
+<li><strong>Action</strong>: Pass</li>
+<li><strong>Interface</strong>: IPsec</li>
+<li><strong>Address Family</strong>: IPv4</li>
+<li><strong>Protocol</strong>: Any</li>
+<li><strong>Source</strong>: Any</li>
+<li><strong>Destination</strong>: Any</li>
+<li><strong>Description</strong>: Allow all traffic through VPN tunnels</li>
+</ul>
+<h4 id="vlan-interface-rules">VLAN Interface Rules<a hidden class="anchor" aria-hidden="true" href="#vlan-interface-rules">#</a></h4>
+<p>For each VLAN interface, I added rules allowing traffic to AWS:</p>
+<p><strong>Navigation</strong>: Firewall &gt; Rules &gt; [VLAN_Interface]</p>
+<p>Example for Management VLAN:</p>
+<ul>
+<li><strong>Action</strong>: Pass</li>
+<li><strong>Interface</strong>: MGMT</li>
+<li><strong>Protocol</strong>: Any</li>
+<li><strong>Source</strong>: MGMT net (172.16.99.0/24)</li>
+<li><strong>Destination</strong>: 10.1.0.0/16</li>
+<li><strong>Description</strong>: Allow Management VLAN to AWS VPC</li>
+</ul>
+<h2 id="phase-4-connection-establishment-and-testing">Phase 4: Connection Establishment and Testing<a hidden class="anchor" aria-hidden="true" href="#phase-4-connection-establishment-and-testing">#</a></h2>
+<h3 id="tunnel-establishment">Tunnel Establishment<a hidden class="anchor" aria-hidden="true" href="#tunnel-establishment">#</a></h3>
+<p>After applying all configurations, I established the tunnels:</p>
+<ol>
+<li><strong>Status &gt; IPsec &gt; Overview</strong></li>
+<li>Clicked &ldquo;Connect P1 and P2s&rdquo; for both tunnels</li>
+<li>Verified both tunnels showed &ldquo;Established&rdquo; status</li>
+</ol>
+<h3 id="aws-side-verification">AWS-Side Verification<a hidden class="anchor" aria-hidden="true" href="#aws-side-verification">#</a></h3>
+<p>I confirmed tunnel status from AWS:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Check tunnel status</span>
+</span></span><span class="line"><span class="cl">aws ec2 describe-vpn-connections --vpn-connection-ids <span class="o">[</span>VPN_ID<span class="o">]</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --query <span class="s1">&#39;VpnConnections[0].VgwTelemetry&#39;</span>
+</span></span></code></pre></div><p>Expected output showed Tunnel 1 as &ldquo;UP&rdquo; and Tunnel 2 as &ldquo;DOWN&rdquo; (normal for active/passive configuration).</p>
+<h3 id="connectivity-testing">Connectivity Testing<a hidden class="anchor" aria-hidden="true" href="#connectivity-testing">#</a></h3>
+<h4 id="test-1-aws-infrastructure-ping">Test 1: AWS Infrastructure Ping<a hidden class="anchor" aria-hidden="true" href="#test-1-aws-infrastructure-ping">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># From pfSense Diagnostics &gt; Ping</span>
+</span></span><span class="line"><span class="cl">ping <span class="o">[</span>AWS_EC2_INSTANCE_IP<span class="o">]</span>  <span class="c1"># Should succeed</span>
+</span></span></code></pre></div><h4 id="test-2-bidirectional-connectivity">Test 2: Bidirectional Connectivity<a hidden class="anchor" aria-hidden="true" href="#test-2-bidirectional-connectivity">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># From on-premise management network</span>
+</span></span><span class="line"><span class="cl">ping <span class="o">[</span>AWS_EC2_INSTANCE_IP<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># From AWS EC2 instance</span>
+</span></span><span class="line"><span class="cl">ping <span class="o">[</span>ON_PREMISE_DEVICE_IP<span class="o">]</span>
+</span></span></code></pre></div><h4 id="test-3-application-level-testing">Test 3: Application-Level Testing<a hidden class="anchor" aria-hidden="true" href="#test-3-application-level-testing">#</a></h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># SSH from on-premise to AWS (if keys configured)</span>
+</span></span><span class="line"><span class="cl">ssh ec2-user@<span class="o">[</span>AWS_EC2_INSTANCE_IP<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># HTTP/HTTPS services (if configured)</span>
+</span></span><span class="line"><span class="cl">curl http://<span class="o">[</span>AWS_EC2_INSTANCE_IP<span class="o">]</span>
+</span></span></code></pre></div><h2 id="troubleshooting-and-resolution">Troubleshooting and Resolution<a hidden class="anchor" aria-hidden="true" href="#troubleshooting-and-resolution">#</a></h2>
+<h3 id="challenge-1-route-table-issues">Challenge 1: Route Table Issues<a hidden class="anchor" aria-hidden="true" href="#challenge-1-route-table-issues">#</a></h3>
+<p><strong>Problem</strong>: pfSense wasn&rsquo;t automatically creating routes to AWS networks despite established tunnels.</p>
+<p><strong>Solution</strong>: Added &ldquo;Automatically ping host&rdquo; parameter in Phase 2 configuration pointing to AWS VPC gateway (10.1.0.1). This forces pfSense to maintain active routes through the tunnel.</p>
+<h3 id="challenge-2-aws-security-group-configuration">Challenge 2: AWS Security Group Configuration<a hidden class="anchor" aria-hidden="true" href="#challenge-2-aws-security-group-configuration">#</a></h3>
+<p><strong>Problem</strong>: Initial ping tests failed due to restrictive default security groups.</p>
+<p><strong>Solution</strong>: Created explicit security group rules allowing ICMP and SSH traffic from on-premise network ranges to AWS resources.</p>
+<h3 id="challenge-3-tunnel-authentication-issues">Challenge 3: Tunnel Authentication Issues<a hidden class="anchor" aria-hidden="true" href="#challenge-3-tunnel-authentication-issues">#</a></h3>
+<p><strong>Problem</strong>: Initial configuration used weaker encryption (SHA-1, DH Group 2).</p>
+<p><strong>Solution</strong>: Updated both AWS VPN connection and pfSense configuration to use stronger parameters:</p>
+<ul>
+<li>IKEv2 instead of IKEv1</li>
+<li>AES-256 instead of AES-128</li>
+<li>SHA2-256 instead of SHA-1</li>
+<li>DH Group 14 instead of Group 2</li>
+</ul>
+<h2 id="security-considerations">Security Considerations<a hidden class="anchor" aria-hidden="true" href="#security-considerations">#</a></h2>
+<h3 id="network-segmentation">Network Segmentation<a hidden class="anchor" aria-hidden="true" href="#network-segmentation">#</a></h3>
+<ul>
+<li>AWS VPC uses non-overlapping IP space (10.1.0.0/16)</li>
+<li>On-premise networks remain segmented by existing VLAN structure</li>
+<li>VPN provides encrypted tunnel between environments</li>
+</ul>
+<h3 id="access-control">Access Control<a hidden class="anchor" aria-hidden="true" href="#access-control">#</a></h3>
+<ul>
+<li>Security groups limit AWS resource access to specific on-premise networks</li>
+<li>pfSense firewall rules control which VLANs can access AWS resources</li>
+<li>Principle of least privilege applied throughout</li>
+</ul>
+<h3 id="encryption-standards">Encryption Standards<a hidden class="anchor" aria-hidden="true" href="#encryption-standards">#</a></h3>
+<ul>
+<li>IKEv2 with AES-256 encryption</li>
+<li>SHA2-256 integrity checking</li>
+<li>Perfect Forward Secrecy (PFS) enabled</li>
+<li>Strong Diffie-Hellman groups (Group 14)</li>
+</ul>
+<h3 id="monitoring-and-logging">Monitoring and Logging<a hidden class="anchor" aria-hidden="true" href="#monitoring-and-logging">#</a></h3>
+<ul>
+<li>AWS VPC Flow Logs capture network traffic</li>
+<li>pfSense logs IPsec tunnel status and traffic</li>
+<li>CloudTrail logs AWS API activities</li>
+</ul>
+<h2 id="performance-and-cost-considerations">Performance and Cost Considerations<a hidden class="anchor" aria-hidden="true" href="#performance-and-cost-considerations">#</a></h2>
+<h3 id="network-performance">Network Performance<a hidden class="anchor" aria-hidden="true" href="#network-performance">#</a></h3>
+<ul>
+<li>VPN provides approximately 1.25 Gbps throughput</li>
+<li>Latency depends on geographic distance to AWS region</li>
+<li>Dual tunnels provide redundancy and failover capability</li>
+</ul>
+<h3 id="cost-structure">Cost Structure<a hidden class="anchor" aria-hidden="true" href="#cost-structure">#</a></h3>
+<ul>
+<li>AWS VPN Connection: $36/month base cost</li>
+<li>NAT Gateway: $45/month plus data processing</li>
+<li>Data transfer charges apply for cross-VPN traffic</li>
+<li>EC2 instances: Variable based on usage</li>
+</ul>
+<h3 id="optimization-opportunities">Optimization Opportunities<a hidden class="anchor" aria-hidden="true" href="#optimization-opportunities">#</a></h3>
+<ul>
+<li>Use VPC Endpoints to reduce NAT Gateway usage</li>
+<li>Implement lifecycle policies for temporary resources</li>
+<li>Monitor data transfer patterns for cost optimization</li>
+</ul>
+<h2 id="future-enhancements">Future Enhancements<a hidden class="anchor" aria-hidden="true" href="#future-enhancements">#</a></h2>
+<h3 id="automation-improvements">Automation Improvements<a hidden class="anchor" aria-hidden="true" href="#automation-improvements">#</a></h3>
+<ul>
+<li>Implement Terraform modules for reusability</li>
+<li>Add automated testing for tunnel connectivity</li>
+<li>Create CI/CD pipeline for infrastructure changes</li>
+</ul>
+<h3 id="security-enhancements">Security Enhancements<a hidden class="anchor" aria-hidden="true" href="#security-enhancements">#</a></h3>
+<ul>
+<li>Implement AWS Config for compliance monitoring</li>
+<li>Add AWS GuardDuty for threat detection</li>
+<li>Configure AWS Security Hub for centralized security management</li>
+</ul>
+<h3 id="operational-improvements">Operational Improvements<a hidden class="anchor" aria-hidden="true" href="#operational-improvements">#</a></h3>
+<ul>
+<li>Set up CloudWatch monitoring for VPN metrics</li>
+<li>Implement automated failover testing</li>
+<li>Add backup VPN connection for additional redundancy</li>
+</ul>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>This project successfully established a production-grade Site-to-Site VPN between my on-premise pfSense infrastructure and AWS, creating a true hybrid cloud environment. The implementation demonstrates several key technical concepts:</p>
+<p><strong>Infrastructure as Code</strong>: Using Terraform ensured reproducible, version-controlled infrastructure deployment with proper validation and documentation.</p>
+<p><strong>Network Security</strong>: The solution implements enterprise-grade encryption and access controls while maintaining network segmentation and the principle of least privilege.</p>
+<p><strong>Hybrid Architecture</strong>: The established connection enables seamless communication between on-premise and cloud resources, opening possibilities for distributed applications, cloud bursting, and hybrid backup strategies.</p>
+<p><strong>Operational Excellence</strong>: Comprehensive monitoring, logging, and documentation support ongoing management and troubleshooting.</p>
+<p>The resulting infrastructure provides a solid foundation for hybrid cloud applications and demonstrates practical implementation of enterprise networking concepts in a home lab environment. This setup now enables exploration of advanced hybrid scenarios including cross-environment authentication, distributed databases, and multi-cloud architectures.</p>
+<h3 id="key-takeaways">Key Takeaways<a hidden class="anchor" aria-hidden="true" href="#key-takeaways">#</a></h3>
+<ol>
+<li>
+<p><strong>Planning is Critical</strong>: Proper IP address planning prevents conflicts and simplifies routing configuration.</p>
+</li>
+<li>
+<p><strong>Security by Design</strong>: Implementing strong encryption and access controls from the beginning is easier than retrofitting security later.</p>
+</li>
+<li>
+<p><strong>Testing Methodology</strong>: Systematic testing from basic connectivity to application-level validation ensures reliable operation.</p>
+</li>
+<li>
+<p><strong>Documentation Value</strong>: Thorough documentation accelerates troubleshooting and enables knowledge sharing.</p>
+</li>
+</ol>
+<p>This hybrid cloud setup now serves as a platform for continued learning and experimentation with enterprise cloud technologies and networking concepts.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/aws/">AWS</a></li>
+      <li><a href="https://blog.tillynet.com/tags/on-premise/">On-Premise</a></li>
+      <li><a href="https://blog.tillynet.com/tags/hybrid-cloud/">Hybrid Cloud</a></li>
+      <li><a href="https://blog.tillynet.com/tags/vpc/">VPC</a></li>
+      <li><a href="https://blog.tillynet.com/tags/vpn/">VPN</a></li>
+      <li><a href="https://blog.tillynet.com/tags/ipsec/">IPsec</a></li>
+      <li><a href="https://blog.tillynet.com/tags/terraform/">Terraform</a></li>
+      <li><a href="https://blog.tillynet.com/tags/pfsense/">PfSense</a></li>
+      <li><a href="https://blog.tillynet.com/tags/infrastructure-as-code/">Infrastructure-as-Code</a></li>
+      <li><a href="https://blog.tillynet.com/tags/network-automation/">Network Automation</a></li>
+      <li><a href="https://blog.tillynet.com/tags/cloud-deployment/">Cloud Deployment</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-2/secure-s3-infrastructure-lab---technical-documentation/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Building Secure AWS S3 Infrastructure with Terraform - Complete Lab Guide</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
