@@ -6,8 +6,27 @@
     <description>Recent content on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 03 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building a Secure Hybrid Cloud Infrastructure with AWS VPN and DNS Integration</title>
+      <link>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-4/building-a-secure-hybrid-cloud-infrastructure-with-aws-vpn-and-dns-integration/</link>
+      <pubDate>Wed, 04 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-4/building-a-secure-hybrid-cloud-infrastructure-with-aws-vpn-and-dns-integration/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This post documents my journey building a production-grade hybrid cloud infrastructure that securely connects my on-premises homelab environment with AWS. The implementation demonstrates enterprise-level network segmentation, DNS integration, and security practices using Infrastructure as Code (IaC) principles.&lt;/p&gt;
+&lt;h2 id=&#34;architecture-goals&#34;&gt;Architecture Goals&lt;/h2&gt;
+&lt;p&gt;My primary objectives were to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Establish secure connectivity&lt;/strong&gt; between on-premises and AWS environments&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Implement seamless DNS resolution&lt;/strong&gt; across both environments&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Maintain security isolation&lt;/strong&gt; while enabling necessary communication&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use Infrastructure as Code&lt;/strong&gt; for reproducible deployments&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Follow enterprise best practices&lt;/strong&gt; for hybrid cloud architectures&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;on-premises-infrastructure-overview&#34;&gt;On-Premises Infrastructure Overview&lt;/h2&gt;
+&lt;p&gt;My existing homelab infrastructure includes:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform</title>
       <link>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-3/establishing-aws-site-to-site-vpn-with-on-premise-pfsense-infrastructure/</link>

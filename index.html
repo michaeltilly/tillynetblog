@@ -185,6 +185,21 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Building a Secure Hybrid Cloud Infrastructure with AWS VPN and DNS Integration
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Overview This post documents my journey building a production-grade hybrid cloud infrastructure that securely connects my on-premises homelab environment with AWS. The implementation demonstrates enterprise-level network segmentation, DNS integration, and security practices using Infrastructure as Code (IaC) principles.
+Architecture Goals My primary objectives were to:
+Establish secure connectivity between on-premises and AWS environments Implement seamless DNS resolution across both environments Maintain security isolation while enabling necessary communication Use Infrastructure as Code for reproducible deployments Follow enterprise best practices for hybrid cloud architectures On-Premises Infrastructure Overview My existing homelab infrastructure includes:
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-06-04 00:00:00 +0000 UTC'>June 4, 2025</span>&nbsp;·&nbsp;10 min</footer>
+  <a class="entry-link" aria-label="post link to Building a Secure Hybrid Cloud Infrastructure with AWS VPN and DNS Integration" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-4/building-a-secure-hybrid-cloud-infrastructure-with-aws-vpn-and-dns-integration/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Building a Hybrid Cloud: AWS Site-to-Site VPN with pfSense and Terraform
     </h2>
   </header>
@@ -326,19 +341,6 @@ sudo systemctl disable smbd nmbd winbind sudo systemctl stop smbd nmbd winbind P
   </div>
   <footer class="entry-footer"><span title='2025-04-26 00:00:00 +0000 UTC'>April 26, 2025</span>&nbsp;·&nbsp;2 min</footer>
   <a class="entry-link" aria-label="post link to Provisioning Samba Active Directory Domain Controller and Windows Domain Integration" href="https://blog.tillynet.com/on-premise-engineering-labs/provisioning-samba-active-directory-domain-controller-and-windows-domain-integration/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Background This post documents the troubleshooting process I followed to resolve an internet connectivity issue affecting virtual machines (VMs) hosted on a Proxmox VE node running on a Wi-Fi-only Dell XPS 15. The VMs were deployed on a routed internal subnet (172.30.30.0/24) with static routes configured through a pfSense firewall. While the VMs could communicate with internal hosts—including DNS and gateway IPs—they were unable to reach external internet addresses such as 8.8.8.8.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2025-04-24 00:00:00 +0000 UTC'>April 24, 2025</span>&nbsp;·&nbsp;3 min</footer>
-  <a class="entry-link" aria-label="post link to Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet" href="https://blog.tillynet.com/on-premise-engineering-labs/resolving-internet-connectivity-issues-for-proxmox-vms-on-a-routed-subnet/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
