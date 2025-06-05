@@ -1,9 +1,29 @@
 ---
-title: "Building a Secure Hybrid Cloud Infrastructure with AWS VPN and DNS Integration"
+title: Building a Secure Hybrid Cloud Infrastructure with AWS VPN and DNS Integration
 date: 2025-06-04
-tags: ["AWS", "On-Premise", "Hybrid Cloud", "Route 53", "DNS", "Samba4", "EC2", "Bastion", "VPC", "VPN", "IPsec", "terraform", "PfSense", "infrastructure-as-code", "network automation", "cloud deployment"]
-cloud_provider: "AWS"
-categories: ["Cloud Engineering Labs"]
+tags:
+  - AWS
+  - On-Premise
+  - Hybrid
+  - Cloud
+  - Route
+  - DNS
+  - Samba4
+  - EC2
+  - Bastion
+  - VPC
+  - VPN
+  - IPsec
+  - terraform
+  - PfSense
+  - infrastructure-as-code
+  - network
+  - automation
+  - cloud
+  - deployment
+cloud_provider: AWS
+categories:
+  - Cloud Engineering Labs
 draft: false
 ---
 
