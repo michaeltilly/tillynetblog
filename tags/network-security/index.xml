@@ -6,8 +6,17 @@
     <description>Recent content in Network Security on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 20 May 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Jun 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/tags/network-security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab</title>
+      <link>https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/</link>
+      <pubDate>Tue, 17 Jun 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/</guid>
+      <description>&lt;h1 id=&#34;implementing-enterprise-grade-8021x-eap-tls-authentication-in-my-home-lab&#34;&gt;Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab&lt;/h1&gt;
+&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I&amp;rsquo;ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Building a Proper PKI Chain of Trust in a Samba AD Lab</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</link>
