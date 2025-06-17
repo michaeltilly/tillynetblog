@@ -2,6 +2,75 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.tillynet.com/tags/aaa/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/active-directory/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/categories/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/chain-of-trust/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/cisco/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/dot1x/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/eap-tls/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/freeradius/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/gpo/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/internal-ca/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/ldaps/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/microsoft-active-directory/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/network-security/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/categories/on-premise-engineering-labs/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/on-premise-engineering-labs/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/pfsense/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/pki/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/radius/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/samba/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/samba4-ad/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/tags/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/</loc>
+    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://blog.tillynet.com/tags/automation/</loc>
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
@@ -12,9 +81,6 @@
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-4/building-a-secure-hybrid-cloud-infrastructure-with-aws-vpn-and-dns-integration/</loc>
-    <lastmod>2025-06-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/categories/</loc>
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/cloud/</loc>
@@ -50,22 +116,13 @@
     <loc>https://blog.tillynet.com/tags/on-premise/</loc>
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/pfsense/</loc>
-    <lastmod>2025-06-04T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/route/</loc>
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/samba4/</loc>
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-06-04T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/terraform/</loc>
-    <lastmod>2025-06-04T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/</loc>
     <lastmod>2025-06-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/vpc/</loc>
@@ -104,16 +161,10 @@
     <loc>https://blog.tillynet.com/cloud-engineering-labs/aws-lab-1/building-secure-aws-infrastructure-with-terraform---complete-lab-guide/</loc>
     <lastmod>2025-05-27T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/active-directory/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/authentik/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/on-premise-engineering-labs/building-a-proper-pki-chain-of-trust-in-a-samba-ad-lab/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/chain-of-trust/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/docker/</loc>
@@ -128,31 +179,10 @@
     <loc>https://blog.tillynet.com/tags/https/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/tags/internal-ca/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/ldaps/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/network-security/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/oidc/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.tillynet.com/categories/on-premise-engineering-labs/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/on-premise-engineering-labs/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/pki/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://blog.tillynet.com/tags/reverse-proxy/</loc>
-    <lastmod>2025-05-20T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/tags/samba/</loc>
     <lastmod>2025-05-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/traefik/</loc>
@@ -204,6 +234,9 @@
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/about/</loc>
+    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/categories/about/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/debian/</loc>

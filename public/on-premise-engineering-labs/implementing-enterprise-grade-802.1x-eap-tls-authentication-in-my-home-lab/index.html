@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab | Tilly Net</title>
+<meta name="keywords" content="dot1x, Microsoft Active Directory, Samba4 AD, Samba, Active Directory, Internal CA, Chain of Trust, PKI, LDAPS, FreeRADIUS, RADIUS, Network Security, GPO, EAP-TLS, Cisco, AAA, pfSense">
+<meta name="description" content="Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab
+Introduction
+Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I&rsquo;ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.tillynet.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.tillynet.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.tillynet.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.tillynet.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.tillynet.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/">
+  <meta property="og:site_name" content="Tilly Net">
+  <meta property="og:title" content="Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab">
+  <meta property="og:description" content="Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab Introduction Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I’ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="on-premise-engineering-labs">
+    <meta property="article:published_time" content="2025-06-17T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-06-17T00:00:00+00:00">
+    <meta property="article:tag" content="Dot1x">
+    <meta property="article:tag" content="Microsoft Active Directory">
+    <meta property="article:tag" content="Samba4 AD">
+    <meta property="article:tag" content="Samba">
+    <meta property="article:tag" content="Active Directory">
+    <meta property="article:tag" content="Internal CA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab">
+<meta name="twitter:description" content="Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab
+Introduction
+Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I&rsquo;ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "On-Premise-Engineering-Labs",
+      "item": "https://blog.tillynet.com/on-premise-engineering-labs/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab",
+      "item": "https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab",
+  "name": "Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab",
+  "description": "Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab Introduction Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I\u0026rsquo;ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.\n",
+  "keywords": [
+    "dot1x", "Microsoft Active Directory", "Samba4 AD", "Samba", "Active Directory", "Internal CA", "Chain of Trust", "PKI", "LDAPS", "FreeRADIUS", "RADIUS", "Network Security", "GPO", "EAP-TLS", "Cisco", "AAA", "pfSense"
+  ],
+  "articleBody": "Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab Introduction Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I’ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.\nThis implementation goes beyond simple password-based authentication by leveraging X.509 certificates for device authentication, providing the same level of security found in enterprise environments while serving as an excellent learning platform for understanding enterprise network security architectures.\nArchitecture Overview My home lab environment consists of several key components that work together to provide enterprise-grade network access control:\nNetwork Infrastructure:\nManagement VLAN: 172.16.99.0/24 Domain: tillynet.lan Samba4 Active Directory Domain Controller: 172.30.30.30 pfSense Firewall with FreeRADIUS: 172.16.99.1 Cisco Catalyst 2960 Switch serving as the Network Access Server (NAS) Windows 10/11 domain-joined workstation: TILLYPC Security Infrastructure:\nTwo-tier PKI with offline Root CA Samba4-hosted Intermediate Certificate Authority EAP-TLS authentication protocol Certificate-based device authentication The architecture follows enterprise best practices by separating the authentication server (FreeRADIUS), directory services (Samba4 AD), and network enforcement (Cisco switch) into distinct components that communicate via standardized protocols.\nCertificate Infrastructure Design The foundation of any EAP-TLS implementation is a robust Public Key Infrastructure. I designed a two-tier PKI that mirrors enterprise deployments:\nRoot Certificate Authority The Root CA operates offline for maximum security, issuing only intermediate certificates. This design ensures that the root private key remains protected while allowing operational flexibility through the intermediate CA.\nIntermediate Certificate Authority I integrated the Intermediate CA directly into my Samba4 Active Directory environment. This approach provides several advantages:\nCentralized certificate management Integration with AD security groups Simplified certificate lifecycle management Realistic enterprise-like setup Server Certificate Generation For the FreeRADIUS server certificate, I developed a shell script that automates the certificate generation process while ensuring proper extensions and Subject Alternative Names (SANs):\n#!/bin/bash SERVICE_FQDN=$1 BASE_DIR=\"/usr/local/samba/private/tls\" KEY_SIZE=2048 DAYS_VALID=825 INTERMEDIATE_KEY=\"${BASE_DIR}/intermediate.key\" INTERMEDIATE_CRT=\"${BASE_DIR}/intermediate.crt\" CA_CHAIN=\"${BASE_DIR}/ca-chain.crt\" if [[ -z \"$SERVICE_FQDN\" ]]; then echo \"Usage: $0 \" exit 1 fi OUTPUT_DIR=\"${BASE_DIR}/${SERVICE_FQDN}\" mkdir -p \"${OUTPUT_DIR}\" # Generate private key and certificate signing request openssl req -new -newkey rsa:${KEY_SIZE} -nodes \\ -keyout \"${OUTPUT_DIR}/${SERVICE_FQDN}.key\" \\ -out \"${OUTPUT_DIR}/${SERVICE_FQDN}.csr\" \\ -subj \"/CN=${SERVICE_FQDN}\" \\ -addext \"subjectAltName = DNS:${SERVICE_FQDN}\" # Create certificate extensions EXT_FILE=\"${OUTPUT_DIR}/v3_ext.cnf\" cat \u003e \"${EXT_FILE}\" \u003c",
+  "wordCount" : "2804",
+  "inLanguage": "en",
+  "datePublished": "2025-06-17T00:00:00Z",
+  "dateModified": "2025-06-17T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Tilly Net",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.tillynet.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.tillynet.com/" accesskey="h" title="Tilly Net (Alt + H)">Tilly Net</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.tillynet.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/on-premise-engineering-labs/" title="On-Premise Engineering Labs">
+                    <span>On-Premise Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/cloud-engineering-labs" title="Cloud Engineering Labs">
+                    <span>Cloud Engineering Labs</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.tillynet.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab
+    </h1>
+    <div class="post-meta"><span title='2025-06-17 00:00:00 +0000 UTC'>June 17, 2025</span>&nbsp;·&nbsp;14 min
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="implementing-enterprise-grade-8021x-eap-tls-authentication-in-my-home-lab">Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab<a hidden class="anchor" aria-hidden="true" href="#implementing-enterprise-grade-8021x-eap-tls-authentication-in-my-home-lab">#</a></h1>
+<h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>Network Access Control (NAC) has become a cornerstone of enterprise security, ensuring that only authorized devices can connect to corporate networks. While technologies like 802.1X are commonplace in enterprise environments, implementing them in a home lab presents unique challenges and learning opportunities. In this article, I&rsquo;ll walk through my complete implementation of 802.1X EAP-TLS authentication using FreeRADIUS, Samba4 Active Directory, and Cisco Catalyst switches.</p>
+<p>This implementation goes beyond simple password-based authentication by leveraging X.509 certificates for device authentication, providing the same level of security found in enterprise environments while serving as an excellent learning platform for understanding enterprise network security architectures.</p>
+<h2 id="architecture-overview">Architecture Overview<a hidden class="anchor" aria-hidden="true" href="#architecture-overview">#</a></h2>
+<p>My home lab environment consists of several key components that work together to provide enterprise-grade network access control:</p>
+<p><strong>Network Infrastructure:</strong></p>
+<ul>
+<li>Management VLAN: <code>172.16.99.0/24</code></li>
+<li>Domain: <code>tillynet.lan</code></li>
+<li>Samba4 Active Directory Domain Controller: <code>172.30.30.30</code></li>
+<li>pfSense Firewall with FreeRADIUS: <code>172.16.99.1</code></li>
+<li>Cisco Catalyst 2960 Switch serving as the Network Access Server (NAS)</li>
+<li>Windows 10/11 domain-joined workstation: <code>TILLYPC</code></li>
+</ul>
+<p><strong>Security Infrastructure:</strong></p>
+<ul>
+<li>Two-tier PKI with offline Root CA</li>
+<li>Samba4-hosted Intermediate Certificate Authority</li>
+<li>EAP-TLS authentication protocol</li>
+<li>Certificate-based device authentication</li>
+</ul>
+<p>The architecture follows enterprise best practices by separating the authentication server (FreeRADIUS), directory services (Samba4 AD), and network enforcement (Cisco switch) into distinct components that communicate via standardized protocols.</p>
+<h2 id="certificate-infrastructure-design">Certificate Infrastructure Design<a hidden class="anchor" aria-hidden="true" href="#certificate-infrastructure-design">#</a></h2>
+<p>The foundation of any EAP-TLS implementation is a robust Public Key Infrastructure. I designed a two-tier PKI that mirrors enterprise deployments:</p>
+<h3 id="root-certificate-authority">Root Certificate Authority<a hidden class="anchor" aria-hidden="true" href="#root-certificate-authority">#</a></h3>
+<p>The Root CA operates offline for maximum security, issuing only intermediate certificates. This design ensures that the root private key remains protected while allowing operational flexibility through the intermediate CA.</p>
+<h3 id="intermediate-certificate-authority">Intermediate Certificate Authority<a hidden class="anchor" aria-hidden="true" href="#intermediate-certificate-authority">#</a></h3>
+<p>I integrated the Intermediate CA directly into my Samba4 Active Directory environment. This approach provides several advantages:</p>
+<ul>
+<li>Centralized certificate management</li>
+<li>Integration with AD security groups</li>
+<li>Simplified certificate lifecycle management</li>
+<li>Realistic enterprise-like setup</li>
+</ul>
+<h3 id="server-certificate-generation">Server Certificate Generation<a hidden class="anchor" aria-hidden="true" href="#server-certificate-generation">#</a></h3>
+<p>For the FreeRADIUS server certificate, I developed a shell script that automates the certificate generation process while ensuring proper extensions and Subject Alternative Names (SANs):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">SERVICE_FQDN</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">BASE_DIR</span><span class="o">=</span><span class="s2">&#34;/usr/local/samba/private/tls&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KEY_SIZE</span><span class="o">=</span><span class="m">2048</span>
+</span></span><span class="line"><span class="cl"><span class="nv">DAYS_VALID</span><span class="o">=</span><span class="m">825</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">INTERMEDIATE_KEY</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span><span class="s2">/intermediate.key&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">INTERMEDIATE_CRT</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span><span class="s2">/intermediate.crt&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CA_CHAIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span><span class="s2">/ca-chain.crt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$SERVICE_FQDN</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;Usage: </span><span class="nv">$0</span><span class="s2"> &lt;service.fqdn&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">OUTPUT_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">mkdir -p <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate private key and certificate signing request</span>
+</span></span><span class="line"><span class="cl">openssl req -new -newkey rsa:<span class="si">${</span><span class="nv">KEY_SIZE</span><span class="si">}</span> -nodes <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -keyout <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">.key&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -out <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">.csr&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -subj <span class="s2">&#34;/CN=</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -addext <span class="s2">&#34;subjectAltName = DNS:</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Create certificate extensions</span>
+</span></span><span class="line"><span class="cl"><span class="nv">EXT_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/v3_ext.cnf&#34;</span>
+</span></span><span class="line"><span class="cl">cat &gt; <span class="s2">&#34;</span><span class="si">${</span><span class="nv">EXT_FILE</span><span class="si">}</span><span class="s2">&#34;</span> <span class="s">&lt;&lt;EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">[ v3_req ]
+</span></span></span><span class="line"><span class="cl"><span class="s">basicConstraints = CA:FALSE
+</span></span></span><span class="line"><span class="cl"><span class="s">keyUsage = digitalSignature, keyEncipherment
+</span></span></span><span class="line"><span class="cl"><span class="s">extendedKeyUsage = serverAuth
+</span></span></span><span class="line"><span class="cl"><span class="s">subjectAltName = @alt_names
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[ alt_names ]
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS.1 = ${SERVICE_FQDN}
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Sign certificate with intermediate CA</span>
+</span></span><span class="line"><span class="cl">openssl x509 -req <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">.csr&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -CA <span class="s2">&#34;</span><span class="si">${</span><span class="nv">INTERMEDIATE_CRT</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -CAkey <span class="s2">&#34;</span><span class="si">${</span><span class="nv">INTERMEDIATE_KEY</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -CAcreateserial <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -out <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">.crt&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -days <span class="si">${</span><span class="nv">DAYS_VALID</span><span class="si">}</span> -sha256 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -extfile <span class="s2">&#34;</span><span class="si">${</span><span class="nv">EXT_FILE</span><span class="si">}</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -extensions v3_req
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Build complete certificate chain</span>
+</span></span><span class="line"><span class="cl">cat <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">.crt&#34;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">CA_CHAIN</span><span class="si">}</span><span class="s2">&#34;</span> &gt; <span class="s2">&#34;</span><span class="si">${</span><span class="nv">OUTPUT_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">SERVICE_FQDN</span><span class="si">}</span><span class="s2">-fullchain.crt&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rm -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">EXT_FILE</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span></code></pre></div><p>This script ensures that the server certificate includes the proper Extended Key Usage (EKU) for server authentication and maintains the complete certificate chain required for client validation.</p>
+<h3 id="client-certificate-generation">Client Certificate Generation<a hidden class="anchor" aria-hidden="true" href="#client-certificate-generation">#</a></h3>
+<p>Client certificates require different extensions, specifically the Client Authentication EKU. I created a separate script for generating client certificates:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">FQDN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CERT_DIR</span><span class="o">=</span><span class="s2">&#34;/usr/local/samba/private/tls/</span><span class="nv">$FQDN</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">mkdir -p <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate client certificate with appropriate extensions</span>
+</span></span><span class="line"><span class="cl">openssl req -new -nodes -newkey rsa:2048 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -keyout <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.key&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -out <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.csr&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -subj <span class="s2">&#34;/CN=</span><span class="nv">$FQDN</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -config &lt;<span class="o">(</span>cat <span class="s">&lt;&lt;EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">[ req ]
+</span></span></span><span class="line"><span class="cl"><span class="s">default_bits       = 2048
+</span></span></span><span class="line"><span class="cl"><span class="s">prompt             = no
+</span></span></span><span class="line"><span class="cl"><span class="s">default_md         = sha256
+</span></span></span><span class="line"><span class="cl"><span class="s">req_extensions     = v3_req
+</span></span></span><span class="line"><span class="cl"><span class="s">distinguished_name = dn
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[ dn ]
+</span></span></span><span class="line"><span class="cl"><span class="s">CN = $FQDN
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[ v3_req ]
+</span></span></span><span class="line"><span class="cl"><span class="s">basicConstraints = CA:FALSE
+</span></span></span><span class="line"><span class="cl"><span class="s">keyUsage = digitalSignature, keyEncipherment
+</span></span></span><span class="line"><span class="cl"><span class="s">extendedKeyUsage = clientAuth
+</span></span></span><span class="line"><span class="cl"><span class="s">subjectAltName = @alt_names
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[ alt_names ]
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS.1 = $FQDN
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Sign with intermediate CA</span>
+</span></span><span class="line"><span class="cl">openssl x509 -req <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -in <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.csr&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -CA /usr/local/samba/private/tls/intermediate.crt <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -CAkey /usr/local/samba/private/tls/intermediate.key <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -CAcreateserial <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -out <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.crt&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -days <span class="m">825</span> -sha256 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -extfile &lt;<span class="o">(</span>cat <span class="s">&lt;&lt;EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">[ v3_req ]
+</span></span></span><span class="line"><span class="cl"><span class="s">basicConstraints = CA:FALSE
+</span></span></span><span class="line"><span class="cl"><span class="s">keyUsage = digitalSignature, keyEncipherment
+</span></span></span><span class="line"><span class="cl"><span class="s">extendedKeyUsage = clientAuth
+</span></span></span><span class="line"><span class="cl"><span class="s">subjectAltName = @alt_names
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">[ alt_names ]
+</span></span></span><span class="line"><span class="cl"><span class="s">DNS.1 = $FQDN
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.crt&#34;</span> /usr/local/samba/private/tls/ca-chain.crt &gt; <span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">-fullchain.crt&#34;</span>
+</span></span></code></pre></div><h3 id="pkcs12-export-for-windows">PKCS#12 Export for Windows<a hidden class="anchor" aria-hidden="true" href="#pkcs12-export-for-windows">#</a></h3>
+<p>Windows workstations require certificates in PKCS#12 format. I automated this conversion process:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nv">FQDN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PFX_PASSWORD</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">2</span><span class="k">:-</span><span class="s2">&#34;&#34;</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CERT_BASE_DIR</span><span class="o">=</span><span class="s2">&#34;/usr/local/samba/private/tls&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CERT_DIR</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CERT_BASE_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">KEY_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.key&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CERT_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.crt&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CHAIN_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CERT_BASE_DIR</span><span class="s2">/ca-chain.crt&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">PFX_OUTPUT</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$CERT_DIR</span><span class="s2">/</span><span class="nv">$FQDN</span><span class="s2">.pfx&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Validate all required files exist</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> file in <span class="s2">&#34;</span><span class="nv">$KEY_FILE</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$CERT_FILE</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$CHAIN_FILE</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[[</span> ! -f <span class="s2">&#34;</span><span class="nv">$file</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Error: Required file not found: </span><span class="nv">$file</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Generate PKCS#12 bundle</span>
+</span></span><span class="line"><span class="cl">openssl pkcs12 -export <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -inkey <span class="s2">&#34;</span><span class="nv">$KEY_FILE</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -in <span class="s2">&#34;</span><span class="nv">$CERT_FILE</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -certfile <span class="s2">&#34;</span><span class="nv">$CHAIN_FILE</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -out <span class="s2">&#34;</span><span class="nv">$PFX_OUTPUT</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -passout pass:<span class="s2">&#34;</span><span class="nv">$PFX_PASSWORD</span><span class="s2">&#34;</span>
+</span></span></code></pre></div><p>This approach ensures that Windows clients receive certificates with the complete certificate chain, enabling proper validation against the root CA.</p>
+<h2 id="freeradius-configuration-deep-dive">FreeRADIUS Configuration Deep Dive<a hidden class="anchor" aria-hidden="true" href="#freeradius-configuration-deep-dive">#</a></h2>
+<p>Configuring FreeRADIUS for EAP-TLS with Active Directory integration required careful attention to several components. The pfSense FreeRADIUS package provides a web interface, but understanding the underlying configuration is crucial for troubleshooting.</p>
+<h3 id="radius-client-configuration">RADIUS Client Configuration<a hidden class="anchor" aria-hidden="true" href="#radius-client-configuration">#</a></h3>
+<p>I configured the Cisco switch as a RADIUS client (NAS) with these parameters:</p>
+<ul>
+<li><strong>Client Name</strong>: TL-ASW1-2960C</li>
+<li><strong>Client IP Address</strong>: The management IP of the switch</li>
+<li><strong>Shared Secret</strong>: A complex pre-shared key matching the switch&rsquo;s AAA configuration</li>
+<li><strong>NAS Type</strong>: Cisco</li>
+</ul>
+<p>The shared secret must be identical on both the switch and FreeRADIUS server. I used a 32-character randomly generated string to ensure security.</p>
+<h3 id="ldap-integration-challenges-and-solutions">LDAP Integration Challenges and Solutions<a hidden class="anchor" aria-hidden="true" href="#ldap-integration-challenges-and-solutions">#</a></h3>
+<p>The most complex aspect of this implementation was configuring FreeRADIUS to authenticate Windows computer accounts against Active Directory. This presented several challenges that required deep understanding of both LDAP and Windows authentication mechanisms.</p>
+<p><strong>Initial LDAP Configuration Attempts:</strong></p>
+<p>My first attempt used user-focused LDAP settings:</p>
+<ul>
+<li>Base DN: <code>DC=tillynet,DC=lan</code></li>
+<li>Filter: <code>(sAMAccountName=%{Stripped-User-Name:-%{User-Name}})</code></li>
+<li>Base Filter: <code>(objectClass=person)</code></li>
+</ul>
+<p>This configuration failed because Windows computer authentication works differently from user authentication. Computer accounts authenticate using the format <code>host/computername.domain</code>, and they are stored in the <code>CN=Computers</code> container by default.</p>
+<p><strong>Corrected LDAP Configuration:</strong></p>
+<p>After extensive troubleshooting, I implemented these settings:</p>
+<ul>
+<li><strong>Base DN</strong>: <code>CN=Computers,DC=tillynet,DC=lan</code></li>
+<li><strong>Filter</strong>: <code>(&amp;(objectClass=computer)(|(sAMAccountName=%{mschap:User-Name}$)(servicePrincipalName=%{User-Name})))</code></li>
+<li><strong>Base Filter</strong>: <code>(objectClass=computer)</code></li>
+<li><strong>LDAP Authentication</strong>: Enabled</li>
+<li><strong>LDAP Authorization</strong>: Enabled (critical for proper operation)</li>
+</ul>
+<p>The filter deserves special explanation:</p>
+<ul>
+<li><code>objectClass=computer</code> ensures we only match computer accounts</li>
+<li><code>sAMAccountName=%{mschap:User-Name}$</code> handles the computer account name with the required dollar sign suffix</li>
+<li><code>servicePrincipalName=%{User-Name}</code> handles the <code>host/computername.domain</code> format used during authentication</li>
+</ul>
+<h3 id="eap-tls-configuration">EAP-TLS Configuration<a hidden class="anchor" aria-hidden="true" href="#eap-tls-configuration">#</a></h3>
+<p>The EAP configuration required specific settings for proper TLS tunnel operation:</p>
+<p><strong>Critical EAP Settings:</strong></p>
+<ul>
+<li><strong>Default EAP Type</strong>: TLS</li>
+<li><strong>TLS Configuration</strong>:
+<ul>
+<li>Server Certificate: <code>radius.tillynet.lan</code></li>
+<li>Private Key: Corresponding private key</li>
+<li>Certificate Chain: Complete CA chain</li>
+</ul>
+</li>
+<li><strong>PEAP Configuration</strong>:
+<ul>
+<li>Default EAP Type: MSCHAPV2 (for inner tunnel, though not used in pure EAP-TLS)</li>
+<li>Copy Request to Tunnel: <strong>Yes</strong></li>
+<li>Use Tunneled Reply: <strong>Yes</strong></li>
+</ul>
+</li>
+</ul>
+<p>The &ldquo;Copy Request to Tunnel&rdquo; and &ldquo;Use Tunneled Reply&rdquo; settings are crucial for passing authentication attributes between the outer and inner authentication contexts.</p>
+<h3 id="interface-binding">Interface Binding<a hidden class="anchor" aria-hidden="true" href="#interface-binding">#</a></h3>
+<p>I configured FreeRADIUS to bind specifically to the management interface (<code>172.16.99.1</code>) rather than all interfaces. This approach provides better security and clearer troubleshooting by ensuring RADIUS traffic flows through the intended interface.</p>
+<h2 id="group-policy-configuration-for-8021x">Group Policy Configuration for 802.1X<a hidden class="anchor" aria-hidden="true" href="#group-policy-configuration-for-8021x">#</a></h2>
+<p>Deploying 802.1X authentication to Windows workstations requires careful Group Policy configuration. I created a comprehensive GPO that handles both certificate deployment and network authentication settings.</p>
+<h3 id="certificate-deployment-strategy">Certificate Deployment Strategy<a hidden class="anchor" aria-hidden="true" href="#certificate-deployment-strategy">#</a></h3>
+<p>While I could have used automatic certificate enrollment, I chose manual certificate deployment for this lab to better understand the process. In production environments, I would recommend:</p>
+<ol>
+<li>Certificate Templates configured for auto-enrollment</li>
+<li>Group Policy-based certificate deployment</li>
+<li>Certificate lifecycle management through AD Certificate Services</li>
+</ol>
+<h3 id="wired-network-policy-configuration">Wired Network Policy Configuration<a hidden class="anchor" aria-hidden="true" href="#wired-network-policy-configuration">#</a></h3>
+<p>I created a new GPO with the following configuration path: <strong>Computer Configuration → Policies → Windows Settings → Security Settings → Wired Network (IEEE 802.3) Policies</strong></p>
+<p><strong>Policy Settings:</strong></p>
+<ul>
+<li><strong>Policy Name</strong>: &ldquo;Enterprise 802.1X EAP-TLS Authentication&rdquo;</li>
+<li><strong>Use Windows Wired Auto Config</strong>: Enabled</li>
+<li><strong>Network Authentication Method</strong>: Smart Card or other Certificate (EAP-TLS)</li>
+<li><strong>Authentication Mode</strong>: Computer authentication</li>
+<li><strong>Validate server certificate</strong>: Enabled</li>
+<li><strong>Connect to these servers</strong>: <code>radius.tillynet.lan</code></li>
+<li><strong>Trusted Root Certification Authorities</strong>: My root CA</li>
+<li><strong>Use simple certificate selection</strong>: Enabled</li>
+</ul>
+<h3 id="gpo-deployment-and-verification">GPO Deployment and Verification<a hidden class="anchor" aria-hidden="true" href="#gpo-deployment-and-verification">#</a></h3>
+<p>I linked the GPO to the Workstations OU where my test computer resides. To verify proper application, I used:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmd" data-lang="cmd"><span class="line"><span class="cl">gpresult /r /scope computer
+</span></span><span class="line"><span class="cl">gpupdate /force
+</span></span></code></pre></div><p>The <code>gpresult</code> command confirmed that the wired network policy was being applied correctly to the computer.</p>
+<h2 id="cisco-catalyst-2960-configuration">Cisco Catalyst 2960 Configuration<a hidden class="anchor" aria-hidden="true" href="#cisco-catalyst-2960-configuration">#</a></h2>
+<p>The network switch serves as the 802.1X authenticator, enforcing authentication before allowing network access. My configuration implements industry-standard practices for enterprise environments.</p>
+<h3 id="global-aaa-configuration">Global AAA Configuration<a hidden class="anchor" aria-hidden="true" href="#global-aaa-configuration">#</a></h3>
+<pre tabindex="0"><code class="language-cisco" data-lang="cisco"># Enable new AAA model
+aaa new-model
+
+# Configure RADIUS server
+radius-server host 172.16.99.1 auth-port 1812 acct-port 1813 key YourSharedSecret
+radius-server timeout 10
+radius-server retransmit 3
+
+# Configure 802.1X authentication
+aaa authentication dot1x default group radius
+</code></pre><p>The timeout and retransmit values balance responsiveness with reliability. A 10-second timeout allows for network latency while preventing excessive delays during authentication failures.</p>
+<h3 id="8021x-global-configuration">802.1X Global Configuration<a hidden class="anchor" aria-hidden="true" href="#8021x-global-configuration">#</a></h3>
+<pre tabindex="0"><code class="language-cisco" data-lang="cisco"># Enable 802.1X system-wide
+dot1x system-auth-control
+</code></pre><p>This command enables 802.1X globally on the switch. Individual ports must still be configured for 802.1X authentication.</p>
+<h3 id="port-level-configuration">Port-Level Configuration<a hidden class="anchor" aria-hidden="true" href="#port-level-configuration">#</a></h3>
+<p>I configured a test port (FastEthernet0/2) for 802.1X authentication:</p>
+<pre tabindex="0"><code class="language-cisco" data-lang="cisco">interface FastEthernet0/2
+ switchport mode access
+ authentication port-control auto
+ dot1x pae authenticator
+ spanning-tree portfast
+</code></pre><p><strong>Configuration Explanation:</strong></p>
+<ul>
+<li><code>switchport mode access</code>: Configures the port as an access port</li>
+<li><code>authentication port-control auto</code>: Enables 802.1X authentication (port blocked until successful authentication)</li>
+<li><code>dot1x pae authenticator</code>: Sets the port as an 802.1X authenticator</li>
+<li><code>spanning-tree portfast</code>: Reduces convergence time for end-device connections</li>
+</ul>
+<h2 id="comprehensive-troubleshooting-journey">Comprehensive Troubleshooting Journey<a hidden class="anchor" aria-hidden="true" href="#comprehensive-troubleshooting-journey">#</a></h2>
+<p>The implementation process involved extensive troubleshooting that provided valuable insights into 802.1X authentication mechanisms. I&rsquo;ll detail the major issues encountered and their resolutions.</p>
+<h3 id="issue-1-radius-port-configuration-mismatch">Issue 1: RADIUS Port Configuration Mismatch<a hidden class="anchor" aria-hidden="true" href="#issue-1-radius-port-configuration-mismatch">#</a></h3>
+<p><strong>Symptoms:</strong> Initial authentication attempts showed no communication between the switch and FreeRADIUS server.</p>
+<p><strong>Investigation Process:</strong> I enabled debugging on the Cisco switch:</p>
+<pre tabindex="0"><code class="language-cisco" data-lang="cisco">terminal monitor
+debug radius
+debug dot1x all
+</code></pre><p>The debug output revealed:</p>
+<pre tabindex="0"><code>*Feb 10 23:25:41.810: RADIUS(00000000): Send Access-Request to 172.16.99.1:1645
+</code></pre><p><strong>Root Cause:</strong> The switch was using legacy RADIUS ports (1645/1646) instead of the standard ports (1812/1813).</p>
+<p><strong>Resolution:</strong> I updated the switch configuration to explicitly specify the correct ports:</p>
+<pre tabindex="0"><code class="language-cisco" data-lang="cisco">radius-server host 172.16.99.1 auth-port 1812 acct-port 1813 key YourSharedSecret
+</code></pre><p><strong>Verification:</strong> After the configuration change, the debug output showed:</p>
+<pre tabindex="0"><code>*Feb 10 23:39:15.446: RADIUS: Received from id 1645/36 172.16.99.1:1812, Access-Reject, len 44
+</code></pre><p>This confirmed that RADIUS communication was working, though authentication was still failing.</p>
+<h3 id="issue-2-freeradius-ldap-filter-configuration">Issue 2: FreeRADIUS LDAP Filter Configuration<a hidden class="anchor" aria-hidden="true" href="#issue-2-freeradius-ldap-filter-configuration">#</a></h3>
+<p><strong>Symptoms:</strong> RADIUS packets were reaching the server, but authentication consistently failed with &ldquo;Access-Reject&rdquo; responses.</p>
+<p><strong>Investigation Process:</strong> I examined the FreeRADIUS logs at <code>/var/log/radius.log</code> and found:</p>
+<pre tabindex="0"><code>[ldap] ERROR: Unable to create filter
+[ldap] ERROR: Failed to create LDAP filter
+</code></pre><p><strong>Root Cause Analysis:</strong> The LDAP filter was configured for user authentication rather than computer authentication. Windows computer accounts have distinct characteristics:</p>
+<ol>
+<li>They authenticate using the <code>host/computername.domain</code> format</li>
+<li>Computer accounts are stored in <code>CN=Computers</code> by default</li>
+<li>Computer account sAMAccountName includes a trailing dollar sign</li>
+</ol>
+<p><strong>Resolution:</strong> I reconfigured the LDAP settings:</p>
+<ul>
+<li><strong>Base DN</strong>: Changed from <code>DC=tillynet,DC=lan</code> to <code>CN=Computers,DC=tillynet,DC=lan</code></li>
+<li><strong>Filter</strong>: Updated to <code>(&amp;(objectClass=computer)(|(sAMAccountName=%{mschap:User-Name}$)(servicePrincipalName=%{User-Name})))</code></li>
+<li><strong>Base Filter</strong>: Changed from <code>(objectClass=person)</code> to <code>(objectClass=computer)</code></li>
+</ul>
+<p><strong>Additional Configuration:</strong> I also enabled LDAP Authorization, which is required for FreeRADIUS to properly process LDAP responses and make authorization decisions.</p>
+<h3 id="issue-3-eap-tls-tunnel-configuration">Issue 3: EAP-TLS Tunnel Configuration<a hidden class="anchor" aria-hidden="true" href="#issue-3-eap-tls-tunnel-configuration">#</a></h3>
+<p><strong>Symptoms:</strong> Even after resolving the LDAP issues, authentication was intermittently failing with TLS-related errors.</p>
+<p><strong>Investigation Process:</strong> Using <code>radiusd -X</code> in debug mode, I observed that the EAP-TLS handshake was completing, but the inner authentication was failing.</p>
+<p><strong>Root Cause:</strong> The EAP tunnel configuration was not properly copying authentication attributes between the outer and inner authentication contexts.</p>
+<p><strong>Resolution:</strong> I updated the EAP-PEAP configuration:</p>
+<ul>
+<li><strong>Copy Request to Tunnel</strong>: Changed from &ldquo;No&rdquo; to &ldquo;Yes&rdquo;</li>
+<li><strong>Use Tunneled Reply</strong>: Changed from &ldquo;No&rdquo; to &ldquo;Yes&rdquo;</li>
+</ul>
+<p>These settings ensure that authentication attributes are properly passed through the TLS tunnel, allowing the inner authentication mechanism to access the necessary user/computer information.</p>
+<h3 id="issue-4-certificate-validation-problems">Issue 4: Certificate Validation Problems<a hidden class="anchor" aria-hidden="true" href="#issue-4-certificate-validation-problems">#</a></h3>
+<p><strong>Symptoms:</strong> Some authentication attempts failed with certificate validation errors on the client side.</p>
+<p><strong>Investigation Process:</strong> I used Windows Event Viewer to examine the System log and found certificate chain validation errors.</p>
+<p><strong>Root Cause:</strong> The Windows client was not properly validating the FreeRADIUS server certificate because:</p>
+<ol>
+<li>The certificate chain was incomplete</li>
+<li>The server certificate&rsquo;s Common Name didn&rsquo;t match the configured server name</li>
+</ol>
+<p><strong>Resolution:</strong></p>
+<ol>
+<li><strong>Complete Certificate Chain</strong>: I ensured that the FreeRADIUS server was configured with the complete certificate chain (server cert + intermediate CA + root CA)</li>
+<li><strong>Certificate Subject Verification</strong>: I verified that the server certificate&rsquo;s CN matched the FQDN configured in the client&rsquo;s 802.1X profile</li>
+<li><strong>Root CA Installation</strong>: I confirmed that the root CA certificate was properly installed in the Windows client&rsquo;s Trusted Root Certification Authorities store</li>
+</ol>
+<h3 id="issue-5-network-timeout-and-performance-optimization">Issue 5: Network Timeout and Performance Optimization<a hidden class="anchor" aria-hidden="true" href="#issue-5-network-timeout-and-performance-optimization">#</a></h3>
+<p><strong>Symptoms:</strong> Authentication was working but taking an excessive amount of time, sometimes causing timeouts.</p>
+<p><strong>Investigation Process:</strong> I analyzed the authentication flow timing and identified several bottlenecks:</p>
+<ol>
+<li>LDAP query timeouts</li>
+<li>Certificate validation delays</li>
+<li>Network latency between components</li>
+</ol>
+<p><strong>Resolution:</strong> I optimized several timeout values:</p>
+<ul>
+<li><strong>RADIUS Server Timeout</strong>: Adjusted to 10 seconds on the switch</li>
+<li><strong>LDAP Connection Pooling</strong>: Enabled persistent LDAP connections</li>
+<li><strong>Certificate Caching</strong>: Configured client-side certificate caching</li>
+</ul>
+<h2 id="advanced-troubleshooting-techniques">Advanced Troubleshooting Techniques<a hidden class="anchor" aria-hidden="true" href="#advanced-troubleshooting-techniques">#</a></h2>
+<p>Throughout this implementation, I developed several troubleshooting methodologies that proved invaluable:</p>
+<h3 id="packet-capture-analysis">Packet Capture Analysis<a hidden class="anchor" aria-hidden="true" href="#packet-capture-analysis">#</a></h3>
+<p>I used tcpdump on the pfSense firewall to capture and analyze RADIUS traffic:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tcpdump -i em0 -s0 -w radius_capture.pcap udp port <span class="m">1812</span>
+</span></span></code></pre></div><p>This approach allowed me to verify that RADIUS packets were reaching the server and to analyze the timing of authentication flows.</p>
+<h3 id="ldap-testing">LDAP Testing<a hidden class="anchor" aria-hidden="true" href="#ldap-testing">#</a></h3>
+<p>To validate LDAP connectivity and search filters, I used ldapsearch directly from the FreeRADIUS host:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ldapsearch -x -H ldaps://172.30.30.30:636 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -D <span class="s2">&#34;CN=ldapbind,CN=Users,DC=tillynet,DC=lan&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -W -b <span class="s2">&#34;CN=Computers,DC=tillynet,DC=lan&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="s2">&#34;(&amp;(objectClass=computer)(sAMAccountName=TILLYPC</span>$<span class="s2">))&#34;</span>
+</span></span></code></pre></div><p>This command helped verify that the LDAP filter was correctly matching computer accounts.</p>
+<h3 id="certificate-validation-testing">Certificate Validation Testing<a hidden class="anchor" aria-hidden="true" href="#certificate-validation-testing">#</a></h3>
+<p>I used OpenSSL to test certificate chain validation:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl verify -CAfile ca-chain.crt radius.tillynet.lan.crt
+</span></span></code></pre></div><p>This command confirmed that the certificate chain was properly constructed and that all certificates were valid.</p>
+<h3 id="windows-event-log-analysis">Windows Event Log Analysis<a hidden class="anchor" aria-hidden="true" href="#windows-event-log-analysis">#</a></h3>
+<p>On the Windows client, I monitored several event logs:</p>
+<ul>
+<li><strong>System Log</strong>: For 802.1X authentication events</li>
+<li><strong>Security Log</strong>: For authentication and authorization events</li>
+<li><strong>Applications and Services Logs → Microsoft → Windows → Wired-AutoConfig</strong>: For detailed 802.1X debugging</li>
+</ul>
+<h2 id="performance-optimization-and-best-practices">Performance Optimization and Best Practices<a hidden class="anchor" aria-hidden="true" href="#performance-optimization-and-best-practices">#</a></h2>
+<p>Based on my implementation experience, I identified several optimization opportunities:</p>
+<h3 id="connection-pooling">Connection Pooling<a hidden class="anchor" aria-hidden="true" href="#connection-pooling">#</a></h3>
+<p>I configured FreeRADIUS to maintain persistent connections to the LDAP server, reducing authentication latency and improving reliability.</p>
+<h3 id="certificate-caching">Certificate Caching<a hidden class="anchor" aria-hidden="true" href="#certificate-caching">#</a></h3>
+<p>I enabled certificate caching on both the server and client sides to reduce certificate validation overhead during subsequent authentications.</p>
+<h3 id="monitoring-and-alerting">Monitoring and Alerting<a hidden class="anchor" aria-hidden="true" href="#monitoring-and-alerting">#</a></h3>
+<p>I implemented monitoring for:</p>
+<ul>
+<li>RADIUS authentication success/failure rates</li>
+<li>LDAP server connectivity</li>
+<li>Certificate expiration dates</li>
+<li>Switch port authentication status</li>
+</ul>
+<h3 id="security-hardening">Security Hardening<a hidden class="anchor" aria-hidden="true" href="#security-hardening">#</a></h3>
+<p>I applied several security hardening measures:</p>
+<ul>
+<li>Restricted RADIUS communication to specific VLANs</li>
+<li>Implemented certificate revocation checking</li>
+<li>Configured detailed audit logging</li>
+<li>Applied the principle of least privilege to service accounts</li>
+</ul>
+<h2 id="lessons-learned-and-best-practices">Lessons Learned and Best Practices<a hidden class="anchor" aria-hidden="true" href="#lessons-learned-and-best-practices">#</a></h2>
+<p>This implementation provided several key insights that would be valuable for enterprise deployments:</p>
+<h3 id="certificate-management">Certificate Management<a hidden class="anchor" aria-hidden="true" href="#certificate-management">#</a></h3>
+<ol>
+<li><strong>Automate Certificate Lifecycle</strong>: In production environments, implement automated certificate enrollment and renewal</li>
+<li><strong>Certificate Templates</strong>: Use properly configured certificate templates that include the necessary EKUs and SANs</li>
+<li><strong>Certificate Monitoring</strong>: Implement proactive monitoring for certificate expiration</li>
+</ol>
+<h3 id="ldap-integration">LDAP Integration<a hidden class="anchor" aria-hidden="true" href="#ldap-integration">#</a></h3>
+<ol>
+<li><strong>Service Account Security</strong>: Use dedicated service accounts with minimal required permissions for LDAP binds</li>
+<li><strong>Connection Security</strong>: Always use LDAPS (LDAP over TLS) for authentication traffic</li>
+<li><strong>Search Optimization</strong>: Design LDAP searches to be as specific as possible to reduce directory server load</li>
+</ol>
+<h3 id="network-design">Network Design<a hidden class="anchor" aria-hidden="true" href="#network-design">#</a></h3>
+<ol>
+<li><strong>VLAN Segmentation</strong>: Implement proper VLAN segmentation to isolate authentication traffic</li>
+<li><strong>Redundancy</strong>: Deploy multiple RADIUS servers for high availability</li>
+<li><strong>Monitoring</strong>: Implement comprehensive monitoring of the authentication infrastructure</li>
+</ol>
+<h3 id="troubleshooting-methodology">Troubleshooting Methodology<a hidden class="anchor" aria-hidden="true" href="#troubleshooting-methodology">#</a></h3>
+<ol>
+<li><strong>Layered Approach</strong>: Troubleshoot authentication issues by examining each layer (network, RADIUS, LDAP, certificates)</li>
+<li><strong>Comprehensive Logging</strong>: Enable detailed logging at all layers during initial deployment</li>
+<li><strong>Test Automation</strong>: Develop automated tests to validate authentication functionality</li>
+</ol>
+<h2 id="future-enhancements">Future Enhancements<a hidden class="anchor" aria-hidden="true" href="#future-enhancements">#</a></h2>
+<p>This implementation serves as a foundation for several potential enhancements:</p>
+<h3 id="dynamic-vlan-assignment">Dynamic VLAN Assignment<a hidden class="anchor" aria-hidden="true" href="#dynamic-vlan-assignment">#</a></h3>
+<p>I plan to implement dynamic VLAN assignment based on computer group membership, allowing for automatic network segmentation based on device classification.</p>
+<h3 id="certificate-lifecycle-management">Certificate Lifecycle Management<a hidden class="anchor" aria-hidden="true" href="#certificate-lifecycle-management">#</a></h3>
+<p>I&rsquo;m working on implementing automated certificate enrollment and renewal using AD Certificate Services templates and Group Policy.</p>
+<h3 id="monitoring-and-analytics">Monitoring and Analytics<a hidden class="anchor" aria-hidden="true" href="#monitoring-and-analytics">#</a></h3>
+<p>I&rsquo;m developing a comprehensive monitoring solution that will track authentication patterns, identify potential security issues, and provide detailed reporting on network access.</p>
+<h3 id="integration-with-network-access-control">Integration with Network Access Control<a hidden class="anchor" aria-hidden="true" href="#integration-with-network-access-control">#</a></h3>
+<p>I&rsquo;m exploring integration with additional NAC solutions to provide more granular access control based on device health, compliance status, and user context.</p>
+<h2 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h2>
+<p>Implementing 802.1X EAP-TLS authentication in my home lab provided invaluable hands-on experience with enterprise network security technologies. The process involved overcoming numerous technical challenges, from certificate infrastructure design to complex LDAP integration issues.</p>
+<p>The key takeaways from this implementation include:</p>
+<ol>
+<li>
+<p><strong>Certificate Infrastructure is Critical</strong>: A well-designed PKI is essential for EAP-TLS success. Proper certificate templates, chain validation, and lifecycle management are crucial.</p>
+</li>
+<li>
+<p><strong>LDAP Integration Complexity</strong>: Integrating FreeRADIUS with Active Directory for computer authentication requires deep understanding of Windows authentication mechanisms and LDAP schema.</p>
+</li>
+<li>
+<p><strong>Troubleshooting Methodology</strong>: Systematic troubleshooting using debug logs, packet captures, and component testing is essential for identifying and resolving authentication issues.</p>
+</li>
+<li>
+<p><strong>Security and Performance Balance</strong>: Implementing strong security while maintaining good performance requires careful optimization of timeouts, connection pooling, and caching mechanisms.</p>
+</li>
+</ol>
+<p>This implementation now serves as a robust foundation for exploring advanced network access control concepts and provides a realistic environment for testing enterprise security scenarios. The experience gained from building this system from the ground up has significantly enhanced my understanding of enterprise network security architecture and the complex interactions between its various components.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.tillynet.com/tags/dot1x/">Dot1x</a></li>
+      <li><a href="https://blog.tillynet.com/tags/microsoft-active-directory/">Microsoft Active Directory</a></li>
+      <li><a href="https://blog.tillynet.com/tags/samba4-ad/">Samba4 AD</a></li>
+      <li><a href="https://blog.tillynet.com/tags/samba/">Samba</a></li>
+      <li><a href="https://blog.tillynet.com/tags/active-directory/">Active Directory</a></li>
+      <li><a href="https://blog.tillynet.com/tags/internal-ca/">Internal CA</a></li>
+      <li><a href="https://blog.tillynet.com/tags/chain-of-trust/">Chain of Trust</a></li>
+      <li><a href="https://blog.tillynet.com/tags/pki/">PKI</a></li>
+      <li><a href="https://blog.tillynet.com/tags/ldaps/">LDAPS</a></li>
+      <li><a href="https://blog.tillynet.com/tags/freeradius/">FreeRADIUS</a></li>
+      <li><a href="https://blog.tillynet.com/tags/radius/">RADIUS</a></li>
+      <li><a href="https://blog.tillynet.com/tags/network-security/">Network Security</a></li>
+      <li><a href="https://blog.tillynet.com/tags/gpo/">GPO</a></li>
+      <li><a href="https://blog.tillynet.com/tags/eap-tls/">EAP-TLS</a></li>
+      <li><a href="https://blog.tillynet.com/tags/cisco/">Cisco</a></li>
+      <li><a href="https://blog.tillynet.com/tags/aaa/">AAA</a></li>
+      <li><a href="https://blog.tillynet.com/tags/pfsense/">PfSense</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://blog.tillynet.com/cloud-engineering-labs/aws-lab-4/building-a-secure-hybrid-cloud-infrastructure-with-aws-vpn-and-dns-integration/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Building a Secure Hybrid Cloud Infrastructure with AWS VPN and DNS Integration</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.tillynet.com/">Tilly Net</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
