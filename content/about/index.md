@@ -1,26 +1,20 @@
 ---
-title: "About"
-date: 2025-04-24
+title: About
+date: 2025-11-09
 type: page
 ---
 
 # About Me
 
-I'm the creator of **TillyNet**—a self-hosted, segmented lab environment that simulates enterprise-grade infrastructure. Built from the ground up using open-source tools and industry-standard practices, TillyNet includes VLAN-based network segmentation, centralized firewalling, containerized services, internal DNS, and automated deployment pipelines. This lab serves as both a learning environment and a proving ground for real-world IT architecture and network design.
+I’m the creator of **TillyNet**—an enterprise-grade, self-hosted lab environment designed to simulate real-world production networks. Built from scratch using open-source tooling, routed VLAN segmentation, containerized services, internal PKI, SSO, recursive DNS, and automated deployment pipelines, TillyNet continues to evolve as a full-stack testing platform for SDN, automation, and advanced networking.
 
-Professionally, I have a solid background in systems support, cybersecurity compliance, and enterprise operations. I currently support The Department of Defense networks with a focus on asset lifecycle management, automation, and secure IT service delivery. I hold active Cisco CCNA (200-301) and CompTIA Security+ certifications and am currently working toward the Cisco CCNP as I continue developing my technical depth in modern networking.
+Professionally, I support the **U.S. Department of Defense** as a Network Engineer focused on secure enclave operations, high-availability infrastructure, and enterprise-scale automation. I manage and maintain the U.S. Marine Corps’ classified and unclassified Base Area Networks (BAN/LAN) across SDA fabric sites—delivering mission-critical connectivity for thousands of users. My work spans routing architecture, encrypted transport, OSPF/BGP redistribution, real-time diagnostics, multi-VRF segmentation, and full-stack SDA operations using Cisco Catalyst Center.
 
-I bring hands-on experience with enterprise tools such as Active Directory, PowerShell, and Python, and have authored automation workflows and SOPs that improve IT processes in highly regulated environments. I also maintain an active DoD Tier 3 Secret Clearance, enabling me to operate confidently across both classified and unclassified enclaves.
+I hold the **Cisco Certified Network Professional – Enterprise (CCNP Enterprise)** certification, along with the **Cisco Certified Specialist – Enterprise Core (CCS-ECore)** and **Automating and Programming Cisco Enterprise Solutions (ENAUTO)** specialist certifications. These reflect my depth in enterprise networking, software-defined architectures, and network automation. I also maintain **Cisco CCNA** and **CompTIA Security+**, and I operate under a **DoD Tier 3 Secret Clearance**, enabling me to support both classified and unclassified domains confidently and securely.
 
-Although I’m not yet in a dedicated networking role, I’m actively building production-style experience in my lab—exploring modern routing and switching, infrastructure-as-code, and SDN concepts.
+I specialize in proactive network reliability—identifying, diagnosing, and resolving complex issues before they impact operations—and continuously improving the resilience and visibility of the infrastructure I support. Whether operating independently or in collaboration with Watch Officers, I maintain real-time situational awareness of routing behavior, authentication systems, device health, and enclave interoperability.
 
-I’m excited to apply my skills to environments that value security, reliability, and scalable infrastructure—and to continue growing into a high-performing network engineer.
-
----
-
-## Why I Built TillyNet
-
-I needed hands-on experience that extended beyond textbooks and certifications. TillyNet reflects my initiative to recreate enterprise-level infrastructure: isolated VLANs, containerized services, local recursive DNS, access controls, virtual firewalls, remote VPN connectivity, and full-stack service automation. It’s a platform for learning, testing, breaking, and rebuilding—exactly like production.
+Outside my DoD work, TillyNet serves as my platform to push boundaries: SDN, LISP/VXLAN, multi-VRF segmentation, PKI hierarchy engineering, reverse-proxy and identity integration, IaC workflows, Python API tooling, and distributed authentication systems. It’s where I experiment, break things, learn, and rebuild with precision.
 
 ---
 
