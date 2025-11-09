@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.tillynet.com/about/</loc>
+    <lastmod>2025-11-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://blog.tillynet.com/</loc>
+    <lastmod>2025-11-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://blog.tillynet.com/tags/aaa/</loc>
     <lastmod>2025-06-17T00:00:00+00:00</lastmod>
   </url><url>
@@ -66,9 +72,6 @@
     <lastmod>2025-06-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/</loc>
-    <lastmod>2025-06-17T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/</loc>
     <lastmod>2025-06-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/automation/</loc>
@@ -232,12 +235,6 @@
   </url><url>
     <loc>https://blog.tillynet.com/tags/windows-domain/</loc>
     <lastmod>2025-04-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/about/</loc>
-    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://blog.tillynet.com/categories/about/</loc>
-    <lastmod>2025-04-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://blog.tillynet.com/tags/debian/</loc>
     <lastmod>2025-04-24T00:00:00+00:00</lastmod>

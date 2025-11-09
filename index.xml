@@ -6,8 +6,17 @@
     <description>Recent content on Tilly Net</description>
     <generator>Hugo -- 0.146.6</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 17 Jun 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://blog.tillynet.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://blog.tillynet.com/about/</link>
+      <pubDate>Sun, 09 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://blog.tillynet.com/about/</guid>
+      <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;
+&lt;p&gt;I’m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;—an enterprise-grade, self-hosted lab environment designed to simulate real-world production networks. Built from scratch using open-source tooling, routed VLAN segmentation, containerized services, internal PKI, SSO, recursive DNS, and automated deployment pipelines, TillyNet continues to evolve as a full-stack testing platform for SDN, automation, and advanced networking.&lt;/p&gt;
+&lt;p&gt;Professionally, I support the &lt;strong&gt;U.S. Department of Defense&lt;/strong&gt; as a Network Engineer focused on secure enclave operations, high-availability infrastructure, and enterprise-scale automation. I manage and maintain the U.S. Marine Corps’ classified and unclassified Base Area Networks (BAN/LAN) across SDA fabric sites—delivering mission-critical connectivity for thousands of users. My work spans routing architecture, encrypted transport, OSPF/BGP redistribution, real-time diagnostics, multi-VRF segmentation, and full-stack SDA operations using Cisco Catalyst Center.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Implementing Enterprise-Grade 802.1X EAP-TLS Authentication in My Home Lab</title>
       <link>https://blog.tillynet.com/on-premise-engineering-labs/implementing-enterprise-grade-802.1x-eap-tls-authentication-in-my-home-lab/</link>
@@ -257,15 +266,6 @@
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Provision Domain Controller:&lt;/strong&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>About</title>
-      <link>https://blog.tillynet.com/about/</link>
-      <pubDate>Thu, 24 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>https://blog.tillynet.com/about/</guid>
-      <description>&lt;h1 id=&#34;about-me&#34;&gt;About Me&lt;/h1&gt;
-&lt;p&gt;I&amp;rsquo;m the creator of &lt;strong&gt;TillyNet&lt;/strong&gt;, a fully segmented home lab environment built from the ground up using tools like Proxmox, pfSense, Cisco switches, and TP-Link APs. What started as a curiosity has turned into a full-blown SDN playground.&lt;/p&gt;
-&lt;p&gt;I am an IT professional with a foundation in systems support, cybersecurity compliance, and enterprise IT operations—actively transitioning into a career in network engineering. I recently earned my Cisco Certified Network Associate (CCNA 200-301) and hold a CompTIA Security+ certification, with plans underway to achieve the CCNP as I deepen my expertise in advanced networking technologies.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Resolving Internet Connectivity Issues for Proxmox VMs on a Routed Subnet</title>
